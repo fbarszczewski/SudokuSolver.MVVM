@@ -5,23 +5,17 @@ namespace SudokuSolver.ViewModel
 {
     public class SudokuViewModel : INotifyPropertyChanged
     {
-        private readonly SudokuBoard board;
-
-        public byte this[byte i, byte j]
-        {
-            get => board[i, j];
-            set
-            {
-                board[i, j] = value;
-                OnPropertyChanged($"Item[{i},{j}]");
-            }
-        }
+        public byte[,] SudokuBoard { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        private readonly SudokuBoard sudokuModel;
+
+
         public SudokuViewModel()
         {
-            board = new SudokuBoard();
+            sudokuModel = new SudokuBoard();
+            SudokuBoard = sudokuModel.Board;
         }
 
         protected virtual void OnPropertyChanged(string propertyName)
