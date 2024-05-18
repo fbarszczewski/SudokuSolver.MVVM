@@ -1,30 +1,50 @@
 ﻿using System.Globalization;
-using System.Windows.Data;
 
 namespace SudokuSolver.ViewModel
 {
-    internal class Converters : IValueConverter
+    public class Converters
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public class MatrixToListConverter : IValueConverter
         {
-            if (value is byte[,] board)
+            public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
             {
-                var list = new List<byte>();
-                for (var i = 0; i < board.GetLength(0); i++)
+                if (value is byte[,] board)
                 {
-                    for (var j = 0; j < board.GetLength(1); j++)
+                    var list = new List<byte>();
+                    for (var i = 0; i < board.GetLength(0); i++)
                     {
-                        list.Add(board[i, j]);
+                        for (var j = 0; j < board.GetLength(1); j++)
+                        {
+                            list.Add(board[i, j]);
+                        }
                     }
+                    return list;
                 }
-                return list;
+                return null;
             }
-            return null;
+
+            public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+            {
+                throw new NotImplementedException();
+            }
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        public class IndexConverter : IValueConverter
         {
-            throw new NotImplementedException();
+            public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+            {
+                if (value is ItemsControl itemsControl && parameter is FrameworkElement element)
+                {
+                    var index = itemsControl.ItemContainerGenerator.IndexFromContainer(element);
+                    return new Tuple<int, string>(index, parameter.ToString());
+                }
+                return null;
+            }
+
+            public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+            {
+                throw new NotImplementedException();
+            }
         }
     }
 }
