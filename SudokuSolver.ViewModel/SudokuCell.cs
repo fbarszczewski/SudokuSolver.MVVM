@@ -6,7 +6,7 @@ namespace SudokuSolver.ViewModel
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        internal byte Value
+        public byte Value
         {
             get => _value;
             set

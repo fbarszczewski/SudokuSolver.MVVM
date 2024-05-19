@@ -5,11 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SudokuSolver.View"
         xmlns:controls="clr-namespace:SudokuSolver.View.CustomControls"
+        xmlns:vm="clr-namespace:SudokuSolver.ViewModel;assembly=SudokuSolver.ViewModel"
         mc:Ignorable="d"
         Title="Sudoku Solver" Height="500" Width="700" SizeToContent="WidthAndHeight" 
         WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
     
     <Grid Width="700" Height="480">
+        <Grid.DataContext>
+            <vm:SudokuViewModel/>
+        </Grid.DataContext>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*"/>
             <ColumnDefinition Width="*"/>
@@ -167,10 +171,7 @@
             
             <!-- Sudoku border display-->
             <StackPanel Grid.Column="0" Height="441" Width="441">
-               <ItemsControl  Grid.Column="0" ItemsSource="{Binding Board}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
-                   <ItemsControl.Background>
-                       <ImageBrush/>
-                   </ItemsControl.Background>
+               <!--<ItemsControl  Grid.Column="0" ItemsSource="{Binding Board}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
                    <ItemsControl.ItemTemplate>
                        <DataTemplate>
                            <ItemsControl ItemsSource="{Binding}">
@@ -181,13 +182,26 @@
                                </ItemsControl.ItemsPanel>
                                <ItemsControl.ItemTemplate>
                                    <DataTemplate>
-                                       <controls:SudokuCell Text="{Binding Value}"/>
+                                       <controls:SudokuCell 
+                                           Text="{Binding Path=Value, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                    </DataTemplate>
                                </ItemsControl.ItemTemplate>
                            </ItemsControl>
                        </DataTemplate>
                    </ItemsControl.ItemTemplate>
-               </ItemsControl>
+               </ItemsControl>-->
+                        <ItemsControl ItemsSource="{Binding CellCollection}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <UniformGrid Rows="9" Columns="9"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <controls:SudokuCell Text="{Binding Path=Value, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
             </StackPanel>            
         </Grid>
         

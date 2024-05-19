@@ -13,6 +13,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\SudokuSolver.ViewModel\SudokuSolver.ViewModel.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Resource Include="Resources\saveicon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>

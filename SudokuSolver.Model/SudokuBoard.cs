@@ -19,7 +19,7 @@
             {
                 for (var j = 0; j < 9; j++)
                 {
-                    Board[i, j] = 0;
+                    Board[i, j] = 9;
                 }
             }
         }
