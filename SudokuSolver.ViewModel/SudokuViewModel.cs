@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Windows.Input;
 
 namespace SudokuSolver.ViewModel
 {
@@ -85,7 +86,123 @@ namespace SudokuSolver.ViewModel
             }
         }
 
+        #region Commands
 
+        private ICommand solveCommand;
+        private ICommand clearCommand;
+        private ICommand saveCommand;
+        private ICommand loadFileCommand;
+        private ICommand exitCommand;
 
+        public ICommand SolveCommand
+        {
+            get
+            {
+                if (solveCommand == null)
+                {
+                    solveCommand = new RelayCommand(param => ClearBoardAndNotify(), param => CanClearBoard());
+                }
+                return solveCommand;
+            }
+        }
+
+        public ICommand ClearCommand
+        {
+            get
+            {
+                if (clearCommand == null)
+                {
+                    clearCommand = new RelayCommand(param => ClearBoardAndNotify(), param => CanClearBoard());
+                }
+                return clearCommand;
+            }
+        }
+
+        public ICommand SaveCommand
+        {
+            get
+            {
+                if (saveCommand == null)
+                {
+                    saveCommand = new RelayCommand(param => SaveBoardAndNotify(), param => CanSaveBoard());
+                }
+                return saveCommand;
+            }
+        }
+
+        public ICommand LoadFileCommand
+        {
+            get
+            {
+                if (loadFileCommand == null)
+                {
+                    loadFileCommand = new RelayCommand(param => LoadFileAndNotify(), param => CanLoadFile());
+                }
+                return loadFileCommand;
+            }
+        }
+
+        public ICommand ExitCommand
+        {
+            get
+            {
+                if (exitCommand == null)
+                {
+                    exitCommand = new RelayCommand(param => ExitApplication(), param => CanExitApplication());
+                }
+                return exitCommand;
+            }
+        }
+
+        private bool CanExitApplication()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void ExitApplication()
+        {
+            throw new NotImplementedException();
+        }
+
+        private bool CanLoadFile()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void LoadFileAndNotify()
+        {
+            throw new NotImplementedException();
+        }
+
+        private bool CanSaveBoard()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void SaveBoardAndNotify()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void SolveBoardAndNotify()
+        {
+            throw new NotImplementedException();
+        }
+        private bool CanSolveBoard()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void ClearBoardAndNotify()
+        {
+            throw new NotImplementedException();
+        }
+
+        private bool CanClearBoard()
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
     }
 }

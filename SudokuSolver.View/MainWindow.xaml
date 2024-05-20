@@ -190,18 +190,23 @@
                 <RowDefinition Height="20"/>
                 <RowDefinition Height="40"/>
             </Grid.RowDefinitions>
-            <Button x:Name="solveBtn" Grid.Row="0" Margin="2" Content="Solve sudoku" FontSize="16"/>
+            <Button x:Name="solveBtn" Command="{Binding SolveCommand}" 
+                    Grid.Row="0" Margin="2" Content="Solve sudoku" FontSize="16"/>
             <StackPanel Grid.Row="1" Orientation="Horizontal">
-                <Button FontSize="16" Height="34" Width="34"  BorderThickness="1" BorderBrush="Transparent" Margin="2,0,2,0"  >
+                <Button x:Name="saveBtn" Command="{Binding SaveCommand}" FontSize="16" Height="34" Width="34"  
+                        BorderThickness="1" BorderBrush="Transparent" Margin="2,0,2,0">
                     <Button.Background>
                         <ImageBrush ImageSource="/Resources/SaveIcon.png"/>
                     </Button.Background>
                 </Button>
-                <Button x:Name="clearBtn"   Content="Clear board" FontSize="16" Height="38" Width="188">
+                <Button x:Name="clearBtn" Command="{Binding ClearCommand}" 
+                        Content="Clear board" FontSize="16" Height="38" Width="188">
                 </Button>
             </StackPanel>
-            <Button  Grid.Row="4" Margin="2" Content="Load from file" FontSize="16"/>
-            <Button  Grid.Row="6" Margin="2" Content="Exit" FontSize="16"/>
+            <Button x:Name="loadFileBtn" Command="{Binding LoadFileCommand}"
+                    Grid.Row="4" Margin="2" Content="Load from file" FontSize="16"/>
+            <Button x:Name="exitBtn" Command="{Binding ExitCommand}"
+                    Grid.Row="6" Margin="2" Content="Exit" FontSize="16"/>
         </Grid>
     </Grid>
 </Window>
