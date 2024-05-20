@@ -161,7 +161,7 @@
                 <Border Grid.Row="2" Grid.Column="2" Style="{StaticResource SquareBorder}"/>                
             </Grid>    
             <!-- Sudoku board display-->
-            <StackPanel Grid.Column="0" Height="441" Width="441">
+            <VirtualizingStackPanel Grid.Column="0" Height="441" Width="441">
                 <ItemsControl ItemsSource="{Binding CellCollection}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
@@ -177,7 +177,7 @@
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
-            </StackPanel>            
+            </VirtualizingStackPanel>            
         </Grid>
         <!-- Buttons-->
         <Grid Grid.Column="1" Margin="0,11,5,11">
