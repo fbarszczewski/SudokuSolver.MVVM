@@ -9,7 +9,7 @@ namespace SudokuSolver.ViewModel
     public class SudokuViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
-        public ObservableCollection<SudokuCell> CellCollection { get; set; }
+        public ObservableCollection<SudokuCell> CellCollection { get; private set; }
 
         private readonly SudokuBoard sudokuModel;
 
