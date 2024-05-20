@@ -8,7 +8,6 @@ namespace SudokuSolver.ViewModel
     public class SudokuViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
-
         public ObservableCollection<SudokuCell> CellCollection { get; set; }
 
         private readonly SudokuBoard sudokuModel;
@@ -16,12 +15,19 @@ namespace SudokuSolver.ViewModel
         public SudokuViewModel()
         {
             sudokuModel = new SudokuBoard();
+
+            // Filling the collection with the values from the model
             CellCollection = new ObservableCollection<SudokuCell>(sudokuModel.Board.Cast<byte>().Select(b => new SudokuCell(b)));
+
+            // Attaching event handler to the CollectionChanged event of CellCollection.
+            // This is necessary to synchronize the changes in the CellCollection with the model's Board.
             CellCollection.CollectionChanged += ListBoard_CollectionChanged;
 
-            foreach (SudokuCell item in CellCollection)
+            // Attaching event handler to the PropertyChanged event of each SudokuCell in CellCollection.
+            // This is necessary to synchronize the changes in the Value property of the SudokuCell objects in the CellCollection
+            foreach (SudokuCell cell in CellCollection)
             {
-                item.PropertyChanged += ListBoardItem_PropertyChanged;
+                cell.PropertyChanged += ListBoardItem_PropertyChanged;
             }
         }
 
@@ -30,6 +36,11 @@ namespace SudokuSolver.ViewModel
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        /// <summary>
+        /// Manages the attachment and detachment of event handlers to SudokuCell objects 
+        /// as they are added and removed from the CellCollection, 
+        /// allowing the ViewModel to respond to changes in the cells of the Sudoku board.
+        /// </summary>
         private void ListBoard_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e.NewItems != null)
@@ -56,10 +67,10 @@ namespace SudokuSolver.ViewModel
         }
 
         /// <summary>
-        /// Updates correct position in Sudoku Board in model.
+        /// Synchronizes changes in the Value property of SudokuCell objects in the CellCollection 
+        /// with the corresponding cells in the sudokuModel.Board, 
+        /// allowing the ViewModel to keep the model's state consistent with the view's state.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void ListBoardItem_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "Value")
@@ -71,8 +82,10 @@ namespace SudokuSolver.ViewModel
                 var col = index % 9;
 
                 sudokuModel.Board[row, col] = item.Value;
-
             }
         }
+
+
+
     }
 }
