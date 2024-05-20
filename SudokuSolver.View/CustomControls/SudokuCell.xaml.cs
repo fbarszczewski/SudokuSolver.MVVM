@@ -1,6 +1,5 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 
 namespace SudokuSolver.View.CustomControls
 {
@@ -20,22 +19,6 @@ namespace SudokuSolver.View.CustomControls
         public SudokuCell()
         {
             InitializeComponent();
-        }
-
-        private void TextBox_GotFocus(object sender, RoutedEventArgs e)
-        {
-            var textBox = sender as TextBox;
-            textBox.Clear();
-        }
-
-        private void TextBox_PreviewMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            var textBox = sender as TextBox;
-            if (!textBox.IsFocused)
-            {
-                textBox.Focus();
-                e.Handled = true;
-            }
         }
     }
 }
