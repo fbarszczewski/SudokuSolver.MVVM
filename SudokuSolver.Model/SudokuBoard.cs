@@ -13,13 +13,13 @@
         /// <summary>
         /// Clears sudoku board by replacing every value with 0.
         /// </summary>
-        private void ClearBoard()
+        public void ClearBoard(byte defaultValue = 0)
         {
             for (var i = 0; i < 9; i++)
             {
                 for (var j = 0; j < 9; j++)
                 {
-                    Board[i, j] = 9;
+                    Board[i, j] = defaultValue;
                 }
             }
         }
