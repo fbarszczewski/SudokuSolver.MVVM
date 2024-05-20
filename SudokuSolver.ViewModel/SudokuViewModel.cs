@@ -16,8 +16,9 @@ namespace SudokuSolver.ViewModel
         public SudokuViewModel()
         {
             sudokuModel = new SudokuBoard();
-            InitializeCellCollection();
+            sudokuModel.BoardChanged += SudokuModel_BoardChanged;
 
+            InitializeCellCollection();
         }
 
 
@@ -28,7 +29,7 @@ namespace SudokuSolver.ViewModel
 
         private void InitializeCellCollection()
         {
-            // Detaching event handlers from the previous CellCollection
+            // Detaching event handlers from the previous CellCollection to avoid data leaks
             if (CellCollection != null)
             {
                 foreach (SudokuCell cell in CellCollection)
@@ -40,7 +41,7 @@ namespace SudokuSolver.ViewModel
             }
 
             // Filling the collection with the values from the model
-            CellCollection = new ObservableCollection<SudokuCell>(sudokuModel.Board.OfType<byte>().Select(b => new SudokuCell(b)));
+            CellCollection = new ObservableCollection<SudokuCell>(sudokuModel.Board.OfType<byte>().Select(c => new SudokuCell(c)));
             // Attaching event handler to the CollectionChanged event of CellCollection.
             // This is necessary to synchronize the changes in the CellCollection with the model's Board.
             CellCollection.CollectionChanged += ListBoard_CollectionChanged;
@@ -78,6 +79,11 @@ namespace SudokuSolver.ViewModel
                     }
                 }
             }
+        }
+        private void SudokuModel_BoardChanged()
+        {
+            InitializeCellCollection();
+            OnPropertyChanged(nameof(CellCollection));
         }
 
         private void AttachPropertyChangedHandler(SudokuCell cell)
