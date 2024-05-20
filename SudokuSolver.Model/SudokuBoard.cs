@@ -3,6 +3,7 @@
     public class SudokuBoard
     {
         public byte[,] Board { get; set; }
+        public event Action BoardChanged;
 
         public SudokuBoard()
         {
@@ -16,6 +17,7 @@
         public void ClearBoard()
         {
             Array.Clear(Board, 0, Board.Length);
+            BoardChanged?.Invoke();
         }
     }
 }
