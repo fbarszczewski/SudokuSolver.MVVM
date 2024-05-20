@@ -100,7 +100,7 @@ namespace SudokuSolver.ViewModel
             {
                 if (solveCommand == null)
                 {
-                    solveCommand = new RelayCommand(param => ClearBoardAndNotify(), param => CanClearBoard());
+                    solveCommand = new RelayCommand(param => SolveBoardAndNotify(), param => CanSolveBoard());
                 }
                 return solveCommand;
             }
