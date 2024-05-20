@@ -15,13 +15,7 @@
         /// </summary>
         public void ClearBoard(byte defaultValue = 0)
         {
-            for (var i = 0; i < 9; i++)
-            {
-                for (var j = 0; j < 9; j++)
-                {
-                    Board[i, j] = defaultValue;
-                }
-            }
+            Array.Clear(Board, defaultValue, Board.Length);
         }
     }
 }
