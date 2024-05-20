@@ -154,19 +154,15 @@ namespace SudokuSolver.ViewModel
             }
         }
 
-        private bool CanExitApplication()
-        {
-            throw new NotImplementedException();
-        }
 
         private void ExitApplication()
         {
             throw new NotImplementedException();
         }
-
-        private bool CanLoadFile()
+        private bool CanExitApplication()
         {
-            throw new NotImplementedException();
+            // Not Implemented;
+            return true;
         }
 
         private void LoadFileAndNotify()
@@ -174,14 +170,20 @@ namespace SudokuSolver.ViewModel
             throw new NotImplementedException();
         }
 
-        private bool CanSaveBoard()
+        private bool CanLoadFile()
         {
-            throw new NotImplementedException();
+            // Not Implemented;
+            return true;
         }
 
         private void SaveBoardAndNotify()
         {
             throw new NotImplementedException();
+        }
+        private bool CanSaveBoard()
+        {
+            // Not Implemented;
+            return true;
         }
 
         private void SolveBoardAndNotify()
@@ -190,7 +192,8 @@ namespace SudokuSolver.ViewModel
         }
         private bool CanSolveBoard()
         {
-            throw new NotImplementedException();
+            // Not Implemented;
+            return true;
         }
 
         private void ClearBoardAndNotify()
@@ -200,7 +203,8 @@ namespace SudokuSolver.ViewModel
 
         private bool CanClearBoard()
         {
-            throw new NotImplementedException();
+            // Not Implemented;
+            return true;
         }
 
         #endregion
