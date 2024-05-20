@@ -32,15 +32,14 @@ namespace SudokuSolver.ViewModel
             }
         }
 
+
         protected virtual void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         /// <summary>
-        /// Manages the attachment and detachment of event handlers to SudokuCell objects 
-        /// as they are added and removed from the CellCollection, 
-        /// allowing the ViewModel to respond to changes in the cells of the Sudoku board.
+        /// Manages the attachment and detachment of event handlers to SudokuCell objects in the CellCollection
         /// </summary>
         private void ListBoard_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
@@ -50,7 +49,7 @@ namespace SudokuSolver.ViewModel
                 {
                     if (newItem is SudokuCell observableByte)
                     {
-                        observableByte.PropertyChanged += ListBoardItem_PropertyChanged;
+                        AttachPropertyChangedHandler(observableByte);
                     }
                 }
             }
@@ -61,10 +60,20 @@ namespace SudokuSolver.ViewModel
                 {
                     if (oldItem is SudokuCell observableByte)
                     {
-                        observableByte.PropertyChanged -= ListBoardItem_PropertyChanged;
+                        DetachPropertyChangedHandler(observableByte);
                     }
                 }
             }
+        }
+
+        private void AttachPropertyChangedHandler(SudokuCell cell)
+        {
+            cell.PropertyChanged += ListBoardItem_PropertyChanged;
+        }
+
+        private void DetachPropertyChangedHandler(SudokuCell cell)
+        {
+            cell.PropertyChanged -= ListBoardItem_PropertyChanged;
         }
 
         /// <summary>
