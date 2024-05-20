@@ -16,26 +16,40 @@ namespace SudokuSolver.ViewModel
         public SudokuViewModel()
         {
             sudokuModel = new SudokuBoard();
+            InitializeCellCollection();
 
-            // Filling the collection with the values from the model
-            CellCollection = new ObservableCollection<SudokuCell>(sudokuModel.Board.OfType<byte>().Select(b => new SudokuCell(b)));
-
-            // Attaching event handler to the CollectionChanged event of CellCollection.
-            // This is necessary to synchronize the changes in the CellCollection with the model's Board.
-            CellCollection.CollectionChanged += ListBoard_CollectionChanged;
-
-            // Attaching event handler to the PropertyChanged event of each SudokuCell in CellCollection.
-            // This is necessary to synchronize the changes in the Value property of the SudokuCell objects in the CellCollection
-            foreach (SudokuCell cell in CellCollection)
-            {
-                cell.PropertyChanged += ListBoardItem_PropertyChanged;
-            }
         }
 
 
         protected virtual void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private void InitializeCellCollection()
+        {
+            // Detaching event handlers from the previous CellCollection
+            if (CellCollection != null)
+            {
+                foreach (SudokuCell cell in CellCollection)
+                {
+                    cell.PropertyChanged -= ListBoardItem_PropertyChanged;
+                }
+
+                CellCollection.CollectionChanged -= ListBoard_CollectionChanged;
+            }
+
+            // Filling the collection with the values from the model
+            CellCollection = new ObservableCollection<SudokuCell>(sudokuModel.Board.OfType<byte>().Select(b => new SudokuCell(b)));
+            // Attaching event handler to the CollectionChanged event of CellCollection.
+            // This is necessary to synchronize the changes in the CellCollection with the model's Board.
+            CellCollection.CollectionChanged += ListBoard_CollectionChanged;
+            // Attaching event handler to the PropertyChanged event of each SudokuCell in CellCollection.
+            // This is necessary to synchronize the changes in the Value property of the SudokuCell objects in the CellCollection
+            foreach (SudokuCell cell in CellCollection)
+            {
+                cell.PropertyChanged += ListBoardItem_PropertyChanged;
+            }
         }
 
         /// <summary>
@@ -192,10 +206,8 @@ namespace SudokuSolver.ViewModel
 
         private void ClearBoardAndNotify()
         {
-            throw new NotImplementedException();
+            sudokuModel.ClearBoard();
         }
-
-
 
         private bool CanClearBoard()
         {
