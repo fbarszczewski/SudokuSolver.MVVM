@@ -4,9 +4,209 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SudokuSolver.View"
+        xmlns:controls="clr-namespace:SudokuSolver.View.CustomControls"
+        xmlns:vm="clr-namespace:SudokuSolver.ViewModel;assembly=SudokuSolver.ViewModel"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-
+        Title="Sudoku Solver" Height="500" Width="700" SizeToContent="WidthAndHeight" 
+        WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+    <Grid Width="700" Height="480">
+        <Grid.DataContext>
+            <vm:SudokuViewModel/>
+        </Grid.DataContext>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="0" Width="465" Height="465">
+            <Grid.Resources>
+                <Style x:Key="CellBorder" TargetType="Border">
+                    <Setter Property="BorderBrush" Value="#FF67A1FF"/>
+                    <Setter Property="BorderThickness" Value="1"/>
+                </Style>
+                <Style x:Key="SquareBorder" TargetType="Border">
+                    <Setter Property="BorderBrush" Value="#FF1E63D4"/>
+                    <Setter Property="BorderThickness" Value="1.4"/>
+                </Style>                
+            </Grid.Resources> 
+            <!-- Sudoku board border -->
+            <Grid Grid.Column="0" Height="441" Width="441">
+                <Border Style="{StaticResource SquareBorder}" BorderThickness="3"/>
+            </Grid>        
+            <!-- Sudoku cells border -->
+            <Grid Grid.Column="0" Height="441" Width="441">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>  
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>                    
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>                    
+                </Grid.ColumnDefinitions>
+                <Border Grid.Row="0" Grid.Column="0" Style="{StaticResource CellBorder}"/>
+                <Border Grid.Row="0" Grid.Column="1" Style="{StaticResource CellBorder}"/>
+                <Border Grid.Row="0" Grid.Column="2" Style="{StaticResource CellBorder}"/>
+                <Border Grid.Row="1" Grid.Column="0" Style="{StaticResource CellBorder}"/>
+                <Border Grid.Row="1" Grid.Column="1" Style="{StaticResource CellBorder}"/>
+                <Border Grid.Row="1" Grid.Column="2" Style="{StaticResource CellBorder}"/>
+                <Border Grid.Row="2" Grid.Column="0" Style="{StaticResource CellBorder}"/>
+                <Border Grid.Row="2" Grid.Column="1" Style="{StaticResource CellBorder}"/>
+                <Border Grid.Row="2" Grid.Column="2" Style="{StaticResource CellBorder}"/>
+                <Border Grid.Row="3" Grid.Column="0" Style="{StaticResource CellBorder}"/>
+                <Border Grid.Row="3" Grid.Column="1" Style="{StaticResource CellBorder}"/>
+                <Border Grid.Row="3" Grid.Column="2" Style="{StaticResource CellBorder}"/>
+                <Border Grid.Row="4" Grid.Column="0" Style="{StaticResource CellBorder}"/>
+                <Border Grid.Row="4" Grid.Column="1" Style="{StaticResource CellBorder}"/>
+                <Border Grid.Row="4" Grid.Column="2" Style="{StaticResource CellBorder}"/>
+                <Border Grid.Row="5" Grid.Column="0" Style="{StaticResource CellBorder}"/>
+                <Border Grid.Row="5" Grid.Column="1" Style="{StaticResource CellBorder}"/>
+                <Border Grid.Row="5" Grid.Column="2" Style="{StaticResource CellBorder}"/>       
+                <Border Grid.Row="6" Grid.Column="0" Style="{StaticResource CellBorder}"/>
+                <Border Grid.Row="6" Grid.Column="1" Style="{StaticResource CellBorder}"/>
+                <Border Grid.Row="6" Grid.Column="2" Style="{StaticResource CellBorder}"/>
+                <Border Grid.Row="7" Grid.Column="0" Style="{StaticResource CellBorder}"/>
+                <Border Grid.Row="7" Grid.Column="1" Style="{StaticResource CellBorder}"/>
+                <Border Grid.Row="7" Grid.Column="2" Style="{StaticResource CellBorder}"/>
+                <Border Grid.Row="8" Grid.Column="0" Style="{StaticResource CellBorder}"/>
+                <Border Grid.Row="8" Grid.Column="1" Style="{StaticResource CellBorder}"/>
+                <Border Grid.Row="8" Grid.Column="2" Style="{StaticResource CellBorder}"/>
+                <Border Grid.Row="0" Grid.Column="3" Style="{StaticResource CellBorder}"/>
+                <Border Grid.Row="0" Grid.Column="4" Style="{StaticResource CellBorder}"/>
+                <Border Grid.Row="0" Grid.Column="5" Style="{StaticResource CellBorder}"/>
+                <Border Grid.Row="1" Grid.Column="3" Style="{StaticResource CellBorder}"/>
+                <Border Grid.Row="1" Grid.Column="4" Style="{StaticResource CellBorder}"/>
+                <Border Grid.Row="1" Grid.Column="5" Style="{StaticResource CellBorder}"/>
+                <Border Grid.Row="2" Grid.Column="3" Style="{StaticResource CellBorder}"/>
+                <Border Grid.Row="2" Grid.Column="4" Style="{StaticResource CellBorder}"/>
+                <Border Grid.Row="2" Grid.Column="5" Style="{StaticResource CellBorder}"/>
+                <Border Grid.Row="3" Grid.Column="3" Style="{StaticResource CellBorder}"/>
+                <Border Grid.Row="3" Grid.Column="4" Style="{StaticResource CellBorder}"/>
+                <Border Grid.Row="3" Grid.Column="5" Style="{StaticResource CellBorder}"/>
+                <Border Grid.Row="4" Grid.Column="3" Style="{StaticResource CellBorder}"/>
+                <Border Grid.Row="4" Grid.Column="4" Style="{StaticResource CellBorder}"/>
+                <Border Grid.Row="4" Grid.Column="5" Style="{StaticResource CellBorder}"/>
+                <Border Grid.Row="5" Grid.Column="3" Style="{StaticResource CellBorder}"/>
+                <Border Grid.Row="5" Grid.Column="4" Style="{StaticResource CellBorder}"/>
+                <Border Grid.Row="5" Grid.Column="5" Style="{StaticResource CellBorder}"/>  
+                <Border Grid.Row="6" Grid.Column="3" Style="{StaticResource CellBorder}"/>
+                <Border Grid.Row="6" Grid.Column="4" Style="{StaticResource CellBorder}"/>
+                <Border Grid.Row="6" Grid.Column="5" Style="{StaticResource CellBorder}"/>
+                <Border Grid.Row="7" Grid.Column="3" Style="{StaticResource CellBorder}"/>
+                <Border Grid.Row="7" Grid.Column="4" Style="{StaticResource CellBorder}"/>
+                <Border Grid.Row="7" Grid.Column="5" Style="{StaticResource CellBorder}"/>
+                <Border Grid.Row="8" Grid.Column="3" Style="{StaticResource CellBorder}"/>
+                <Border Grid.Row="8" Grid.Column="4" Style="{StaticResource CellBorder}"/>
+                <Border Grid.Row="8" Grid.Column="5" Style="{StaticResource CellBorder}"/>   
+                <Border Grid.Row="0" Grid.Column="6" Style="{StaticResource CellBorder}"/>
+                <Border Grid.Row="0" Grid.Column="7" Style="{StaticResource CellBorder}"/>
+                <Border Grid.Row="0" Grid.Column="8" Style="{StaticResource CellBorder}"/>
+                <Border Grid.Row="1" Grid.Column="6" Style="{StaticResource CellBorder}"/>
+                <Border Grid.Row="1" Grid.Column="7" Style="{StaticResource CellBorder}"/>
+                <Border Grid.Row="1" Grid.Column="8" Style="{StaticResource CellBorder}"/>
+                <Border Grid.Row="2" Grid.Column="6" Style="{StaticResource CellBorder}"/>
+                <Border Grid.Row="2" Grid.Column="7" Style="{StaticResource CellBorder}"/>
+                <Border Grid.Row="2" Grid.Column="8" Style="{StaticResource CellBorder}"/>
+                <Border Grid.Row="3" Grid.Column="6" Style="{StaticResource CellBorder}"/>
+                <Border Grid.Row="3" Grid.Column="7" Style="{StaticResource CellBorder}"/>
+                <Border Grid.Row="3" Grid.Column="8" Style="{StaticResource CellBorder}"/>
+                <Border Grid.Row="4" Grid.Column="6" Style="{StaticResource CellBorder}"/>
+                <Border Grid.Row="4" Grid.Column="7" Style="{StaticResource CellBorder}"/>
+                <Border Grid.Row="4" Grid.Column="8" Style="{StaticResource CellBorder}"/>
+                <Border Grid.Row="5" Grid.Column="6" Style="{StaticResource CellBorder}"/>
+                <Border Grid.Row="5" Grid.Column="7" Style="{StaticResource CellBorder}"/>
+                <Border Grid.Row="5" Grid.Column="8" Style="{StaticResource CellBorder}"/>  
+                <Border Grid.Row="6" Grid.Column="6" Style="{StaticResource CellBorder}"/>
+                <Border Grid.Row="6" Grid.Column="7" Style="{StaticResource CellBorder}"/>
+                <Border Grid.Row="6" Grid.Column="8" Style="{StaticResource CellBorder}"/>
+                <Border Grid.Row="7" Grid.Column="6" Style="{StaticResource CellBorder}"/>
+                <Border Grid.Row="7" Grid.Column="7" Style="{StaticResource CellBorder}"/>
+                <Border Grid.Row="7" Grid.Column="8" Style="{StaticResource CellBorder}"/>
+                <Border Grid.Row="8" Grid.Column="6" Style="{StaticResource CellBorder}"/>
+                <Border Grid.Row="8" Grid.Column="7" Style="{StaticResource CellBorder}"/>
+                <Border Grid.Row="8" Grid.Column="8" Style="{StaticResource CellBorder}"/>                   
+            </Grid>
+            <!-- Sudoku squares border -->
+            <Grid Grid.Column="0" Height="441" Width="441" Panel.ZIndex="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Border Grid.Row="0" Grid.Column="0" Style="{StaticResource SquareBorder}"/>
+                <Border Grid.Row="0" Grid.Column="1" Style="{StaticResource SquareBorder}"/>
+                <Border Grid.Row="0" Grid.Column="2" Style="{StaticResource SquareBorder}"/>
+                <Border Grid.Row="1" Grid.Column="0" Style="{StaticResource SquareBorder}"/>
+                <Border Grid.Row="1" Grid.Column="1" Style="{StaticResource SquareBorder}"/>
+                <Border Grid.Row="1" Grid.Column="2" Style="{StaticResource SquareBorder}"/>
+                <Border Grid.Row="2" Grid.Column="0" Style="{StaticResource SquareBorder}"/>
+                <Border Grid.Row="2" Grid.Column="1" Style="{StaticResource SquareBorder}"/>
+                <Border Grid.Row="2" Grid.Column="2" Style="{StaticResource SquareBorder}"/>                
+            </Grid>    
+            <!-- Sudoku board display-->
+            <VirtualizingStackPanel Grid.Column="0" Height="441" Width="441">
+                <ItemsControl ItemsSource="{Binding CellCollection}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid Rows="9" Columns="9"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <controls:SudokuCell Text="{
+                                Binding Path=Value, 
+                                UpdateSourceTrigger=PropertyChanged, 
+                                Mode=TwoWay}" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </VirtualizingStackPanel>            
+        </Grid>
+        <!-- Buttons-->
+        <Grid Grid.Column="1" Margin="0,11,5,11">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="20"/>
+                <RowDefinition Height="40"/>
+            </Grid.RowDefinitions>
+            <Button x:Name="solveBtn" Command="{Binding SolveCommand}" 
+                    Grid.Row="0" Margin="2" Content="Solve sudoku" FontSize="16"/>
+            <StackPanel Grid.Row="1" Orientation="Horizontal">
+                <Button x:Name="saveBtn" Command="{Binding SaveCommand}" FontSize="16" Height="34" Width="34"  
+                        BorderThickness="1" BorderBrush="Transparent" Margin="2,0,2,0">
+                    <Button.Background>
+                        <ImageBrush ImageSource="/Resources/SaveIcon.png"/>
+                    </Button.Background>
+                </Button>
+                <Button x:Name="clearBtn" Command="{Binding ClearCommand}" 
+                        Content="Clear board" FontSize="16" Height="38" Width="188">
+                </Button>
+            </StackPanel>
+            <Button x:Name="loadFileBtn" Command="{Binding LoadFileCommand}"
+                    Grid.Row="4" Margin="2" Content="Load from file" FontSize="16"/>
+            <Button x:Name="exitBtn" Command="{Binding ExitCommand}"
+                    Grid.Row="6" Margin="2" Content="Exit" FontSize="16"/>
+        </Grid>
     </Grid>
 </Window>
