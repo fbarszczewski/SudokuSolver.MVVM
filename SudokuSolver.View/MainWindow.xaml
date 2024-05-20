@@ -9,7 +9,6 @@
         mc:Ignorable="d"
         Title="Sudoku Solver" Height="500" Width="700" SizeToContent="WidthAndHeight" 
         WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
-    
     <Grid Width="700" Height="480">
         <Grid.DataContext>
             <vm:SudokuViewModel/>
@@ -18,7 +17,6 @@
             <ColumnDefinition Width="2*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        
         <Grid Grid.Column="0" Width="465" Height="465">
             <Grid.Resources>
                 <Style x:Key="CellBorder" TargetType="Border">
@@ -34,7 +32,6 @@
             <Grid Grid.Column="0" Height="441" Width="441">
                 <Border Style="{StaticResource SquareBorder}" BorderThickness="3"/>
             </Grid>        
-            
             <!-- Sudoku cells border -->
             <Grid Grid.Column="0" Height="441" Width="441">
                 <Grid.RowDefinitions>
@@ -59,7 +56,6 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>                    
                 </Grid.ColumnDefinitions>
-                
                 <Border Grid.Row="0" Grid.Column="0" Style="{StaticResource CellBorder}"/>
                 <Border Grid.Row="0" Grid.Column="1" Style="{StaticResource CellBorder}"/>
                 <Border Grid.Row="0" Grid.Column="2" Style="{StaticResource CellBorder}"/>
@@ -87,7 +83,6 @@
                 <Border Grid.Row="8" Grid.Column="0" Style="{StaticResource CellBorder}"/>
                 <Border Grid.Row="8" Grid.Column="1" Style="{StaticResource CellBorder}"/>
                 <Border Grid.Row="8" Grid.Column="2" Style="{StaticResource CellBorder}"/>
-                
                 <Border Grid.Row="0" Grid.Column="3" Style="{StaticResource CellBorder}"/>
                 <Border Grid.Row="0" Grid.Column="4" Style="{StaticResource CellBorder}"/>
                 <Border Grid.Row="0" Grid.Column="5" Style="{StaticResource CellBorder}"/>
@@ -115,7 +110,6 @@
                 <Border Grid.Row="8" Grid.Column="3" Style="{StaticResource CellBorder}"/>
                 <Border Grid.Row="8" Grid.Column="4" Style="{StaticResource CellBorder}"/>
                 <Border Grid.Row="8" Grid.Column="5" Style="{StaticResource CellBorder}"/>   
-
                 <Border Grid.Row="0" Grid.Column="6" Style="{StaticResource CellBorder}"/>
                 <Border Grid.Row="0" Grid.Column="7" Style="{StaticResource CellBorder}"/>
                 <Border Grid.Row="0" Grid.Column="8" Style="{StaticResource CellBorder}"/>
@@ -144,7 +138,6 @@
                 <Border Grid.Row="8" Grid.Column="7" Style="{StaticResource CellBorder}"/>
                 <Border Grid.Row="8" Grid.Column="8" Style="{StaticResource CellBorder}"/>                   
             </Grid>
-            
             <!-- Sudoku squares border -->
             <Grid Grid.Column="0" Height="441" Width="441" Panel.ZIndex="2">
                 <Grid.RowDefinitions>
@@ -157,7 +150,6 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                
                 <Border Grid.Row="0" Grid.Column="0" Style="{StaticResource SquareBorder}"/>
                 <Border Grid.Row="0" Grid.Column="1" Style="{StaticResource SquareBorder}"/>
                 <Border Grid.Row="0" Grid.Column="2" Style="{StaticResource SquareBorder}"/>
@@ -168,43 +160,25 @@
                 <Border Grid.Row="2" Grid.Column="1" Style="{StaticResource SquareBorder}"/>
                 <Border Grid.Row="2" Grid.Column="2" Style="{StaticResource SquareBorder}"/>                
             </Grid>    
-            
-            <!-- Sudoku border display-->
+            <!-- Sudoku board display-->
             <StackPanel Grid.Column="0" Height="441" Width="441">
-               <!--<ItemsControl  Grid.Column="0" ItemsSource="{Binding Board}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
-                   <ItemsControl.ItemTemplate>
-                       <DataTemplate>
-                           <ItemsControl ItemsSource="{Binding}">
-                               <ItemsControl.ItemsPanel>
-                                   <ItemsPanelTemplate>
-                                       <UniformGrid Rows="1"/>
-                                   </ItemsPanelTemplate>
-                               </ItemsControl.ItemsPanel>
-                               <ItemsControl.ItemTemplate>
-                                   <DataTemplate>
-                                       <controls:SudokuCell 
-                                           Text="{Binding Path=Value, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-                                   </DataTemplate>
-                               </ItemsControl.ItemTemplate>
-                           </ItemsControl>
-                       </DataTemplate>
-                   </ItemsControl.ItemTemplate>
-               </ItemsControl>-->
-                        <ItemsControl ItemsSource="{Binding CellCollection}">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <UniformGrid Rows="9" Columns="9"/>
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <controls:SudokuCell Text="{Binding Path=Value, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
+                <ItemsControl ItemsSource="{Binding CellCollection}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid Rows="9" Columns="9"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <controls:SudokuCell Text="{
+                                Binding Path=Value, 
+                                UpdateSourceTrigger=PropertyChanged, 
+                                Mode=TwoWay}" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
             </StackPanel>            
         </Grid>
-        
         <!-- Buttons-->
         <Grid Grid.Column="1" Margin="0,11,5,11">
             <Grid.RowDefinitions>
@@ -216,25 +190,18 @@
                 <RowDefinition Height="20"/>
                 <RowDefinition Height="40"/>
             </Grid.RowDefinitions>
-            
             <Button x:Name="solveBtn" Grid.Row="0" Margin="2" Content="Solve sudoku" FontSize="16"/>
-
             <StackPanel Grid.Row="1" Orientation="Horizontal">
                 <Button FontSize="16" Height="34" Width="34"  BorderThickness="1" BorderBrush="Transparent" Margin="2,0,2,0"  >
                     <Button.Background>
                         <ImageBrush ImageSource="/Resources/SaveIcon.png"/>
                     </Button.Background>
-
-
-
                 </Button>
                 <Button x:Name="clearBtn"   Content="Clear board" FontSize="16" Height="38" Width="188">
                 </Button>
-
             </StackPanel>
             <Button  Grid.Row="4" Margin="2" Content="Load from file" FontSize="16"/>
             <Button  Grid.Row="6" Margin="2" Content="Exit" FontSize="16"/>
         </Grid>
-        
     </Grid>
 </Window>
