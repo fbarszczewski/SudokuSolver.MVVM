@@ -13,9 +13,9 @@
         /// <summary>
         /// Clears sudoku board by replacing every value with 0.
         /// </summary>
-        public void ClearBoard(byte defaultValue = 0)
+        public void ClearBoard()
         {
-            Array.Clear(Board, defaultValue, Board.Length);
+            Array.Clear(Board, 0, Board.Length);
         }
     }
 }
