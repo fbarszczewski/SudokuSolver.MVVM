@@ -18,7 +18,7 @@ namespace SudokuSolver.ViewModel
             sudokuModel = new SudokuBoard();
 
             // Filling the collection with the values from the model
-            CellCollection = new ObservableCollection<SudokuCell>(sudokuModel.Board.Cast<byte>().Select(b => new SudokuCell(b)));
+            CellCollection = new ObservableCollection<SudokuCell>(sudokuModel.Board.OfType<byte>().Select(b => new SudokuCell(b)));
 
             // Attaching event handler to the CollectionChanged event of CellCollection.
             // This is necessary to synchronize the changes in the CellCollection with the model's Board.
