@@ -98,10 +98,7 @@ namespace SudokuSolver.ViewModel
         {
             get
             {
-                if (solveCommand == null)
-                {
-                    solveCommand = new RelayCommand(param => SolveBoardAndNotify(), param => CanSolveBoard());
-                }
+                solveCommand = solveCommand ?? new RelayCommand(param => SolveBoardAndNotify(), param => CanSolveBoard());
                 return solveCommand;
             }
         }
@@ -110,10 +107,7 @@ namespace SudokuSolver.ViewModel
         {
             get
             {
-                if (clearCommand == null)
-                {
-                    clearCommand = new RelayCommand(param => ClearBoardAndNotify(), param => CanClearBoard());
-                }
+                clearCommand = clearCommand ?? new RelayCommand(param => ClearBoardAndNotify(), param => CanClearBoard());
                 return clearCommand;
             }
         }
@@ -122,10 +116,7 @@ namespace SudokuSolver.ViewModel
         {
             get
             {
-                if (saveCommand == null)
-                {
-                    saveCommand = new RelayCommand(param => SaveBoardAndNotify(), param => CanSaveBoard());
-                }
+                saveCommand = saveCommand ?? new RelayCommand(param => SaveBoardAndNotify(), param => CanSaveBoard());
                 return saveCommand;
             }
         }
@@ -134,10 +125,7 @@ namespace SudokuSolver.ViewModel
         {
             get
             {
-                if (loadFileCommand == null)
-                {
-                    loadFileCommand = new RelayCommand(param => LoadFileAndNotify(), param => CanLoadFile());
-                }
+                loadFileCommand = loadFileCommand ?? new RelayCommand(param => LoadFileAndNotify(), param => CanLoadFile());
                 return loadFileCommand;
             }
         }
@@ -146,10 +134,7 @@ namespace SudokuSolver.ViewModel
         {
             get
             {
-                if (exitCommand == null)
-                {
-                    exitCommand = new RelayCommand(param => ExitApplication(), param => CanExitApplication());
-                }
+                exitCommand = exitCommand ?? new RelayCommand(param => ExitApplication(), param => CanExitApplication());
                 return exitCommand;
             }
         }
@@ -200,6 +185,8 @@ namespace SudokuSolver.ViewModel
         {
             throw new NotImplementedException();
         }
+
+
 
         private bool CanClearBoard()
         {
