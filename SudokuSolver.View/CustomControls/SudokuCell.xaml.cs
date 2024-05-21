@@ -28,6 +28,16 @@ namespace SudokuSolver.View.CustomControls
             {
                 e.Handled = true;
             }
+            else
+            {
+                var textBox = (TextBox)sender;
+                // Replace the existing text with the new input
+                textBox.Text = e.Text;
+                // Set the caret to the end of the text
+                //textBox.CaretIndex = textBox.Text.Length;
+                // Mark the event as handled so the text isn't added a second time
+                e.Handled = true;
+            }
         }
     }
 }
