@@ -11,7 +11,7 @@
             <TextBox MaxLength="1" MaxLines="1" Margin="1" 
                  HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  
                  Background="White" BorderBrush="white" BorderThickness="0" UseLayoutRounding="True"
-                 Text="{Binding Text, RelativeSource={RelativeSource AncestorType=UserControl}}" Width="16"/>
+                 Text="{Binding Text, RelativeSource={RelativeSource AncestorType=UserControl}}" Width="16" PreviewTextInput="TextBox_PreviewTextInput"/>
         </Viewbox>
     </Border>
 </UserControl>
