@@ -29,7 +29,7 @@ namespace SudokuSolver.ViewModel
 
         private void InitializeCellCollection()
         {
-            // Detaching event handlers from the previous CellCollection to avoid data leaks
+            // Detaching event handlers from the previous CellCollection to avoid data leaks.
             if (CellCollection != null)
             {
                 foreach (SudokuCell cell in CellCollection)
@@ -80,6 +80,11 @@ namespace SudokuSolver.ViewModel
                 }
             }
         }
+
+        /// <summary>
+        /// Updates the CellCollection when the model's Board changes .
+        /// Changes are invoked by the model's BoardChanged event in SudokuBoard model.
+        /// </summary>
         private void SudokuModel_BoardChanged()
         {
             InitializeCellCollection();
@@ -105,13 +110,13 @@ namespace SudokuSolver.ViewModel
         {
             if (e.PropertyName == "Value")
             {
-                var item = (SudokuCell)sender;
-                var index = CellCollection.IndexOf(item);
+                var cell = (SudokuCell)sender;
+                var index = CellCollection.IndexOf(cell);
 
                 var row = index / 9;
                 var col = index % 9;
 
-                sudokuModel.Board[row, col] = item.Value;
+                sudokuModel.Board[row, col] = cell;
             }
         }
 
