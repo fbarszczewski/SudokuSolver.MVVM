@@ -15,7 +15,8 @@ namespace SudokuSolver.ViewModel
             {
                 if (this.value != value)
                 {
-                    this.value = value;
+                    this.value = value == "0" ? string.Empty : value;
+
                     OnPropertyChanged(nameof(Value));
                 }
             }
