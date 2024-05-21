@@ -217,8 +217,7 @@ namespace SudokuSolver.ViewModel
 
         private bool CanClearBoard()
         {
-            // Not Implemented;
-            return true;
+            return !sudokuModel.IsEmpty();
         }
 
         #endregion
