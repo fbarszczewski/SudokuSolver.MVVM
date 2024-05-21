@@ -6,7 +6,7 @@ namespace SudokuSolver.ViewModel
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public byte Value
+        public string Value
         {
             get => _value;
             set
@@ -19,9 +19,9 @@ namespace SudokuSolver.ViewModel
             }
         }
 
-        private byte _value;
+        private string _value;
 
-        public SudokuCell(byte value)
+        public SudokuCell(string value)
         {
             _value = value;
         }
@@ -31,14 +31,18 @@ namespace SudokuSolver.ViewModel
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public static implicit operator byte(SudokuCell observableByte)
+        public static implicit operator byte(SudokuCell cellValue)
         {
-            return observableByte.Value;
+            //convert to int
+            int num;
+
+            return !string.IsNullOrEmpty(cellValue.Value) && int.TryParse(cellValue.Value, out num) ? (byte)num : (byte)0;
         }
 
         public static implicit operator SudokuCell(byte value)
         {
-            return new SudokuCell(value);
+
+            return 7;
         }
     }
 }
