@@ -17,6 +17,29 @@ namespace SudokuSolver.Model.Tests
         }
 
         [Fact]
+        public void Board_InitializedWithZeroes()
+        {
+            // Arrange
+            var sudokuBoard = new SudokuBoard();
+
+            // Act
+            var totalZeroes = 0;
+            for (var i = 0; i < 9; i++)
+            {
+                for (var j = 0; j < 9; j++)
+                {
+                    if (sudokuBoard.Board[i, j] == 0)
+                    {
+                        totalZeroes++;
+                    }
+                }
+            }
+
+            // Assert
+            Assert.Equal(81, totalZeroes);
+        }
+
+        [Fact]
         public void ClearBoard_SetsAllFieldsToZero()
         {
             // Arrange
