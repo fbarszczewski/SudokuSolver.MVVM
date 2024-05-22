@@ -8,7 +8,7 @@ namespace SudokuSolver.ViewModel
 {
     public class SudokuViewModel : INotifyPropertyChanged
     {
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         public ObservableCollection<SudokuCell> CellCollection { get; private set; }
 
@@ -18,8 +18,9 @@ namespace SudokuSolver.ViewModel
         {
             sudokuModel = new SudokuBoard();
             sudokuModel.BoardChanged += SudokuModel_BoardChanged;
-
+            CellCollection = new ObservableCollection<SudokuCell>();
             InitializeCellCollection();
+
         }
 
 
@@ -57,8 +58,13 @@ namespace SudokuSolver.ViewModel
         /// <summary>
         /// Manages the attachment and detachment of event handlers to SudokuCell objects in the CellCollection
         /// </summary>
-        private void ListBoard_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void ListBoard_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {
+            if (sender == null)
+                return;
+            {
+
+            }
             if (e.NewItems != null)
             {
                 foreach (var newItem in e.NewItems)
@@ -103,8 +109,11 @@ namespace SudokuSolver.ViewModel
         /// corresponding cells in the sudokuModel.Board,  allowing the ViewModel to keep the model's state consistent
         /// with the view's state.
         /// </summary>
-        private void ListBoardItem_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void ListBoardItem_PropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
+            if (sender == null)
+                return;
+
             if (e.PropertyName == "Value")
             {
                 var cell = (SudokuCell)sender;
@@ -118,11 +127,11 @@ namespace SudokuSolver.ViewModel
         }
 
         #region Commands
-        private ICommand solveCommand;
-        private ICommand clearCommand;
-        private ICommand saveCommand;
-        private ICommand loadFileCommand;
-        private ICommand exitCommand;
+        private ICommand? solveCommand;
+        private ICommand? clearCommand;
+        private ICommand? saveCommand;
+        private ICommand? loadFileCommand;
+        private ICommand? exitCommand;
 
         public ICommand SolveCommand
         {
