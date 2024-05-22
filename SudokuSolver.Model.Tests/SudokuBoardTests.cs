@@ -44,6 +44,7 @@ namespace SudokuSolver.Model.Tests
         {
             // Arrange
             var sudokuBoard = new SudokuBoard();
+            var clearBoard = new byte[9, 9];
             var number = 1;
             for (var i = 0; i < 9; i++)
             {
@@ -57,13 +58,7 @@ namespace SudokuSolver.Model.Tests
             sudokuBoard.ClearBoard();
 
             // Assert
-            for (var i = 0; i < 9; i++)
-            {
-                for (var j = 0; j < 9; j++)
-                {
-                    Assert.Equal(0, sudokuBoard.Board[i, j]);
-                }
-            }
+            Assert.Equal(clearBoard, sudokuBoard.Board);
         }
 
         [Fact]
