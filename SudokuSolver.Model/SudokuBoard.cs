@@ -3,7 +3,7 @@
     public class SudokuBoard
     {
         public byte[,] Board { get; set; }
-        public event Action BoardChanged;
+        public event Action? BoardChanged;
 
         public SudokuBoard()
         {
