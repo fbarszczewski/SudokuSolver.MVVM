@@ -4,44 +4,35 @@ using System.ComponentModel;
 
 namespace SudokuSolver.ViewModel
 {
-    public class SudokuCell : INotifyPropertyChanged
-    {
-        public event PropertyChangedEventHandler? PropertyChanged;
+	public class SudokuCell : INotifyPropertyChanged
+	{
+		private string value;
 
-        public string Value
-        {
-            get => value;
-            set
-            {
-                if (this.value != value)
-                {
-                    this.value = value == "0" ? string.Empty : value;
+		public SudokuCell(byte _value)
+		{
+			this.value=_value==0 ? string.Empty : _value.ToString();
+		}
 
-                    OnPropertyChanged(nameof(Value));
-                }
-            }
-        }
+		public event PropertyChangedEventHandler? PropertyChanged;
 
-        private string value;
+		public string Value
+		{
+			get => value;
+			set
+			{
+				if(this.value!=value)
+				{
+					this.value=value=="0" ? string.Empty : value;
 
-        public SudokuCell(byte _value)
-        {
-            this.value = _value == 0 ? string.Empty : _value.ToString();
-        }
+					OnPropertyChanged(nameof(Value));
+				}
+			}
+		}
 
-        protected void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+		public static implicit operator byte(SudokuCell cellValue) => !string.IsNullOrEmpty(cellValue.Value)
+																   &&int.TryParse(cellValue.Value,out var num)
+																   ? (byte)num : (byte)0;
 
-        public static implicit operator byte(SudokuCell cellValue)
-        {
-            //convert to int
-            int num;
-
-            return !string.IsNullOrEmpty(cellValue.Value) && int.TryParse(cellValue.Value, out num) ? (byte)num : (byte)0;
-        }
-
-
-    }
+		protected void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this,new PropertyChangedEventArgs(propertyName));
+	}
 }
