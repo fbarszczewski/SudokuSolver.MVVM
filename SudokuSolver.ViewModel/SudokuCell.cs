@@ -1,29 +1,32 @@
-﻿using System.ComponentModel;
+﻿// Ignore Spelling: Sudoku
+
+using System.ComponentModel;
 
 namespace SudokuSolver.ViewModel
 {
     public class SudokuCell : INotifyPropertyChanged
     {
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
-        public byte Value
+        public string Value
         {
-            get => _value;
+            get => value;
             set
             {
-                if (_value != value)
+                if (this.value != value)
                 {
-                    _value = value;
+                    this.value = value == "0" ? string.Empty : value;
+
                     OnPropertyChanged(nameof(Value));
                 }
             }
         }
 
-        private byte _value;
+        private string value;
 
-        public SudokuCell(byte value)
+        public SudokuCell(byte _value)
         {
-            _value = value;
+            this.value = _value == 0 ? string.Empty : _value.ToString();
         }
 
         protected void OnPropertyChanged(string propertyName)
@@ -31,14 +34,14 @@ namespace SudokuSolver.ViewModel
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public static implicit operator byte(SudokuCell observableByte)
+        public static implicit operator byte(SudokuCell cellValue)
         {
-            return observableByte.Value;
+            //convert to int
+            int num;
+
+            return !string.IsNullOrEmpty(cellValue.Value) && int.TryParse(cellValue.Value, out num) ? (byte)num : (byte)0;
         }
 
-        public static implicit operator SudokuCell(byte value)
-        {
-            return new SudokuCell(value);
-        }
+
     }
 }

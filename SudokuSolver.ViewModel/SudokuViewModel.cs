@@ -9,6 +9,7 @@ namespace SudokuSolver.ViewModel
     public class SudokuViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
+
         public ObservableCollection<SudokuCell> CellCollection { get; private set; }
 
         private readonly SudokuBoard sudokuModel;
@@ -16,26 +17,41 @@ namespace SudokuSolver.ViewModel
         public SudokuViewModel()
         {
             sudokuModel = new SudokuBoard();
+            sudokuModel.BoardChanged += SudokuModel_BoardChanged;
 
-            // Filling the collection with the values from the model
-            CellCollection = new ObservableCollection<SudokuCell>(sudokuModel.Board.OfType<byte>().Select(b => new SudokuCell(b)));
+            InitializeCellCollection();
+        }
 
+
+        protected virtual void OnPropertyChanged(string propertyName)
+        { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)); }
+
+        private void InitializeCellCollection()
+        {
+            // Detaching event handlers from the previous CellCollection to avoid data leaks.
+            if (CellCollection != null)
+            {
+                foreach (SudokuCell cell in CellCollection)
+                {
+                    cell.PropertyChanged -= ListBoardItem_PropertyChanged;
+                }
+
+                CellCollection.CollectionChanged -= ListBoard_CollectionChanged;
+            }
+
+            // Filling the collection with the values from the model.
+            // Value type is converted in SudokuCell constructor & every '0' is replaced with empty string.
+            CellCollection = new ObservableCollection<SudokuCell>(
+                sudokuModel.Board.OfType<byte>().Select(b => new SudokuCell(b)));
             // Attaching event handler to the CollectionChanged event of CellCollection.
             // This is necessary to synchronize the changes in the CellCollection with the model's Board.
             CellCollection.CollectionChanged += ListBoard_CollectionChanged;
-
             // Attaching event handler to the PropertyChanged event of each SudokuCell in CellCollection.
             // This is necessary to synchronize the changes in the Value property of the SudokuCell objects in the CellCollection
             foreach (SudokuCell cell in CellCollection)
             {
                 cell.PropertyChanged += ListBoardItem_PropertyChanged;
             }
-        }
-
-
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         /// <summary>
@@ -66,37 +82,42 @@ namespace SudokuSolver.ViewModel
             }
         }
 
-        private void AttachPropertyChangedHandler(SudokuCell cell)
+        /// <summary>
+        /// Updates the CellCollection when the model's Board changes . Changes are invoked by the model's BoardChanged
+        /// event in SudokuBoard model.
+        /// </summary>
+        private void SudokuModel_BoardChanged()
         {
-            cell.PropertyChanged += ListBoardItem_PropertyChanged;
+            InitializeCellCollection();
+            OnPropertyChanged(nameof(CellCollection));
         }
+
+        private void AttachPropertyChangedHandler(SudokuCell cell)
+        { cell.PropertyChanged += ListBoardItem_PropertyChanged; }
 
         private void DetachPropertyChangedHandler(SudokuCell cell)
-        {
-            cell.PropertyChanged -= ListBoardItem_PropertyChanged;
-        }
+        { cell.PropertyChanged -= ListBoardItem_PropertyChanged; }
 
         /// <summary>
-        /// Synchronizes changes in the Value property of SudokuCell objects in the CellCollection 
-        /// with the corresponding cells in the sudokuModel.Board, 
-        /// allowing the ViewModel to keep the model's state consistent with the view's state.
+        /// Synchronizes changes in the Value property of SudokuCell objects in the CellCollection  with the
+        /// corresponding cells in the sudokuModel.Board,  allowing the ViewModel to keep the model's state consistent
+        /// with the view's state.
         /// </summary>
         private void ListBoardItem_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "Value")
             {
-                var item = (SudokuCell)sender;
-                var index = CellCollection.IndexOf(item);
+                var cell = (SudokuCell)sender;
+                var index = CellCollection.IndexOf(cell);
 
                 var row = index / 9;
                 var col = index % 9;
 
-                sudokuModel.Board[row, col] = item.Value;
+                sudokuModel.Board[row, col] = cell;
             }
         }
 
         #region Commands
-
         private ICommand solveCommand;
         private ICommand clearCommand;
         private ICommand saveCommand;
@@ -107,7 +128,8 @@ namespace SudokuSolver.ViewModel
         {
             get
             {
-                solveCommand = solveCommand ?? new RelayCommand(param => SolveBoardAndNotify(), param => CanSolveBoard());
+                solveCommand = solveCommand ??
+                    new RelayCommand(param => SolveBoardAndNotify(), param => CanSolveBoard());
                 return solveCommand;
             }
         }
@@ -116,7 +138,8 @@ namespace SudokuSolver.ViewModel
         {
             get
             {
-                clearCommand = clearCommand ?? new RelayCommand(param => ClearBoardAndNotify(), param => CanClearBoard());
+                clearCommand = clearCommand ??
+                    new RelayCommand(param => ClearBoardAndNotify(), param => CanClearBoard());
                 return clearCommand;
             }
         }
@@ -134,7 +157,8 @@ namespace SudokuSolver.ViewModel
         {
             get
             {
-                loadFileCommand = loadFileCommand ?? new RelayCommand(param => LoadFileAndNotify(), param => CanLoadFile());
+                loadFileCommand = loadFileCommand ??
+                    new RelayCommand(param => LoadFileAndNotify(), param => CanLoadFile());
                 return loadFileCommand;
             }
         }
@@ -149,20 +173,15 @@ namespace SudokuSolver.ViewModel
         }
 
 
-        private void ExitApplication()
-        {
-            throw new NotImplementedException();
-        }
+        private void ExitApplication() { throw new NotImplementedException(); }
+
         private bool CanExitApplication()
         {
             // Not Implemented;
             return true;
         }
 
-        private void LoadFileAndNotify()
-        {
-            throw new NotImplementedException();
-        }
+        private void LoadFileAndNotify() { throw new NotImplementedException(); }
 
         private bool CanLoadFile()
         {
@@ -170,39 +189,25 @@ namespace SudokuSolver.ViewModel
             return true;
         }
 
-        private void SaveBoardAndNotify()
-        {
-            throw new NotImplementedException();
-        }
+        private void SaveBoardAndNotify() { throw new NotImplementedException(); }
+
         private bool CanSaveBoard()
         {
             // Not Implemented;
             return true;
         }
 
-        private void SolveBoardAndNotify()
-        {
-            throw new NotImplementedException();
-        }
+        private void SolveBoardAndNotify() { throw new NotImplementedException(); }
+
         private bool CanSolveBoard()
         {
             // Not Implemented;
             return true;
         }
 
-        private void ClearBoardAndNotify()
-        {
-            throw new NotImplementedException();
-        }
+        private void ClearBoardAndNotify() { sudokuModel.ClearBoard(); }
 
-
-
-        private bool CanClearBoard()
-        {
-            // Not Implemented;
-            return true;
-        }
-
+        private bool CanClearBoard() { return !sudokuModel.IsEmpty(); }
         #endregion
     }
 }
