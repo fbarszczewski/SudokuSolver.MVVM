@@ -6,13 +6,13 @@
 		{
 			get; set;
 		}
+
 		public event Action? BoardChanged;
 
 		public SudokuBoard()
 		{
-			Board=new byte[9,9];
+			Board = new byte[9,9];
 		}
-
 
 		/// <summary>
 		/// Clears sudoku board by replacing every value with 0.
@@ -22,7 +22,6 @@
 			Array.Clear(Board,0,Board.Length);
 			BoardChanged?.Invoke();
 		}
-
 		/// <summary>
 		/// Checks if the Sudoku Board is empty.
 		/// </summary>
@@ -31,7 +30,7 @@
 		{
 			foreach(var value in Board)
 			{
-				if(value!=0)
+				if(value != 0)
 				{
 					return false;
 				}
@@ -39,5 +38,6 @@
 
 			return true;
 		}
+		public void RaiseBoardChanged() => BoardChanged?.Invoke();
 	}
 }

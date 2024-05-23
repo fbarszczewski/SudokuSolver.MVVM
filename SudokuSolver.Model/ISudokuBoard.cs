@@ -4,11 +4,14 @@
 	{
 		byte[,] Board
 		{
-			get; set;
+			get;
+			set;
 		}
+
 		event Action? BoardChanged;
 
 		void ClearBoard();
 		bool IsEmpty();
+		void RaiseBoardChanged();
 	}
 }

@@ -20,9 +20,9 @@ namespace SudokuSolver.ViewModel
 
 		public SudokuViewModel(ISudokuBoard _model)
 		{
-			sudokuModel=_model;
-			sudokuModel.BoardChanged+=SudokuModel_BoardChanged;
-			CellCollection=new ObservableCollection<SudokuCell>();
+			sudokuModel = _model;
+			sudokuModel.BoardChanged += SudokuModel_BoardChanged;
+			CellCollection = new ObservableCollection<SudokuCell>();
 			InitializeCellCollection();
 
 		}
@@ -33,28 +33,28 @@ namespace SudokuSolver.ViewModel
 		private void InitializeCellCollection()
 		{
 			// Detaching event handlers from the previous CellCollection to avoid data leaks.
-			if(CellCollection!=null)
+			if(CellCollection != null)
 			{
 				foreach(SudokuCell cell in CellCollection)
 				{
-					cell.PropertyChanged-=ListBoardItem_PropertyChanged;
+					cell.PropertyChanged -= ListBoardItem_PropertyChanged;
 				}
 
-				CellCollection.CollectionChanged-=ListBoard_CollectionChanged;
+				CellCollection.CollectionChanged -= ListBoard_CollectionChanged;
 			}
 
 			// Filling the collection with the values from the model.
 			// Value type is converted in SudokuCell constructor & every '0' is replaced with empty string.
-			CellCollection=new ObservableCollection<SudokuCell>(
+			CellCollection = new ObservableCollection<SudokuCell>(
 				sudokuModel.Board.OfType<byte>().Select(b => new SudokuCell(b)));
 			// Attaching event handler to the CollectionChanged event of CellCollection.
 			// This is necessary to synchronize the changes in the CellCollection with the model's Board.
-			CellCollection.CollectionChanged+=ListBoard_CollectionChanged;
+			CellCollection.CollectionChanged += ListBoard_CollectionChanged;
 			// Attaching event handler to the PropertyChanged event of each SudokuCell in CellCollection.
 			// This is necessary to synchronize the changes in the Value property of the SudokuCell objects in the CellCollection
 			foreach(SudokuCell cell in CellCollection)
 			{
-				cell.PropertyChanged+=ListBoardItem_PropertyChanged;
+				cell.PropertyChanged += ListBoardItem_PropertyChanged;
 			}
 		}
 
@@ -63,12 +63,12 @@ namespace SudokuSolver.ViewModel
 		/// </summary>
 		private void ListBoard_CollectionChanged(object? sender,NotifyCollectionChangedEventArgs e)
 		{
-			if(sender==null)
+			if(sender == null)
 				return;
 			{
 
 			}
-			if(e.NewItems!=null)
+			if(e.NewItems != null)
 			{
 				foreach(var newItem in e.NewItems)
 				{
@@ -79,7 +79,7 @@ namespace SudokuSolver.ViewModel
 				}
 			}
 
-			if(e.OldItems!=null)
+			if(e.OldItems != null)
 			{
 				foreach(var oldItem in e.OldItems)
 				{
@@ -88,6 +88,34 @@ namespace SudokuSolver.ViewModel
 						DetachPropertyChangedHandler(observableByte);
 					}
 				}
+			}
+		}
+
+
+
+		private void AttachPropertyChangedHandler(SudokuCell cell) => cell.PropertyChanged += ListBoardItem_PropertyChanged;
+
+		private void DetachPropertyChangedHandler(SudokuCell cell) => cell.PropertyChanged -= ListBoardItem_PropertyChanged;
+
+		/// <summary>
+		/// Synchronizes changes in the Value property of SudokuCell objects in the CellCollection  with the
+		/// corresponding cells in the sudokuModel.Board,  allowing the ViewModel to keep the model's state consistent
+		/// with the view's state.
+		/// </summary>
+		private void ListBoardItem_PropertyChanged(object? sender,PropertyChangedEventArgs e)
+		{
+			if(sender == null)
+				return;
+
+			if(e.PropertyName == "Value")
+			{
+				var cell = (SudokuCell)sender;
+				var index = CellCollection.IndexOf(cell);
+
+				var row = index / 9;
+				var col = index % 9;
+
+				sudokuModel.Board[row,col] = cell;
 			}
 		}
 
@@ -101,32 +129,6 @@ namespace SudokuSolver.ViewModel
 			OnPropertyChanged(nameof(CellCollection));
 		}
 
-		private void AttachPropertyChangedHandler(SudokuCell cell) => cell.PropertyChanged+=ListBoardItem_PropertyChanged;
-
-		private void DetachPropertyChangedHandler(SudokuCell cell) => cell.PropertyChanged-=ListBoardItem_PropertyChanged;
-
-		/// <summary>
-		/// Synchronizes changes in the Value property of SudokuCell objects in the CellCollection  with the
-		/// corresponding cells in the sudokuModel.Board,  allowing the ViewModel to keep the model's state consistent
-		/// with the view's state.
-		/// </summary>
-		private void ListBoardItem_PropertyChanged(object? sender,PropertyChangedEventArgs e)
-		{
-			if(sender==null)
-				return;
-
-			if(e.PropertyName=="Value")
-			{
-				var cell = (SudokuCell)sender;
-				var index = CellCollection.IndexOf(cell);
-
-				var row = index/9;
-				var col = index%9;
-
-				sudokuModel.Board[row,col]=cell;
-			}
-		}
-
 		#region Commands
 		private ICommand? solveCommand;
 		private ICommand? clearCommand;
@@ -138,7 +140,7 @@ namespace SudokuSolver.ViewModel
 		{
 			get
 			{
-				solveCommand=solveCommand??new RelayCommand(param => SolveBoardAndNotify(),param => CanSolveBoard());
+				solveCommand = solveCommand ?? new RelayCommand(param => SolveBoardAndNotify(),param => CanSolveBoard());
 				return solveCommand;
 			}
 		}
@@ -147,7 +149,7 @@ namespace SudokuSolver.ViewModel
 		{
 			get
 			{
-				clearCommand=clearCommand??new RelayCommand(param => ClearBoardAndNotify(),param => CanClearBoard());
+				clearCommand = clearCommand ?? new RelayCommand(param => ClearBoardAndNotify(),param => CanClearBoard());
 				return clearCommand;
 			}
 		}
@@ -156,7 +158,7 @@ namespace SudokuSolver.ViewModel
 		{
 			get
 			{
-				saveCommand=saveCommand??new RelayCommand(param => SaveBoardAndNotify(),param => CanSaveBoard());
+				saveCommand = saveCommand ?? new RelayCommand(param => SaveBoardAndNotify(),param => CanSaveBoard());
 				return saveCommand;
 			}
 		}
@@ -165,7 +167,7 @@ namespace SudokuSolver.ViewModel
 		{
 			get
 			{
-				loadFileCommand=loadFileCommand??
+				loadFileCommand = loadFileCommand ??
 					new RelayCommand(param => LoadFileAndNotify(),param => CanLoadFile());
 				return loadFileCommand;
 			}
@@ -175,7 +177,7 @@ namespace SudokuSolver.ViewModel
 		{
 			get
 			{
-				exitCommand=exitCommand??new RelayCommand(param => ExitApplication(),param => CanExitApplication());
+				exitCommand = exitCommand ?? new RelayCommand(param => ExitApplication(),param => CanExitApplication());
 				return exitCommand;
 			}
 		}

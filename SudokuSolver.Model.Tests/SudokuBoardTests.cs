@@ -1,108 +1,102 @@
 ﻿
 namespace SudokuSolver.Model.Tests
 {
-    public class SudokuBoardTests
-    {
-        [Fact]
-        public void Board_Has81Fields()
-        {
-            // Arrange
-            var sudokuBoard = new SudokuBoard();
+	public class SudokuBoardTests
+	{
+		[Fact]
+		public void Board_Has81Fields()
+		{
+			// Arrange
+			var sudokuBoard = new SudokuBoard();
 
-            // Act
-            var totalFields = sudokuBoard.Board.Length;
+			// Act
+			var totalFields = sudokuBoard.Board.Length;
 
-            // Assert
-            Assert.Equal(81, totalFields);
-        }
+			// Assert
+			Assert.Equal(81,totalFields);
+		}
+		[Fact]
+		public void Board_InitializedWithZeroes()
+		{
+			// Arrange
+			var sudokuBoard = new SudokuBoard();
 
-        [Fact]
-        public void Board_InitializedWithZeroes()
-        {
-            // Arrange
-            var sudokuBoard = new SudokuBoard();
+			// Act
+			var totalZeroes = 0;
+			for(var i = 0;i < 9;i++)
+			{
+				for(var j = 0;j < 9;j++)
+				{
+					if(sudokuBoard.Board[i,j] == 0)
+					{
+						totalZeroes++;
+					}
+				}
+			}
 
-            // Act
-            var totalZeroes = 0;
-            for (var i = 0; i < 9; i++)
-            {
-                for (var j = 0; j < 9; j++)
-                {
-                    if (sudokuBoard.Board[i, j] == 0)
-                    {
-                        totalZeroes++;
-                    }
-                }
-            }
+			// Assert
+			Assert.Equal(81,totalZeroes);
+		}
+		[Fact]
+		public void ClearBoard_SetsAllFieldsToZero()
+		{
+			// Arrange
+			var sudokuBoard = new SudokuBoard();
+			var clearBoard = new byte[9,9];
+			var number = 1;
+			for(var i = 0;i < 9;i++)
+			{
+				for(var j = 0;j < 9;j++)
+				{
+					sudokuBoard.Board[i,j] = (byte)number++;
+				}
+			}
 
-            // Assert
-            Assert.Equal(81, totalZeroes);
-        }
+			// Act
+			sudokuBoard.ClearBoard();
 
-        [Fact]
-        public void ClearBoard_SetsAllFieldsToZero()
-        {
-            // Arrange
-            var sudokuBoard = new SudokuBoard();
-            var clearBoard = new byte[9, 9];
-            var number = 1;
-            for (var i = 0; i < 9; i++)
-            {
-                for (var j = 0; j < 9; j++)
-                {
-                    sudokuBoard.Board[i, j] = (byte)number++;
-                }
-            }
+			// Assert
+			Assert.Equal(clearBoard,sudokuBoard.Board);
+		}
+		[Fact]
+		public void IsEmpty_ReturnsTrue_WhenBoardIsEmpty()
+		{
+			// Arrange
+			var sudokuBoard = new SudokuBoard();
+			sudokuBoard.ClearBoard();
 
-            // Act
-            sudokuBoard.ClearBoard();
+			// Act
+			var result = sudokuBoard.IsEmpty();
 
-            // Assert
-            Assert.Equal(clearBoard, sudokuBoard.Board);
-        }
+			// Assert
+			Assert.True(result);
+		}
+		[Fact]
+		public void IsEmpty_ReturnsFalse_WhenOneFieldInBoardIsPopulated()
+		{
+			// Arrange
+			var sudokuBoard = new SudokuBoard();
+			sudokuBoard.Board[0,0] = 1;
 
-        [Fact]
-        public void IsEmpty_ReturnsTrue_WhenBoardIsEmpty()
-        {
-            // Arrange
-            var sudokuBoard = new SudokuBoard();
-            sudokuBoard.ClearBoard();
+			// Act
+			var result = sudokuBoard.IsEmpty();
 
-            // Act
-            var result = sudokuBoard.IsEmpty();
+			// Assert
+			Assert.False(result);
+		}
+		[Fact]
+		public void IsEmpty_ReturnsFalse_WhenOnlyOneFieldIsNotEmpty()
+		{
+			// Arrange
+			var sudokuBoard = new SudokuBoard();
+			sudokuBoard.ClearBoard();
+			sudokuBoard.Board[8,8] = 1; // Set a value to only one field
 
-            // Assert
-            Assert.True(result);
-        }
+			// Act
+			var result = sudokuBoard.IsEmpty();
 
-        [Fact]
-        public void IsEmpty_ReturnsFalse_WhenOneFieldInBoardIsPopulated()
-        {
-            // Arrange
-            var sudokuBoard = new SudokuBoard();
-            sudokuBoard.Board[0, 0] = 1;
-
-            // Act
-            var result = sudokuBoard.IsEmpty();
-
-            // Assert
-            Assert.False(result);
-        }
-
-        [Fact]
-        public void IsEmpty_ReturnsFalse_WhenOnlyOneFieldIsNotEmpty()
-        {
-            // Arrange
-            var sudokuBoard = new SudokuBoard();
-            sudokuBoard.ClearBoard();
-            sudokuBoard.Board[8, 8] = 1; // Set a value to only one field
-
-            // Act
-            var result = sudokuBoard.IsEmpty();
-
-            // Assert
-            Assert.False(result);
-        }
-
-    }
+			// Assert
+			Assert.False(result);
+		}
+	}
 }
