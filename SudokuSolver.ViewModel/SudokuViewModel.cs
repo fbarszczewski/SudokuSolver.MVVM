@@ -15,11 +15,11 @@ namespace SudokuSolver.ViewModel
 			get; private set;
 		}
 
-		private readonly SudokuBoard sudokuModel;
+		private readonly ISudokuBoard sudokuModel;
 
-		public SudokuViewModel()
+		public SudokuViewModel(ISudokuBoard _model)
 		{
-			sudokuModel=new SudokuBoard();
+			sudokuModel=_model;
 			sudokuModel.BoardChanged+=SudokuModel_BoardChanged;
 			CellCollection=new ObservableCollection<SudokuCell>();
 			InitializeCellCollection();
