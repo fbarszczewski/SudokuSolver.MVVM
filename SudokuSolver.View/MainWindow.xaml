@@ -9,10 +9,9 @@
         mc:Ignorable="d"
         Title="Sudoku Solver" Height="500" Width="700" SizeToContent="WidthAndHeight" 
         WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+
     <Grid Width="700" Height="480">
-        <Grid.DataContext>
-            <vm:SudokuViewModel/>
-        </Grid.DataContext>
+
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*"/>
             <ColumnDefinition Width="*"/>
