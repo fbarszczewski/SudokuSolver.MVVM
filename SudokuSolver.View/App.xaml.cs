@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using Autofac;
-using SudokuSolver.Model;
+using SudokuSolver.Model.Interfaces;
+using SudokuSolver.Model.Models;
 using SudokuSolver.ViewModel;
 
 namespace SudokuSolver.View

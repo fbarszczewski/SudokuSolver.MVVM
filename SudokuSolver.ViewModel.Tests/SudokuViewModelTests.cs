@@ -1,5 +1,5 @@
 ﻿using Moq;
-using SudokuSolver.Model;
+using SudokuSolver.Model.Interfaces;
 
 namespace SudokuSolver.ViewModel.Tests
 {

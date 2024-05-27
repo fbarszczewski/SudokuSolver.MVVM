@@ -2,7 +2,7 @@
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Windows.Input;
-using SudokuSolver.Model;
+using SudokuSolver.Model.Interfaces;
 
 namespace SudokuSolver.ViewModel
 {

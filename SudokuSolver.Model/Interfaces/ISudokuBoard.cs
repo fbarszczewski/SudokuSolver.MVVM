@@ -1,4 +1,4 @@
-﻿namespace SudokuSolver.Model
+﻿namespace SudokuSolver.Model.Interfaces
 {
 	public interface ISudokuBoard
 	{
