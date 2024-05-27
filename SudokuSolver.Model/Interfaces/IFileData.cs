@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SudokuSolver.Model.Services
+﻿namespace SudokuSolver.Model.Interfaces
 {
 	internal interface IFileData
 	{
+		string DataPath { get; set; }
+		string Content { get; set; }
+		string FileType { get; set; }
 	}
 }

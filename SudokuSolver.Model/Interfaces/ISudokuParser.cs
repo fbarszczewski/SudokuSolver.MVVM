@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SudokuSolver.Model.Services
+﻿namespace SudokuSolver.Model.Interfaces
 {
 	internal interface ISudokuParser
 	{
+		void Serialize(ISudokuFile sudokuData);
+		void Deserialize(ISudokuFile sudokuData);
 	}
 }
