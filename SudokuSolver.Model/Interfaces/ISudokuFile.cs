@@ -2,7 +2,7 @@
 {
 	public interface ISudokuFile : IFileData
 	{
-		IEnumerable<byte[,]> Boards { get; set; }
+		List<byte[,]> Boards { get; set; }
 		string Schema { get; set; }
 	}
 }
