@@ -12,9 +12,12 @@ namespace SudokuSolver.Model.Services.ParseFactory.ParseStrategies
 		{
 			FileHandler.ReadFile(sudokuData);
 
-			sudokuData.Boards = SchemaValidation(sudokuData.Schema,sudokuData.Content)
-								? JsonConvert.DeserializeObject<IEnumerable<byte[,]>>(sudokuData.Content)
-								: throw new InvalidDataException("Invalid JSON file content.");
+			if(sudokuData.Boards == null)
+				sudokuData.Boards = new List<byte[,]>();
+
+			IEnumerable<byte[,]>? boards = JsonConvert.DeserializeObject<IEnumerable<byte[,]>>(sudokuData.Content);
+			sudokuData.Boards = boards != null ? boards.ToList() : throw new InvalidDataException("Invalid JSON file content.");
+
 		}
 
 		public void SaveBoards(ISudokuFile sudokuData)
