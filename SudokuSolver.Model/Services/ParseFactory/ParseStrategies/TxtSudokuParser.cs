@@ -7,13 +7,12 @@ namespace SudokuSolver.Model.Services.ParseFactory.ParseStrategies
 	{
 		public void LoadBoards(ISudokuFile sudokuData)
 		{
-			FileHandler.ReadFile(sudokuData);
+			var inputData = sudokuData.Content.Replace(" ",string.Empty);
 
-			if(!CanConvert(sudokuData.Content))
-			{
-				throw new InvalidDataException("Provided Text file cannot be converted to a Sudoku board." +
-					"Ensure that file has 9 lines of 9 digits (0-9)");
-			}
+			if(!CanConvert(inputData))
+				throw new ArgumentException("Invalid Sudoku data.");
+
+			sudokuData.Boards = ConvertToBoard(inputData).ToList();
 		}
 
 		public void SaveBoards(ISudokuFile sudokuData)
@@ -42,8 +41,8 @@ namespace SudokuSolver.Model.Services.ParseFactory.ParseStrategies
 		private bool CanConvert(string inputData)
 		{
 			var lines = inputData.Split(new[] { "\r\n","\r","\n" },StringSplitOptions.None)
-				  .Where(line => !string.IsNullOrWhiteSpace(line))
-				  .ToArray();
+					  .Where(line => !string.IsNullOrWhiteSpace(line))
+					  .ToArray();
 
 			if(lines.Length % 9 != 0)
 			{
@@ -59,7 +58,7 @@ namespace SudokuSolver.Model.Services.ParseFactory.ParseStrategies
 					return false;
 				}
 
-				if(!line.All(char.IsDigit))
+				if(!line.All(c => char.IsDigit(c) && c >= '0' && c <= '9'))
 				{
 					return false;
 				}
