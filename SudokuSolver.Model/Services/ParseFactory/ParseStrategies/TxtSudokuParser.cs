@@ -12,6 +12,7 @@ namespace SudokuSolver.Model.Services.ParseFactory.ParseStrategies
 			if(!CanConvert(inputData))
 				throw new ArgumentException("Invalid Sudoku data.");
 
+
 			sudokuData.Boards = ConvertToBoard(inputData).ToList();
 		}
 

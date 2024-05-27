@@ -9,7 +9,6 @@ namespace SudokuSolver.Model.Services.ParseFactory.ParseStrategies
 		public void LoadBoards(ISudokuFile sudokuData)
 		{
 			var doc = XDocument.Parse(sudokuData.Content);
-			sudokuData.Boards = new List<byte[,]>();
 
 			foreach(XElement game in doc.Descendants("game"))
 			{
