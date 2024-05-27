@@ -1,6 +1,6 @@
 ﻿namespace SudokuSolver.Model.Interfaces
 {
-	public interface ISudokuFile
+	public interface ISudokuFile : IFileData
 	{
 		IEnumerable<byte[,]> Boards { get; set; }
 		string Schema { get; set; }

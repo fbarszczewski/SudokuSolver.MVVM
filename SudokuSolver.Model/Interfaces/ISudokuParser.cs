@@ -2,7 +2,7 @@
 {
 	public interface ISudokuParser
 	{
-		void Serialize(ISudokuFile sudokuData);
-		void Deserialize(ISudokuFile sudokuData);
+		void LoadBoards(ISudokuFile sudokuData);
+		void SaveBoards(ISudokuFile sudokuData);
 	}
 }
