@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using Autofac;
-using SudokuSolver.Model;
+using SudokuSolver.Model.Interfaces;
+using SudokuSolver.Model.Models;
 using SudokuSolver.ViewModel;
 
 namespace SudokuSolver.View
@@ -14,7 +15,7 @@ namespace SudokuSolver.View
 		{
 			var builder = new ContainerBuilder();
 
-			builder.RegisterType<SudokuBoard>().As<ISudokuBoard>();
+			builder.RegisterType<AppModel>().As<IAppModel>();
 			builder.RegisterType<SudokuViewModel>();
 
 			IContainer container = builder.Build();
@@ -23,7 +24,7 @@ namespace SudokuSolver.View
 
 			var mainWindow = new MainWindow
 			{
-				DataContext=sudokuViewModel
+				DataContext = sudokuViewModel
 			};
 			mainWindow.Show();
 
