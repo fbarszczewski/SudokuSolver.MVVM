@@ -14,6 +14,9 @@ namespace SudokuSolver.ViewModel
 		{
 			get; private set;
 		}
+
+		public string PageNumbers => $"{currentBoardIndex + 1} of {model.BoardsList.Count} ";
+
 		private int currentBoardIndex => model.CurrentBoardIndex;
 		private ISudokuBoard currentSudokuBoardModel => model.BoardsList[currentBoardIndex];
 		private byte[,] currentBoard => model.BoardsList[currentBoardIndex].Board;
@@ -146,7 +149,9 @@ namespace SudokuSolver.ViewModel
 		private ICommand? clearCommand;
 		private ICommand? saveCommand;
 		private ICommand? loadFileCommand;
-		private ICommand? exitCommand;
+		private ICommand? previousCommand;
+		private ICommand? nextCommand;
+
 
 		public ICommand SolveCommand
 		{
@@ -185,22 +190,42 @@ namespace SudokuSolver.ViewModel
 			}
 		}
 
-		public ICommand ExitCommand
+		public ICommand PreviousCommand
 		{
 			get
 			{
-				exitCommand = exitCommand ?? new RelayCommand(param => ExitApplication(),param => CanExitApplication());
-				return exitCommand;
+				previousCommand = previousCommand ?? new RelayCommand(param => PreviousAndNotify(),param => CanPrevious());
+				return previousCommand;
 			}
 		}
 
+		public ICommand NextCommand
+		{
+			get
+			{
+				nextCommand = nextCommand ?? new RelayCommand(param => NextAndNotify(),param => CanNext());
+				return nextCommand;
+			}
+		}
 
-		private void ExitApplication()
+		private void PreviousAndNotify()
 		{
 			throw new NotImplementedException();
 		}
 
-		private bool CanExitApplication()
+		private bool CanPrevious()
+		{
+			// Not Implemented;
+			return true;
+		}
+
+
+		private void NextAndNotify()
+		{
+			throw new NotImplementedException();
+		}
+
+		private bool CanNext()
 		{
 			// Not Implemented;
 			return true;
@@ -225,7 +250,7 @@ namespace SudokuSolver.ViewModel
 		private bool CanSaveBoard()
 		{
 			// Not Implemented;
-			return true;
+			return false;
 		}
 
 		private void SolveBoardAndNotify()

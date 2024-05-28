@@ -216,28 +216,36 @@
                 </Grid>
                 <StackPanel Margin="14,10,0,10" HorizontalAlignment="Left"
                             VerticalAlignment="Top" Orientation="Horizontal">
-                    <Button x:Name="previousBtn" Width="100" FontSize="12"
-                            Height="30" HorizontalAlignment="Left"
-                            VerticalAlignment="Top" Content="Previous"
-                            Style="{StaticResource WinButton}" Margin="0,0,0,10" Padding="10,1,10,5"/>
+                    <Button x:Name="previousBtn" Width="100"
+                            Height="30" Margin="0,0,0,10"
+                            HorizontalAlignment="Left" VerticalAlignment="Top"
+                            Command="{Binding PreviousCommand}" Content="Previous"
+                            FontSize="12" Padding="10,1,10,5"
+                            Style="{StaticResource WinButton}"/>
                     <Label x:Name="sudokuNumber" Width="241"
                            Height="30" HorizontalAlignment="Center"
                            VerticalAlignment="Center" HorizontalContentAlignment="Center"
-                           VerticalContentAlignment="Center" Content="Sudoku number: 1"
+                           VerticalContentAlignment="Center" Content="{Binding PageNumbers}"
                            FontFamily="Segoe UI" FontSize="14"/>
-                    <Button x:Name="nextBtn" Width="100" FontSize="12"
-                            Height="30" HorizontalAlignment="Right"
-                            VerticalAlignment="Top" Content="Next"
-                            Style="{StaticResource WinButton}" Margin="0,0,0,10" Padding="10,1,10,5"/>
+                    <Button x:Name="nextBtn" Width="100"
+                            Height="30" Margin="0,0,0,10"
+                            HorizontalAlignment="Right" VerticalAlignment="Top"
+                            Command="{Binding NextCommand}" Content="Next"
+                            FontSize="12" Padding="10,1,10,5"
+                            Style="{StaticResource WinButton}"/>
                 </StackPanel>
             </StackPanel>
             <!-- Buttons -->
             <StackPanel Grid.Column="1" Margin="0" Orientation="Vertical">
-                <Button x:Name="solveBtn" Margin="0,0,0,3" Content="Solve"
+                <Button x:Name="solveBtn" Margin="0,0,0,3"
+                        Command="{Binding SolveCommand}" Content="Solve"
                         Style="{StaticResource WinButton}"/>
-                <Button x:Name="clearBtn" Content="Clear" Style="{StaticResource WinButton}"/>
-                <Button x:Name="saveBtn" Content="Save" Style="{StaticResource WinButton}"/>
-                <Button x:Name="loadBtn" Content="Load" Style="{StaticResource WinButton}"/>
+                <Button x:Name="clearBtn" Command="{Binding ClearCommand}"
+                        Content="Clear" Style="{StaticResource WinButton}"/>
+                <Button x:Name="saveBtn" Command="{Binding SaveCommand}"
+                        Content="Save" Style="{StaticResource WinButton}"/>
+                <Button x:Name="loadBtn" Command="{Binding SaveCommand}"
+                        Content="Load" Style="{StaticResource WinButton}"/>
             </StackPanel>
         </Grid>
     </Grid>
