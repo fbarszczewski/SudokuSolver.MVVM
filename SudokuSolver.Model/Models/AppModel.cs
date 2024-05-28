@@ -18,6 +18,14 @@ namespace SudokuSolver.Model.Models
 			BoardsList.Add(board);
 		}
 
+		public void RemoveBoard(int index)
+		{
+			throw new NotImplementedException();
+		}
 
+		public void SelectCurrentBoard(int index)
+		{
+			throw new NotImplementedException();
+		}
 	}
 }
