@@ -2,7 +2,7 @@
 
 namespace SudokuSolver.Model.Models
 {
-	public class SudokuBoard : ISudokuBoard
+	public class CurrentBoardModel : ISudokuBoard
     {
         public byte[,] Board
         {
@@ -11,7 +11,7 @@ namespace SudokuSolver.Model.Models
 
         public event Action? BoardChanged;
 
-        public SudokuBoard()
+        public CurrentBoardModel()
         {
             Board = new byte[9, 9];
         }
