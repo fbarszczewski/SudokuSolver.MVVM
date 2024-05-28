@@ -12,7 +12,7 @@ namespace SudokuSolver.ViewModel
 
 		private byte[,] currentBoard => model.BoardsList[currentBoardIndex].Board;
 
-		private int currentBoardIndex => model.CurrentBoardIndex;
+		private int currentBoardIndex => model.CurrentBoardId;
 
 		private ISudokuBoard currentSudokuBoardModel => model.BoardsList[currentBoardIndex];
 

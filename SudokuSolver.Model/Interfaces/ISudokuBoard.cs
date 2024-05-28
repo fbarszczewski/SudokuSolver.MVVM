@@ -2,6 +2,7 @@
 {
 	public interface ISudokuBoard
 	{
+		int Id { get; }
 		byte[,] Board
 		{
 			get;

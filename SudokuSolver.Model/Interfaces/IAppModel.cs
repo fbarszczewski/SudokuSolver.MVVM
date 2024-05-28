@@ -3,8 +3,10 @@
 	public interface IAppModel
 	{
 		public List<ISudokuBoard> BoardsList { get; set; }
-		// Id of the selected board in view from BoardsList
-		public int CurrentBoardIndex { get; set; }
+		/// <summary>
+		/// Represents the id of the selected board in view from BoardsList.
+		/// </summary>
+		public int CurrentBoardId { get; set; }
 
 
 	}
