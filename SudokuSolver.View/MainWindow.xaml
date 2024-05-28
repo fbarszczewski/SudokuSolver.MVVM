@@ -7,16 +7,18 @@
         xmlns:controls="clr-namespace:SudokuSolver.View.CustomControls"
         xmlns:vm="clr-namespace:SudokuSolver.ViewModel;assembly=SudokuSolver.ViewModel"
         mc:Ignorable="d"
-        Title="Sudoku Solver" Height="500" Width="700" SizeToContent="WidthAndHeight" 
+        Title="Sudoku Solver" Height="521" Width="700" SizeToContent="WidthAndHeight" 
         WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
 
-    <Grid Width="700" Height="480">
+    <Grid Width="700" Margin="0,0,0,0" VerticalAlignment="Top">
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <Grid Grid.Column="0" Width="465" Height="465">
+        
+        <StackPanel Orientation="Vertical" Margin="-1,13,0,0">
+        <Grid Grid.Column="0" Width="465" Height="auto" Margin="1,0,1,0">
             <Grid.Resources>
                 <Style x:Key="CellBorder" TargetType="Border">
                     <Setter Property="BorderBrush" Value="#FF67A1FF"/>
@@ -25,24 +27,25 @@
                 <Style x:Key="SquareBorder" TargetType="Border">
                     <Setter Property="BorderBrush" Value="#FF1E63D4"/>
                     <Setter Property="BorderThickness" Value="1.4"/>
-                </Style>                
-            </Grid.Resources> 
+                </Style>
+            </Grid.Resources>
+
             <!-- Sudoku board border -->
-            <Grid Grid.Column="0" Height="441" Width="441">
+            <Grid Grid.Column="0" Height="441" Width="441" VerticalAlignment="Top">
                 <Border Style="{StaticResource SquareBorder}" BorderThickness="3"/>
-            </Grid>        
+            </Grid>
             <!-- Sudoku cells border -->
-            <Grid Grid.Column="0" Height="441" Width="441">
+            <Grid Grid.Column="0" Height="441" Width="441" VerticalAlignment="Top">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>  
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>                    
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -53,7 +56,7 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>                    
+                    <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Border Grid.Row="0" Grid.Column="0" Style="{StaticResource CellBorder}"/>
                 <Border Grid.Row="0" Grid.Column="1" Style="{StaticResource CellBorder}"/>
@@ -72,7 +75,7 @@
                 <Border Grid.Row="4" Grid.Column="2" Style="{StaticResource CellBorder}"/>
                 <Border Grid.Row="5" Grid.Column="0" Style="{StaticResource CellBorder}"/>
                 <Border Grid.Row="5" Grid.Column="1" Style="{StaticResource CellBorder}"/>
-                <Border Grid.Row="5" Grid.Column="2" Style="{StaticResource CellBorder}"/>       
+                <Border Grid.Row="5" Grid.Column="2" Style="{StaticResource CellBorder}"/>
                 <Border Grid.Row="6" Grid.Column="0" Style="{StaticResource CellBorder}"/>
                 <Border Grid.Row="6" Grid.Column="1" Style="{StaticResource CellBorder}"/>
                 <Border Grid.Row="6" Grid.Column="2" Style="{StaticResource CellBorder}"/>
@@ -99,7 +102,7 @@
                 <Border Grid.Row="4" Grid.Column="5" Style="{StaticResource CellBorder}"/>
                 <Border Grid.Row="5" Grid.Column="3" Style="{StaticResource CellBorder}"/>
                 <Border Grid.Row="5" Grid.Column="4" Style="{StaticResource CellBorder}"/>
-                <Border Grid.Row="5" Grid.Column="5" Style="{StaticResource CellBorder}"/>  
+                <Border Grid.Row="5" Grid.Column="5" Style="{StaticResource CellBorder}"/>
                 <Border Grid.Row="6" Grid.Column="3" Style="{StaticResource CellBorder}"/>
                 <Border Grid.Row="6" Grid.Column="4" Style="{StaticResource CellBorder}"/>
                 <Border Grid.Row="6" Grid.Column="5" Style="{StaticResource CellBorder}"/>
@@ -108,7 +111,7 @@
                 <Border Grid.Row="7" Grid.Column="5" Style="{StaticResource CellBorder}"/>
                 <Border Grid.Row="8" Grid.Column="3" Style="{StaticResource CellBorder}"/>
                 <Border Grid.Row="8" Grid.Column="4" Style="{StaticResource CellBorder}"/>
-                <Border Grid.Row="8" Grid.Column="5" Style="{StaticResource CellBorder}"/>   
+                <Border Grid.Row="8" Grid.Column="5" Style="{StaticResource CellBorder}"/>
                 <Border Grid.Row="0" Grid.Column="6" Style="{StaticResource CellBorder}"/>
                 <Border Grid.Row="0" Grid.Column="7" Style="{StaticResource CellBorder}"/>
                 <Border Grid.Row="0" Grid.Column="8" Style="{StaticResource CellBorder}"/>
@@ -126,7 +129,7 @@
                 <Border Grid.Row="4" Grid.Column="8" Style="{StaticResource CellBorder}"/>
                 <Border Grid.Row="5" Grid.Column="6" Style="{StaticResource CellBorder}"/>
                 <Border Grid.Row="5" Grid.Column="7" Style="{StaticResource CellBorder}"/>
-                <Border Grid.Row="5" Grid.Column="8" Style="{StaticResource CellBorder}"/>  
+                <Border Grid.Row="5" Grid.Column="8" Style="{StaticResource CellBorder}"/>
                 <Border Grid.Row="6" Grid.Column="6" Style="{StaticResource CellBorder}"/>
                 <Border Grid.Row="6" Grid.Column="7" Style="{StaticResource CellBorder}"/>
                 <Border Grid.Row="6" Grid.Column="8" Style="{StaticResource CellBorder}"/>
@@ -135,10 +138,10 @@
                 <Border Grid.Row="7" Grid.Column="8" Style="{StaticResource CellBorder}"/>
                 <Border Grid.Row="8" Grid.Column="6" Style="{StaticResource CellBorder}"/>
                 <Border Grid.Row="8" Grid.Column="7" Style="{StaticResource CellBorder}"/>
-                <Border Grid.Row="8" Grid.Column="8" Style="{StaticResource CellBorder}"/>                   
+                <Border Grid.Row="8" Grid.Column="8" Style="{StaticResource CellBorder}"/>
             </Grid>
             <!-- Sudoku squares border -->
-            <Grid Grid.Column="0" Height="441" Width="441" Panel.ZIndex="2">
+            <Grid Grid.Column="0" Height="441" Width="441" Panel.ZIndex="2" VerticalAlignment="Top">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
@@ -157,10 +160,10 @@
                 <Border Grid.Row="1" Grid.Column="2" Style="{StaticResource SquareBorder}"/>
                 <Border Grid.Row="2" Grid.Column="0" Style="{StaticResource SquareBorder}"/>
                 <Border Grid.Row="2" Grid.Column="1" Style="{StaticResource SquareBorder}"/>
-                <Border Grid.Row="2" Grid.Column="2" Style="{StaticResource SquareBorder}"/>                
-            </Grid>    
+                <Border Grid.Row="2" Grid.Column="2" Style="{StaticResource SquareBorder}"/>
+            </Grid>
             <!-- Sudoku board display-->
-            <VirtualizingStackPanel Grid.Column="0" Height="441" Width="441">
+            <VirtualizingStackPanel Grid.Column="0" Height="441" Width="441" VerticalAlignment="Top">
                 <ItemsControl ItemsSource="{Binding CellCollection}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
@@ -176,10 +179,24 @@
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
-            </VirtualizingStackPanel>            
+            </VirtualizingStackPanel>
         </Grid>
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="14,10,0,10"> 
+                <Button x:Name="previousBtn" Content="Previous Sudoku" 
+                        HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" Width="100"/>
+                
+                <Label x:Name="sudokuNumber" Content="Sudoku number: 1" Height="30" Width="241" 
+                       FontSize="14" FontFamily="Segoe UI" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                       VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+                
+                <Button x:Name="nextBtn" Content="Previous Sudoku" 
+                        HorizontalAlignment="Right" VerticalAlignment="Top" Height="30" Width="100"/>
+            </StackPanel>
+            
+        </StackPanel>
+
         <!-- Buttons-->
-        <Grid Grid.Column="1" Margin="0,11,5,11">
+        <Grid Grid.Column="1" Margin="0,11,5,6">
             <Grid.RowDefinitions>
                 <RowDefinition Height="50"/>
                 <RowDefinition Height="40"/>
@@ -205,7 +222,7 @@
             <Button x:Name="loadFileBtn" Command="{Binding LoadFileCommand}"
                     Grid.Row="4" Margin="2" Content="Load from file" FontSize="16"/>
             <Button x:Name="exitBtn" Command="{Binding ExitCommand}"
-                    Grid.Row="6" Margin="2" Content="Exit" FontSize="16"/>
+                    Grid.Row="6" Margin="2,2,2,4" Content="Exit" FontSize="16"/>
         </Grid>
     </Grid>
 </Window>
