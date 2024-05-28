@@ -1,12 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SudokuSolver.Model.Interfaces;
+using SudokuSolver.Model.Services.ParseFactory.ParseStrategies;
 
 namespace SudokuSolver.Model.Services.ParseFactory
 {
-	internal class SudokuParserFactory
+	public class SudokuParserFactory
 	{
+		public ISudokuParser GetParser(string fileType)
+		{
+			return fileType.ToLower() switch
+			{
+				"json" => new JsonSudokuParser(),
+				"xml" => new XmlSudokuParser(),
+				"txt" => new TxtSudokuParser(),
+				_ => throw new ArgumentException("Unsupported file type"),
+			};
+		}
 	}
 }
