@@ -1,11 +1,13 @@
-﻿namespace SudokuSolver.Model.Interfaces
+﻿using SudokuSolver.Model.Models;
+
+namespace SudokuSolver.Model.Interfaces
 {
 	public interface IAppModel
 	{
-		public List<ISudokuBoard> BoardsList { get; set; }
-		// Id of the selected board in view from BoardsList
-		public int CurrentBoardIndex { get; set; }
-
-
+		List<SelectedBoardModel> BoardsList { get; }
+		/// <summary>
+		/// Represents the id of the selected board in view from BoardsList.
+		/// </summary>
+		int SelectedBoardId { get; set; }
 	}
 }

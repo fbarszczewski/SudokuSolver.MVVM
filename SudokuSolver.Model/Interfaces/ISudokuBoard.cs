@@ -2,16 +2,7 @@
 {
 	public interface ISudokuBoard
 	{
-		byte[,] Board
-		{
-			get;
-			set;
-		}
-
-		event Action? BoardChanged;
-
-		void ClearBoard();
-		bool IsEmpty();
-		void RaiseBoardChanged();
+		byte[,] Board { get; set; }
+		string? DifficultyLevel { get; set; }
 	}
 }

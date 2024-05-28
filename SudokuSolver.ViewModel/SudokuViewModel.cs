@@ -10,25 +10,25 @@ namespace SudokuSolver.ViewModel
 	{
 		private readonly IAppModel model;
 
-		private byte[,] currentBoard => model.BoardsList[currentBoardIndex].Board;
+		private byte[,] currentBoard => model.BoardsList[selectedBoardId].Board;
 
-		private int currentBoardIndex => model.CurrentBoardIndex;
+		private int selectedBoardId => model.SelectedBoardId;
 
-		private ISudokuBoard currentSudokuBoardModel => model.BoardsList[currentBoardIndex];
+		private ISelectedBoardModel selectedBoardModel => model.BoardsList[selectedBoardId];
 
 		public ObservableCollection<SudokuCell> CellCollection
 		{
 			get;
 			private set;
 		}
-		public string PageNumbers => $"{currentBoardIndex + 1} of {model.BoardsList.Count} ";
+		public string PageNumbers => $"{selectedBoardId + 1} of {model.BoardsList.Count} ";
 
 		public event PropertyChangedEventHandler? PropertyChanged;
 
 		public SudokuViewModel(IAppModel _model)
 		{
 			model = _model;
-			currentSudokuBoardModel.BoardChanged += SudokuModel_BoardChanged;
+			selectedBoardModel.BoardChanged += SudokuModel_BoardChanged;
 			CellCollection = new ObservableCollection<SudokuCell>();
 			InitializeCellCollection();
 		}
@@ -132,7 +132,7 @@ namespace SudokuSolver.ViewModel
 
 		/// <summary>
 		/// Updates the CellCollection when the model's Board changes . Changes are invoked by the model's BoardChanged
-		/// event in CurrentBoardModel model.
+		/// event in SelectedBoardModel model.
 		/// </summary>
 		private void SudokuModel_BoardChanged()
 		{
@@ -261,12 +261,12 @@ namespace SudokuSolver.ViewModel
 
 		private void ClearBoardAndNotify()
 		{
-			currentSudokuBoardModel.ClearBoard();
+			selectedBoardModel.ClearBoard();
 		}
 
 		private bool CanClearBoard()
 		{
-			return !currentSudokuBoardModel.IsEmpty();
+			return !selectedBoardModel.IsEmpty();
 		}
 		#endregion
 	}
