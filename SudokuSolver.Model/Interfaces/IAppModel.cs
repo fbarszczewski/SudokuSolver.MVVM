@@ -7,8 +7,5 @@
 		public int CurrentBoardIndex { get; set; }
 
 
-		void AddBoard(ISudokuBoard board);
-		void RemoveBoard(int index);
-		void SelectCurrentBoard(int index);
 	}
 }

@@ -10,22 +10,10 @@ namespace SudokuSolver.Model.Models
 		public AppModel()
 		{
 			BoardsList = new List<ISudokuBoard>();
-			AddBoard(new CurrentBoardModel());
+			BoardsList.Add(new CurrentBoardModel());
 		}
 
-		public void AddBoard(ISudokuBoard board)
-		{
-			BoardsList.Add(board);
-		}
 
-		public void RemoveBoard(int index)
-		{
-			throw new NotImplementedException();
-		}
 
-		public void SelectCurrentBoard(int index)
-		{
-			throw new NotImplementedException();
-		}
 	}
 }
