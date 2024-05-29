@@ -1,7 +1,9 @@
 ﻿using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Windows;
 using System.Windows.Input;
+using Microsoft.Win32;
 using SudokuSolver.Model.Interfaces;
 
 namespace SudokuSolver.ViewModel
@@ -171,7 +173,7 @@ namespace SudokuSolver.ViewModel
 		{
 			get
 			{
-				saveCommand = saveCommand ?? new RelayCommand(param => SaveBoardAndNotify(),param => CanSaveBoard());
+				saveCommand = saveCommand ?? new RelayCommand(param => SaveBoard(),param => CanSaveBoard());
 				return saveCommand;
 			}
 		}
@@ -237,15 +239,24 @@ namespace SudokuSolver.ViewModel
 			return true;
 		}
 
-		private void SaveBoardAndNotify()
+		private void SaveBoard()
 		{
-			throw new NotImplementedException();
+			var saveFileDialog = new SaveFileDialog();
+			saveFileDialog.Filter = "JSON (*.json)|*.json|Text file (*.txt)|*.txt|XML (*.xml)|*.xml";
+			saveFileDialog.ShowDialog();
+			if(model.SaveCurrentBoard(saveFileDialog.FileName))
+			{
+				MessageBox.Show("File Saved.");
+			}
+			else
+			{
+				MessageBox.Show("Operation aborted.");
+			}
 		}
 
 		private bool CanSaveBoard()
 		{
-			// Not Implemented;
-			return false;
+			return !selectedBoardModel.IsEmpty();
 		}
 
 		private void SolveBoardAndNotify()
