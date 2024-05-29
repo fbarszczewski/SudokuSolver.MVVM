@@ -3,7 +3,7 @@ using SudokuSolver.Model.Services.ParseFactory.ParseStrategies;
 
 namespace SudokuSolver.Model.Services.ParseFactory
 {
-	public class SudokuParserFactory
+	public class SudokuParserFactory : ISudokuParserFactory
 	{
 		public ISudokuParser GetParser(string fileType)
 		{
