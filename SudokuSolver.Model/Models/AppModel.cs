@@ -5,6 +5,7 @@ namespace SudokuSolver.Model.Models
 
 	public class AppModel : IAppModel
 	{
+		private readonly ISudokuDataManager _dataManager;
 		private int _nextBoardId = 0;
 
 		public List<SelectedBoardModel> BoardsList { get; private set; }
@@ -17,11 +18,30 @@ namespace SudokuSolver.Model.Models
 		/// </summary>
 		public int SelectedBoardId { get; set; }
 
-		public AppModel()
+		public AppModel(ISudokuDataManager dataManager)
 		{
+			_dataManager = dataManager;
 			BoardsList = new List<SelectedBoardModel>();
 
 			AddBoardToList(new SudokuBoard());
+		}
+
+
+
+		public void SaveCurrentBoard(string path)
+		{
+			SelectedBoardModel selectedBoard = BoardsList.FirstOrDefault(board => board.Id == SelectedBoardId);
+
+			if(selectedBoard == null)
+				throw new Exception("No board is currently selected.");
+
+
+
+			SudokuBoard board = selectedBoard;
+			ISudokuFile sudokuFile = new SudokuFile(new List<SudokuBoard>() { board },path,Path.GetExtension(path).TrimStart('.'));
+
+
+			_dataManager.SaveSudoku(sudokuFile);
 		}
 
 		/// <summary>

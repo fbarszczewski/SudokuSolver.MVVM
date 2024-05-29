@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Input;
 using Microsoft.Win32;
 using SudokuSolver.Model.Interfaces;
+using SudokuSolver.Model.Models;
 
 namespace SudokuSolver.ViewModel
 {
@@ -16,7 +17,7 @@ namespace SudokuSolver.ViewModel
 
 		private int selectedBoardId => model.SelectedBoardId;
 
-		private ISelectedBoardModel selectedBoardModel => model.BoardsList[selectedBoardId];
+		private SelectedBoardModel selectedBoardModel => model.BoardsList[selectedBoardId];
 
 		public ObservableCollection<SudokuCell> CellCollection
 		{
@@ -244,13 +245,15 @@ namespace SudokuSolver.ViewModel
 			var saveFileDialog = new SaveFileDialog();
 			saveFileDialog.Filter = "JSON (*.json)|*.json|Text file (*.txt)|*.txt|XML (*.xml)|*.xml";
 			saveFileDialog.ShowDialog();
-			if(model.SaveCurrentBoard(saveFileDialog.FileName))
+
+
+			try
 			{
-				MessageBox.Show("File Saved.");
+				model.SaveCurrentBoard(saveFileDialog.FileName);
 			}
-			else
+			catch(Exception ex)
 			{
-				MessageBox.Show("Operation aborted.");
+				MessageBox.Show(ex.Message);
 			}
 		}
 

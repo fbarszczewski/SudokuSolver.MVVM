@@ -10,6 +10,6 @@ namespace SudokuSolver.Model.Interfaces
 		/// </summary>
 		int SelectedBoardId { get; set; }
 
-		bool SaveCurrentBoard(string path);
+		void SaveCurrentBoard(string path);
 	}
 }
