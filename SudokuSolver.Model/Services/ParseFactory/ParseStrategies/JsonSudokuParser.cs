@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Schema;
 using SudokuSolver.Model.Interfaces;
 
@@ -12,7 +13,7 @@ namespace SudokuSolver.Model.Services.ParseFactory.ParseStrategies
 			//FileHandler.ReadFile(sudokuData);
 
 
-
+			sudokuData.Boards
 			//IEnumerable<byte[,]>? boards = JsonConvert.DeserializeObject<IEnumerable<byte[,]>>(sudokuData.Content);
 			//sudokuData.Boards = boards != null ? boards.ToList() : throw new InvalidDataException("Invalid JSON file content.");
 			throw new NotImplementedException();
@@ -20,8 +21,8 @@ namespace SudokuSolver.Model.Services.ParseFactory.ParseStrategies
 
 		public void SaveBoards(ISudokuFile sudokuData)
 		{
-			//sudokuData.Content = JsonConvert.SerializeObject(sudokuData.Boards);
-			throw new NotImplementedException();
+			sudokuData.Content = JsonConvert.SerializeObject(sudokuData.Boards);
+			FileHandler.WriteFile(sudokuData);
 		}
 
 
