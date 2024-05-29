@@ -9,6 +9,7 @@ using SudokuSolver.Model.Models;
 
 namespace SudokuSolver.ViewModel
 {
+
 	public class SudokuViewModel : INotifyPropertyChanged
 	{
 		private readonly IAppModel model;
@@ -24,6 +25,7 @@ namespace SudokuSolver.ViewModel
 			get;
 			private set;
 		}
+
 		public string PageNumbers => $"{selectedBoardId + 1} of {model.BoardsList.Count} ";
 
 		public event PropertyChangedEventHandler? PropertyChanged;
@@ -31,7 +33,8 @@ namespace SudokuSolver.ViewModel
 		public SudokuViewModel(IAppModel _model)
 		{
 			model = _model;
-			selectedBoardModel.BoardChanged += SudokuModel_BoardChanged;
+			model.ModelChanged += AnyModel_ModelChanged;
+			selectedBoardModel.BoardChanged += AnyModel_ModelChanged;
 			CellCollection = new ObservableCollection<SudokuCell>();
 			InitializeCellCollection();
 		}
@@ -137,10 +140,13 @@ namespace SudokuSolver.ViewModel
 		/// Updates the CellCollection when the model's Board changes . Changes are invoked by the model's BoardChanged
 		/// event in SelectedBoardModel model.
 		/// </summary>
-		private void SudokuModel_BoardChanged()
+		private void AnyModel_ModelChanged()
 		{
 			InitializeCellCollection();
 			OnPropertyChanged(nameof(CellCollection));
+			OnPropertyChanged(nameof(selectedBoardId));
+			OnPropertyChanged(nameof(selectedBoardModel));
+			OnPropertyChanged(nameof(PageNumbers));
 		}
 
 		#region Commands
@@ -241,7 +247,6 @@ namespace SudokuSolver.ViewModel
 			}
 			catch(Exception ex)
 			{
-
 				MessageBox.Show($"Cant load file. {ex.Message}");
 			}
 		}
@@ -256,7 +261,6 @@ namespace SudokuSolver.ViewModel
 			{
 				model.SaveCurrentBoard(saveFileDialog.FileName);
 				MessageBox.Show("Saved");
-
 			}
 			catch(Exception ex)
 			{
@@ -291,4 +295,5 @@ namespace SudokuSolver.ViewModel
 		}
 		#endregion
 	}
+
 }

@@ -7,16 +7,34 @@ namespace SudokuSolver.Model.Models
 	{
 		private readonly ISudokuDataManager _dataManager;
 		private int _nextBoardId = 0;
+		private int selectedBoardId;
 
-		public List<SelectedBoardModel> BoardsList { get; private set; }
+		public List<SelectedBoardModel> BoardsList
+		{
+			get;
+			private set;
+		}
+
 		/// <summary>
 		/// Gets the next board id and increments the id counter.
 		/// </summary>
 		public int NextBoardId => _nextBoardId++;
+
 		/// <summary>
 		/// Represents the id of the selected board in view from BoardsList.
 		/// </summary>
-		public int SelectedBoardId { get; set; }
+		public int SelectedBoardId
+		{
+			get => selectedBoardId;
+
+			set
+			{
+				ModelChanged?.Invoke();
+				selectedBoardId = value;
+			}
+		}
+
+		public event Action? ModelChanged;
 
 		public AppModel(ISudokuDataManager dataManager)
 		{
@@ -25,7 +43,6 @@ namespace SudokuSolver.Model.Models
 
 			AddBoardToListAndSetAsSelected(new SudokuBoard());
 		}
-
 
 		public void LoadBoardsFromFile(string path)
 		{
@@ -36,8 +53,8 @@ namespace SudokuSolver.Model.Models
 			{
 				AddBoardToListAndSetAsSelected(board);
 			}
-
 		}
+
 		public void SaveCurrentBoard(string path)
 		{
 			SelectedBoardModel? selectedBoard = BoardsList.FirstOrDefault(board => board.Id == SelectedBoardId);
@@ -46,7 +63,7 @@ namespace SudokuSolver.Model.Models
 				throw new Exception("No board is currently selected.");
 
 			SudokuBoard board = selectedBoard;
-			ISudokuFile sudokuFile = new SudokuFile(new List<SudokuBoard>() { board },path);
+			ISudokuFile sudokuFile = new SudokuFile(new List<SudokuBoard> { board },path);
 
 			_dataManager.SaveSudoku(sudokuFile);
 		}
@@ -111,4 +128,5 @@ namespace SudokuSolver.Model.Models
 			return currentIndex > 0;
 		}
 	}
+
 }

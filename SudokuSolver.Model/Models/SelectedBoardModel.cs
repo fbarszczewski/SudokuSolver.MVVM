@@ -2,10 +2,14 @@
 
 namespace SudokuSolver.Model.Models
 {
+
 	public class SelectedBoardModel : SudokuBoard
 	{
-
-		public int Id { get; private set; }
+		public int Id
+		{
+			get;
+			private set;
+		}
 
 		public event Action? BoardChanged;
 
@@ -14,7 +18,6 @@ namespace SudokuSolver.Model.Models
 			Board = sudokuBoard.Board;
 			DifficultyLevel = sudokuBoard.DifficultyLevel;
 			Id = id;
-
 		}
 
 		/// <summary>
@@ -43,9 +46,7 @@ namespace SudokuSolver.Model.Models
 			return true;
 		}
 
-		public void RaiseBoardChanged()
-		{
-			BoardChanged?.Invoke();
-		}
+
 	}
+
 }
