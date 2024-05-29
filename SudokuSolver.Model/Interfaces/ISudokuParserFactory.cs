@@ -1,6 +1,6 @@
 ﻿namespace SudokuSolver.Model.Interfaces
 {
-	internal interface ISudokuParserFactory
+	public interface ISudokuParserFactory
 	{
 		ISudokuParser GetParser(string fileType);
 	}
