@@ -2,6 +2,7 @@
 
 namespace SudokuSolver.Model.Models
 {
+
 	public class AppModel : IAppModel
 	{
 		private int _nextBoardId = 0;
