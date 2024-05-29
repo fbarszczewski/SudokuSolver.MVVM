@@ -9,5 +9,7 @@ namespace SudokuSolver.Model.Interfaces
 		/// Represents the id of the selected board in view from BoardsList.
 		/// </summary>
 		int SelectedBoardId { get; set; }
+
+		bool SaveCurrentBoard(string path);
 	}
 }
