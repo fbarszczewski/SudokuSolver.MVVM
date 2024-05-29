@@ -11,5 +11,7 @@ namespace SudokuSolver.Model.Interfaces
 		int SelectedBoardId { get; set; }
 
 		void SaveCurrentBoard(string path);
+
+		void LoadBoardsFromFile(string path);
 	}
 }

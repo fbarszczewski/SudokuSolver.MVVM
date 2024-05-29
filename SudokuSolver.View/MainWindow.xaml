@@ -244,7 +244,7 @@
                         Content="Clear" Style="{StaticResource WinButton}"/>
                 <Button x:Name="saveBtn" Command="{Binding SaveCommand}"
                         Content="Save" Style="{StaticResource WinButton}"/>
-                <Button x:Name="loadBtn" Command="{Binding SaveCommand}"
+                <Button x:Name="loadBtn" Command="{Binding LoadFileCommand}"
                         Content="Load" Style="{StaticResource WinButton}"/>
             </StackPanel>
         </Grid>

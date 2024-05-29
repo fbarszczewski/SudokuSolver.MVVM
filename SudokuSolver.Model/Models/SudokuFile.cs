@@ -6,14 +6,18 @@ namespace SudokuSolver.Model.Models
 	{
 		public List<SudokuBoard> Boards { get; set; }
 		public string DataPath { get; set; }
-		public string FileType { get; set; }
+		public string FileType => Path.GetExtension(DataPath).TrimStart('.');
 		public string? Content { get; set; }
 
-		public SudokuFile(List<SudokuBoard> boards,string dataPath,string fileType)
+		public SudokuFile(string dataPath)
+		{
+			Boards = new List<SudokuBoard>();
+			DataPath = dataPath;
+		}
+		public SudokuFile(List<SudokuBoard> boards,string dataPath)
 		{
 			Boards = boards;
 			DataPath = dataPath;
-			FileType = fileType;
 		}
 	}
 }

@@ -184,7 +184,7 @@ namespace SudokuSolver.ViewModel
 			get
 			{
 				loadFileCommand = loadFileCommand ??
-					new RelayCommand(param => LoadFileAndNotify(),param => CanLoadFile());
+					new RelayCommand(param => LoadFile(),param => true);
 				return loadFileCommand;
 			}
 		}
@@ -229,15 +229,21 @@ namespace SudokuSolver.ViewModel
 			return true;
 		}
 
-		private void LoadFileAndNotify()
+		private void LoadFile()
 		{
-			throw new NotImplementedException();
-		}
+			var openFileDialog = new OpenFileDialog();
+			openFileDialog.Multiselect = true;
+			openFileDialog.Filter = "JSON (*.json)|*.json|Text file (*.txt)|*.txt|XML (*.xml)|*.xml";
+			openFileDialog.ShowDialog();
+			try
+			{
+				model.LoadBoardsFromFile(openFileDialog.FileName);
+			}
+			catch(Exception ex)
+			{
 
-		private bool CanLoadFile()
-		{
-			// Not Implemented;
-			return true;
+				MessageBox.Show($"Cant load file. {ex.Message}");
+			}
 		}
 
 		private void SaveBoard()
@@ -245,7 +251,6 @@ namespace SudokuSolver.ViewModel
 			var saveFileDialog = new SaveFileDialog();
 			saveFileDialog.Filter = "JSON (*.json)|*.json|Text file (*.txt)|*.txt|XML (*.xml)|*.xml";
 			saveFileDialog.ShowDialog();
-
 
 			try
 			{

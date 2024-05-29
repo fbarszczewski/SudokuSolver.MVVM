@@ -23,11 +23,21 @@ namespace SudokuSolver.Model.Models
 			_dataManager = dataManager;
 			BoardsList = new List<SelectedBoardModel>();
 
-			AddBoardToList(new SudokuBoard());
+			AddBoardToListAndSetAsSelected(new SudokuBoard());
 		}
 
 
+		public void LoadBoardsFromFile(string path)
+		{
+			var loadSudoku = new SudokuFile(path);
+			_dataManager.LoadSudoku(loadSudoku);
 
+			foreach(SudokuBoard board in loadSudoku.Boards)
+			{
+				AddBoardToListAndSetAsSelected(board);
+			}
+
+		}
 		public void SaveCurrentBoard(string path)
 		{
 			SelectedBoardModel? selectedBoard = BoardsList.FirstOrDefault(board => board.Id == SelectedBoardId);
@@ -35,22 +45,21 @@ namespace SudokuSolver.Model.Models
 			if(selectedBoard == null)
 				throw new Exception("No board is currently selected.");
 
-
-
 			SudokuBoard board = selectedBoard;
-			ISudokuFile sudokuFile = new SudokuFile(new List<SudokuBoard>() { board },path,Path.GetExtension(path).TrimStart('.'));
-
+			ISudokuFile sudokuFile = new SudokuFile(new List<SudokuBoard>() { board },path);
 
 			_dataManager.SaveSudoku(sudokuFile);
 		}
 
 		/// <summary>
-		/// Adds board to the BoardsList.
+		/// Adds board to the BoardsList & set it as selected board
 		/// </summary>
 		/// <param name="board">The board to add.</param>
-		public void AddBoardToList(ISudokuBoard board)
+		public void AddBoardToListAndSetAsSelected(ISudokuBoard board)
 		{
-			BoardsList.Add(new SelectedBoardModel(board,NextBoardId));
+			var boardModel = new SelectedBoardModel(board,NextBoardId);
+			BoardsList.Add(boardModel);
+			SelectedBoardId = boardModel.Id;
 		}
 
 		/// <summary>
