@@ -2,13 +2,9 @@
 
 namespace SudokuSolver.Model.Models
 {
-	public class SelectedBoardModel : ISelectedBoardModel
+	public class SelectedBoardModel : SudokuBoard
 	{
-		public byte[,] Board
-		{
-			get; set;
-		}
-		public string? DifficultyLevel { get; set; }
+
 		public int Id { get; private set; }
 
 		public event Action? BoardChanged;
