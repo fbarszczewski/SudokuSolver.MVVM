@@ -1,5 +1,4 @@
-﻿using System.Text;
-using SudokuSolver.Model.Interfaces;
+﻿using SudokuSolver.Model.Interfaces;
 
 namespace SudokuSolver.Model.Services.ParseFactory.ParseStrategies
 {
@@ -7,35 +6,37 @@ namespace SudokuSolver.Model.Services.ParseFactory.ParseStrategies
 	{
 		public void LoadBoards(ISudokuFile sudokuData)
 		{
-			var inputData = sudokuData.Content.Replace(" ",string.Empty);
+			//var inputData = sudokuData.Content.Replace(" ",string.Empty);
 
-			if(!CanConvert(inputData))
-				throw new ArgumentException("Invalid Sudoku data.");
+			//if(!CanConvert(inputData))
+			//	throw new ArgumentException("Invalid Sudoku data.");
 
 
-			sudokuData.Boards = ConvertToBoard(inputData).ToList();
+			//sudokuData.Boards = ConvertToBoard(inputData).ToList();
+			throw new NotImplementedException();
 		}
 
 		public void SaveBoards(ISudokuFile sudokuData)
 		{
-			if(!sudokuData.Boards.Any())
-				throw new ArgumentNullException("Nothing to save.");
+			//if(!sudokuData.Boards.Any())
+			//	throw new ArgumentNullException("Nothing to save.");
 
-			var sb = new StringBuilder();
+			//var sb = new StringBuilder();
 
-			foreach(var board in sudokuData.Boards)
-			{
-				for(var i = 0;i < 9;i++)
-				{
-					for(var j = 0;j < 9;j++)
-					{
-						sb.Append(board[i,j]);
-						if(j < 8) sb.Append(" ");
-					}
-					sb.AppendLine();
-				}
-				sb.AppendLine();
-			}
+			//foreach(var board in sudokuData.Boards)
+			//{
+			//	for(var i = 0;i < 9;i++)
+			//	{
+			//		for(var j = 0;j < 9;j++)
+			//		{
+			//			sb.Append(board[i,j]);
+			//			if(j < 8) sb.Append(" ");
+			//		}
+			//		sb.AppendLine();
+			//	}
+			//	sb.AppendLine();
+			//}
+			throw new NotImplementedException();
 		}
 
 

@@ -4,10 +4,13 @@ using SudokuSolver.Model.Interfaces;
 
 namespace SudokuSolver.Model.Services.ParseFactory.ParseStrategies
 {
+
 	internal class XmlSudokuParser : ISudokuParser
 	{
 		public void LoadBoards(ISudokuFile sudokuData)
 		{
+			throw new NotImplementedException();
+
 			var doc = XDocument.Parse(sudokuData.Content);
 
 			foreach(XElement game in doc.Descendants("game"))
@@ -38,11 +41,14 @@ namespace SudokuSolver.Model.Services.ParseFactory.ParseStrategies
 					sudokuData.Boards = new List<byte[,]>();
 				}
 				sudokuData.Boards.Add(board);
+				throw new NotImplementedException();
 			}
 		}
 
 		public void SaveBoards(ISudokuFile sudokuData)
 		{
+			throw new NotImplementedException();
+
 			var doc = new XDocument();
 			var root = new XElement("SudokuSolver");
 
@@ -65,7 +71,5 @@ namespace SudokuSolver.Model.Services.ParseFactory.ParseStrategies
 			doc.Add(root);
 			sudokuData.Content = doc.ToString();
 		}
-
-
 	}
 }
