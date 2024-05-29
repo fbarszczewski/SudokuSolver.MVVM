@@ -20,6 +20,5 @@ namespace SudokuSolver.Model.Services
 		{
 			_parser.SaveBoards(sudokuFile);
 		}
-
 	}
 }
