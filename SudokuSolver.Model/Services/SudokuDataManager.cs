@@ -2,7 +2,7 @@
 
 namespace SudokuSolver.Model.Services
 {
-	public class SudokuDataManager
+	public class SudokuDataManager : ISudokuDataManager
 	{
 		private readonly ISudokuParser _parser;
 

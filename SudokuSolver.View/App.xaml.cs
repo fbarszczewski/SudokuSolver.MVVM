@@ -2,6 +2,8 @@
 using Autofac;
 using SudokuSolver.Model.Interfaces;
 using SudokuSolver.Model.Models;
+using SudokuSolver.Model.Services;
+using SudokuSolver.Model.Services.ParseFactory;
 using SudokuSolver.ViewModel;
 
 namespace SudokuSolver.View
@@ -17,6 +19,8 @@ namespace SudokuSolver.View
 
 			builder.RegisterType<AppModel>().As<IAppModel>();
 			builder.RegisterType<SudokuViewModel>();
+			builder.RegisterType<SudokuDataManager>().As<ISudokuDataManager>();
+			builder.RegisterType<SudokuParserFactory>().As<ISudokuParserFactory>();
 
 			IContainer container = builder.Build();
 
