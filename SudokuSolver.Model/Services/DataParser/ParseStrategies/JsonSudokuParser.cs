@@ -4,7 +4,7 @@ using Newtonsoft.Json.Schema;
 using SudokuSolver.Model.Interfaces;
 using SudokuSolver.Model.Models;
 
-namespace SudokuSolver.Model.Services.ParseFactory.ParseStrategies
+namespace SudokuSolver.Model.Services.DataParser.ParseStrategies
 {
 
 	public class JsonSudokuParser : ISudokuParser
@@ -24,7 +24,7 @@ namespace SudokuSolver.Model.Services.ParseFactory.ParseStrategies
 
 			foreach(SudokuBoard board in sudokuData.Boards)
 			{
-				if(!SudokuBoard.IsValidBoard(board))
+				if(!SudokuValidator.IsValidBoard(board))
 					throw new Exception("Board have incorrect format");
 			}
 
