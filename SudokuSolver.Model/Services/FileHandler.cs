@@ -34,8 +34,6 @@ namespace SudokuSolver.Model.Services
 			{
 				throw new Exception(ex.Message);
 			}
-
-			fileData.FileType = Path.GetExtension(fileData.DataPath);
 		}
 
 		/// <summary>

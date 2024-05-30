@@ -1,41 +1,76 @@
 ﻿using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Windows;
 using System.Windows.Input;
+using Microsoft.Win32;
 using SudokuSolver.Model.Interfaces;
+using SudokuSolver.Model.Models;
 
 namespace SudokuSolver.ViewModel
 {
-	public class SudokuViewModel : INotifyPropertyChanged
+	public class GameManagerViewModel : INotifyPropertyChanged
 	{
+		private readonly IGameManager gameManagerModel;
 		public event PropertyChangedEventHandler? PropertyChanged;
-
+		private SudokuGame? selectedGame;
+		public string? PageNumber { get; set; }
 		public ObservableCollection<SudokuCell> CellCollection
 		{
-			get; private set;
+			get;
+			private set;
 		}
-		private int currentBoardIndex => model.CurrentBoardIndex;
-		private ISudokuBoard currentSudokuBoardModel => model.BoardsList[currentBoardIndex];
-		private byte[,] currentBoard => model.BoardsList[currentBoardIndex].Board;
-
-		private readonly IAppModel model;
 
 
-		public SudokuViewModel(IAppModel _model)
+		public GameManagerViewModel(IGameManager _model)
 		{
-			model = _model;
-			currentSudokuBoardModel.BoardChanged += SudokuModel_BoardChanged;
+			gameManagerModel = _model;
+
+			UpdateSelectedGame();
+			UpdatePageNumber();
+			gameManagerModel.GameChanged += RefreshView;
 			CellCollection = new ObservableCollection<SudokuCell>();
 			InitializeCellCollection();
-
 		}
-
 
 		protected virtual void OnPropertyChanged(string propertyName)
 		{
 			PropertyChanged?.Invoke(this,new PropertyChangedEventArgs(propertyName));
 		}
 
+		private void UpdatePageNumber()
+		{
+			PageNumber = $"{gameManagerModel.SelectedGameId + 1} of {gameManagerModel.GameList.Count}";
+		}
+		private void RefreshView()
+		{
+			UpdateSelectedGame();
+
+			InitializeCellCollection();
+			UpdatePageNumber();
+			OnPropertyChanged(nameof(CellCollection));
+			OnPropertyChanged(nameof(PageNumber));
+		}
+		private void UpdateSelectedGame()
+		{
+			SudokuGame? selectedGame = gameManagerModel.ReturnSelectedGame();
+			try
+			{
+				if(selectedGame == null)
+					throw new Exception("Cant find selected game.");
+			}
+			catch(Exception ex)
+			{
+				MessageBox.Show($"Error:{ex.Message}\nRedirecting to default board.");
+				if(gameManagerModel.GameList.Count == 0)
+				{
+					gameManagerModel.AddEmptyGame();
+				}
+			}
+
+
+			this.selectedGame = selectedGame;
+		}
 		private void InitializeCellCollection()
 		{
 			// Detaching event handlers from the previous CellCollection to avoid data leaks.
@@ -49,13 +84,17 @@ namespace SudokuSolver.ViewModel
 				CellCollection.CollectionChanged -= ListBoard_CollectionChanged;
 			}
 
+			//getting selected game
+
 			// Filling the collection with the values from the model.
 			// Value type is converted in SudokuCell constructor & every '0' is replaced with empty string.
 			CellCollection = new ObservableCollection<SudokuCell>(
-				currentBoard.OfType<byte>().Select(b => new SudokuCell(b)));
+							selectedGame.Board.OfType<byte>().Select(b => new SudokuCell(b)));
+
 			// Attaching event handler to the CollectionChanged event of CellCollection.
 			// This is necessary to synchronize the changes in the CellCollection with the model's Board.
 			CellCollection.CollectionChanged += ListBoard_CollectionChanged;
+
 			// Attaching event handler to the PropertyChanged event of each SudokuCell in CellCollection.
 			// This is necessary to synchronize the changes in the Value property of the SudokuCell objects in the CellCollection
 			foreach(SudokuCell cell in CellCollection)
@@ -71,9 +110,6 @@ namespace SudokuSolver.ViewModel
 		{
 			if(sender == null)
 				return;
-			{
-
-			}
 			if(e.NewItems != null)
 			{
 				foreach(var newItem in e.NewItems)
@@ -96,9 +132,6 @@ namespace SudokuSolver.ViewModel
 				}
 			}
 		}
-
-
-
 		private void AttachPropertyChangedHandler(SudokuCell cell)
 		{
 			cell.PropertyChanged += ListBoardItem_PropertyChanged;
@@ -111,8 +144,8 @@ namespace SudokuSolver.ViewModel
 
 		/// <summary>
 		/// Synchronizes changes in the Value property of SudokuCell objects in the CellCollection  with the
-		/// corresponding cells in the model.Board,  allowing the ViewModel to keep the model's state consistent
-		/// with the view's state.
+		/// corresponding cells in the model.Board,  allowing the ViewModel to keep the model's state consistent with
+		/// the view's state.
 		/// </summary>
 		private void ListBoardItem_PropertyChanged(object? sender,PropertyChangedEventArgs e)
 		{
@@ -127,26 +160,20 @@ namespace SudokuSolver.ViewModel
 				var row = index / 9;
 				var col = index % 9;
 
-				currentBoard[row,col] = cell;
+				selectedGame.Board[row,col] = cell;
 			}
 		}
 
-		/// <summary>
-		/// Updates the CellCollection when the model's Board changes . Changes are invoked by the model's BoardChanged
-		/// event in CurrentBoardModel model.
-		/// </summary>
-		private void SudokuModel_BoardChanged()
-		{
-			InitializeCellCollection();
-			OnPropertyChanged(nameof(CellCollection));
-		}
+
 
 		#region Commands
 		private ICommand? solveCommand;
 		private ICommand? clearCommand;
 		private ICommand? saveCommand;
 		private ICommand? loadFileCommand;
-		private ICommand? exitCommand;
+		private ICommand? previousCommand;
+		private ICommand? nextCommand;
+
 
 		public ICommand SolveCommand
 		{
@@ -161,7 +188,7 @@ namespace SudokuSolver.ViewModel
 		{
 			get
 			{
-				clearCommand = clearCommand ?? new RelayCommand(param => ClearBoardAndNotify(),param => CanClearBoard());
+				clearCommand = clearCommand ?? new RelayCommand(param => gameManagerModel.ClearSelectedGame(),param => gameManagerModel.CanClearSelectedGame());
 				return clearCommand;
 			}
 		}
@@ -170,7 +197,7 @@ namespace SudokuSolver.ViewModel
 		{
 			get
 			{
-				saveCommand = saveCommand ?? new RelayCommand(param => SaveBoardAndNotify(),param => CanSaveBoard());
+				saveCommand = saveCommand ?? new RelayCommand(param => SaveBoard(),param => true);
 				return saveCommand;
 			}
 		}
@@ -179,58 +206,66 @@ namespace SudokuSolver.ViewModel
 		{
 			get
 			{
-				loadFileCommand = loadFileCommand ??
-					new RelayCommand(param => LoadFileAndNotify(),param => CanLoadFile());
+				loadFileCommand = loadFileCommand ?? new RelayCommand(param => LoadFile(),param => true);
 				return loadFileCommand;
 			}
 		}
 
-		public ICommand ExitCommand
+		public ICommand PreviousCommand
 		{
 			get
 			{
-				exitCommand = exitCommand ?? new RelayCommand(param => ExitApplication(),param => CanExitApplication());
-				return exitCommand;
+				previousCommand = previousCommand ?? new RelayCommand(param => gameManagerModel.PreviousGame(),param => gameManagerModel.CanPreviousGame());
+				return previousCommand;
+			}
+		}
+
+		public ICommand NextCommand
+		{
+			get
+			{
+				nextCommand = nextCommand ?? new RelayCommand(param => gameManagerModel.NextGame(),param => gameManagerModel.CanNextGame());
+				return nextCommand;
+			}
+		}
+
+		private void LoadFile()
+		{
+			var openFileDialog = new OpenFileDialog();
+			openFileDialog.Multiselect = true;
+			openFileDialog.Filter = "JSON (*.json)|*.json|Text file (*.txt)|*.txt|XML (*.xml)|*.xml";
+			openFileDialog.ShowDialog();
+			try
+			{
+				gameManagerModel.LoadGamesFromFile(openFileDialog.FileName);
+			}
+			catch(Exception ex)
+			{
+				MessageBox.Show($"Cant load file. {ex.Message}");
+			}
+		}
+
+		private void SaveBoard()
+		{
+			var saveFileDialog = new SaveFileDialog();
+			saveFileDialog.Filter = "JSON (*.json)|*.json|Text file (*.txt)|*.txt|XML (*.xml)|*.xml";
+			saveFileDialog.ShowDialog();
+
+			try
+			{
+				gameManagerModel.SaveSelectedGame(saveFileDialog.FileName);
+				MessageBox.Show("Saved");
+			}
+			catch(Exception ex)
+			{
+				MessageBox.Show(ex.Message);
 			}
 		}
 
 
-		private void ExitApplication()
-		{
-			throw new NotImplementedException();
-		}
-
-		private bool CanExitApplication()
-		{
-			// Not Implemented;
-			return true;
-		}
-
-		private void LoadFileAndNotify()
-		{
-			throw new NotImplementedException();
-		}
-
-		private bool CanLoadFile()
-		{
-			// Not Implemented;
-			return true;
-		}
-
-		private void SaveBoardAndNotify()
-		{
-			throw new NotImplementedException();
-		}
-
-		private bool CanSaveBoard()
-		{
-			// Not Implemented;
-			return true;
-		}
-
 		private void SolveBoardAndNotify()
 		{
-			throw new NotImplementedException();
+			MessageBox.Show("Not implemented");
 		}
 
 		private bool CanSolveBoard()
@@ -239,15 +274,6 @@ namespace SudokuSolver.ViewModel
 			return true;
 		}
 
-		private void ClearBoardAndNotify()
-		{
-			currentSudokuBoardModel.ClearBoard();
-		}
-
-		private bool CanClearBoard()
-		{
-			return !currentSudokuBoardModel.IsEmpty();
-		}
 		#endregion
 	}
 }

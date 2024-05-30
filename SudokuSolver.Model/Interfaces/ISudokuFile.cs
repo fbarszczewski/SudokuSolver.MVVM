@@ -1,7 +1,9 @@
-﻿namespace SudokuSolver.Model.Interfaces
+﻿using SudokuSolver.Model.Models;
+
+namespace SudokuSolver.Model.Interfaces
 {
 	public interface ISudokuFile : IFileData
 	{
-		List<byte[,]> Boards { get; set; }
+		List<SudokuBoard> Boards { get; set; }
 	}
 }

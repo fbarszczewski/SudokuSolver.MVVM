@@ -4,7 +4,7 @@
 	{
 		string DataPath { get; set; }
 		string Content { get; set; }
-		string FileType { get; set; }
+		string FileType { get; }
 
 	}
 }

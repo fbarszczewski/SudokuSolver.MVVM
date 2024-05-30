@@ -2,24 +2,25 @@
 
 namespace SudokuSolver.Model.Services
 {
-	public class SudokuDataManager
+	public class SudokuDataManager : ISudokuDataManager
 	{
-		private readonly ISudokuParser _parser;
+		private readonly ISudokuParserFactory _parserFactory;
 
-		public SudokuDataManager(ISudokuParser parser)
+		public SudokuDataManager(ISudokuParserFactory parserFactory)
 		{
-			_parser = parser;
+			_parserFactory = parserFactory;
 		}
 
 		public void LoadSudoku(ISudokuFile sudokuFile)
 		{
-			_parser.LoadBoards(sudokuFile);
+			ISudokuParser parser = _parserFactory.GetParser(sudokuFile.FileType);
+			parser.LoadBoards(sudokuFile);
 		}
 
 		public void SaveSudoku(ISudokuFile sudokuFile)
 		{
-			_parser.SaveBoards(sudokuFile);
+			ISudokuParser parser = _parserFactory.GetParser(sudokuFile.FileType);
+			parser.SaveBoards(sudokuFile);
 		}
-
 	}
 }
