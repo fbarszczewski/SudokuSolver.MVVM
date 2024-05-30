@@ -17,14 +17,14 @@ namespace SudokuSolver.View
 		{
 			var builder = new ContainerBuilder();
 
-			builder.RegisterType<AppModel>().As<IAppModel>();
-			builder.RegisterType<SudokuViewModel>();
+			builder.RegisterType<SudokuGameManager>().As<IGameManager>();
+			builder.RegisterType<GameManagerViewModel>();
 			builder.RegisterType<SudokuDataManager>().As<ISudokuDataManager>();
 			builder.RegisterType<SudokuParserFactory>().As<ISudokuParserFactory>();
 
 			IContainer container = builder.Build();
 
-			SudokuViewModel sudokuViewModel = container.Resolve<SudokuViewModel>();
+			GameManagerViewModel sudokuViewModel = container.Resolve<GameManagerViewModel>();
 
 			var mainWindow = new MainWindow
 			{
