@@ -1,6 +1,6 @@
 ﻿using SudokuSolver.Model.Interfaces;
 
-namespace SudokuSolver.Model.Services.ParseFactory.ParseStrategies
+namespace SudokuSolver.Model.Services.DataParser.ParseStrategies
 {
 	internal class TxtSudokuParser : ISudokuParser
 	{

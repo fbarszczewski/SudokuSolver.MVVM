@@ -1,7 +1,7 @@
 ﻿using SudokuSolver.Model.Interfaces;
-using SudokuSolver.Model.Services.ParseFactory.ParseStrategies;
+using SudokuSolver.Model.Services.DataParser.ParseStrategies;
 
-namespace SudokuSolver.Model.Services.ParseFactory
+namespace SudokuSolver.Model.Services.DataParser
 {
 	public class SudokuParserFactory : ISudokuParserFactory
 	{
