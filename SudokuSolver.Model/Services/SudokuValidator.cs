@@ -3,10 +3,10 @@
 	internal class SudokuValidator
 	{
 		/// <summary>
-		/// Checks if the given Sudoku board is correctly solved.
+		/// Checks if the given Sudoku _board is correctly solved.
 		/// </summary>
-		/// <param name="board">The Sudoku board to check.</param>
-		/// <returns>True if the Sudoku board is correctly solved, false otherwise.</returns>
+		/// <param name="board">The Sudoku _board to check.</param>
+		/// <returns>True if the Sudoku _board is correctly solved, false otherwise.</returns>
 		public static bool IsSolved(byte[,] board)
 		{
 			if(!IsValidBoard(board))
@@ -39,19 +39,19 @@
 		}
 
 		/// <summary>
-		/// Checks if the given Sudoku board is a valid 9x9 grid and all values are between 0 and 9.
+		/// Checks if the given Sudoku _board is a valid 9x9 grid and all values are between 0 and 9.
 		/// </summary>
-		/// <param name="board">The Sudoku board to check.</param>
-		/// <returns>True if the Sudoku board is valid, false otherwise.</returns>
+		/// <param name="board">The Sudoku _board to check.</param>
+		/// <returns>True if the Sudoku _board is valid, false otherwise.</returns>
 		public static bool IsValidBoard(byte[,] board)
 		{
 			return IsCorrectSize(board) && ContainsValidValues(board);
 		}
 
 		/// <summary>
-		/// Checks if all numbers from 1 to 9 are present in the specified range of the board.
+		/// Checks if all numbers from 1 to 9 are present in the specified range of the _board.
 		/// </summary>
-		/// <param name="board">The Sudoku board to check.</param>
+		/// <param name="board">The Sudoku _board to check.</param>
 		/// <param name="startRow">The start row of the range.</param>
 		/// <param name="startCol">The start column of the range.</param>
 		/// <param name="endRow">The end row of the range.</param>
@@ -81,19 +81,19 @@
 		}
 
 		/// <summary>
-		/// Checks if the given Sudoku board is a 9x9 grid.
+		/// Checks if the given Sudoku _board is a 9x9 grid.
 		/// </summary>
-		/// <param name="board">The Sudoku board to check.</param>
-		/// <returns>True if the Sudoku board is a 9x9 grid, false otherwise.</returns>
+		/// <param name="board">The Sudoku _board to check.</param>
+		/// <returns>True if the Sudoku _board is a 9x9 grid, false otherwise.</returns>
 		private static bool IsCorrectSize(byte[,] board)
 		{
 			return board.GetLength(0) == 9 && board.GetLength(1) == 9;
 		}
 
 		/// <summary>
-		/// Checks if all values in the given Sudoku board are between 0 and 9.
+		/// Checks if all values in the given Sudoku _board are between 0 and 9.
 		/// </summary>
-		/// <param name="board">The Sudoku board to check.</param>
+		/// <param name="board">The Sudoku _board to check.</param>
 		/// <returns>True if all values are between 0 and 9, false otherwise.</returns>
 		private static bool ContainsValidValues(byte[,] board)
 		{

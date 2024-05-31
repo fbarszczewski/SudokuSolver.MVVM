@@ -9,7 +9,7 @@ namespace SudokuSolver.Model.Interfaces
 			get;
 		}
 		/// <summary>
-		/// Represents the id of the selected board in view from BoardsList.
+		/// Represents the id of the selected _board in view from BoardsList.
 		/// </summary>
 		int SelectedGameId
 		{

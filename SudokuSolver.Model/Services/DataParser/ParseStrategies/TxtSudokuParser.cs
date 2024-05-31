@@ -23,13 +23,13 @@ namespace SudokuSolver.Model.Services.DataParser.ParseStrategies
 
 			//var sb = new StringBuilder();
 
-			//foreach(var board in sudokuData.Boards)
+			//foreach(var _board in sudokuData.Boards)
 			//{
 			//	for(var i = 0;i < 9;i++)
 			//	{
 			//		for(var j = 0;j < 9;j++)
 			//		{
-			//			sb.Append(board[i,j]);
+			//			sb.Append(_board[i,j]);
 			//			if(j < 8) sb.Append(" ");
 			//		}
 			//		sb.AppendLine();

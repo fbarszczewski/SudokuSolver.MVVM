@@ -231,7 +231,7 @@ namespace SudokuSolver.ViewModel
 
 		private void SolveSudoku()
 		{
-			var algorithm = "Constraint Programming";
+			var algorithm = "X-Wing";
 
 			try
 			{

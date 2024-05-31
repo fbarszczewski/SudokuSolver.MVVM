@@ -11,7 +11,9 @@ namespace SudokuSolver.Model.Services
 			_solvers = new List<ISudokuSolver>
 			{
 				new SimpleBacktrackingSolver(),
-				new ConstraintProgrammingSolver()
+				new ConstraintProgrammingSolver(),
+				new XwingSolver(),
+				new SwordfishSolver()
 				// add more solvers here
 			};
 		}
@@ -20,10 +22,10 @@ namespace SudokuSolver.Model.Services
 		{
 			if(!SudokuValidator.IsValidBoard(board))
 			{
-				throw new ArgumentException("Invalid Sudoku board");
+				throw new ArgumentException("Invalid Sudoku _board");
 			}
 
-			// try to solve the board with the first algorithm
+			// try to solve the _board with the first algorithm
 			foreach(ISudokuSolver solver in _solvers)
 			{
 				if(solver.GetName() == firstAlgorithm)
@@ -37,7 +39,7 @@ namespace SudokuSolver.Model.Services
 				}
 			}
 
-			// try to solve the board with the other algorithms
+			// try to solve the _board with the other algorithms
 			foreach(ISudokuSolver solver in _solvers)
 			{
 				if(solver.GetName() != firstAlgorithm)
