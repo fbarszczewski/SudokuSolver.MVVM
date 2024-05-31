@@ -1,4 +1,5 @@
 ﻿using SudokuSolver.Model.Interfaces;
+using SudokuSolver.Model.Services;
 
 namespace SudokuSolver.Model.Models
 {
@@ -6,7 +7,7 @@ namespace SudokuSolver.Model.Models
 	{
 		private readonly ISudokuDataManager _dataManager;
 		private int _nextBoardId = 0;
-
+		private readonly SudokuSolverManager _solverManager;
 		private int NextBoardId => _nextBoardId++;
 
 		public List<SudokuGame> GameList { get; private set; }
@@ -16,6 +17,7 @@ namespace SudokuSolver.Model.Models
 
 		public SudokuGameManager(ISudokuDataManager dataManager)
 		{
+			_solverManager = new SudokuSolverManager();
 			_dataManager = dataManager;
 			GameList = new List<SudokuGame>();
 			AddGame(new SudokuBoard());
@@ -128,6 +130,24 @@ namespace SudokuSolver.Model.Models
 			return false;
 		}
 
+		public bool SolveSudoku(ref string firstAlgorithm)
+		{
+			SudokuGame? selectedGame = ReturnSelectedGame();
+			var board = selectedGame.Board;
 
+			if(selectedGame == null)
+				throw new Exception("Cant find selected game.");
+
+			var isSolved = _solverManager.Solve(ref board,ref firstAlgorithm);
+
+			if(isSolved)
+			{
+				selectedGame.Board = board;
+			}
+
+			return isSolved;
+
+
+		}
 	}
 }

@@ -179,7 +179,7 @@ namespace SudokuSolver.ViewModel
 		{
 			get
 			{
-				solveCommand = solveCommand ?? new RelayCommand(param => SolveBoardAndNotify(),param => CanSolveBoard());
+				solveCommand = solveCommand ?? new RelayCommand(param => SolveSudoku(),param => gameManagerModel.CanClearSelectedGame());
 				return solveCommand;
 			}
 		}
@@ -229,6 +229,25 @@ namespace SudokuSolver.ViewModel
 			}
 		}
 
+		private void SolveSudoku()
+		{
+			var algorithm = "Simple Backtracking";
+
+			try
+			{
+				if(gameManagerModel.SolveSudoku(ref algorithm))
+				{
+					MessageBox.Show($"Sudoku solved with {algorithm}");
+					RefreshView();
+				}
+				else
+					MessageBox.Show("Cant solve this sudoku.");
+			}
+			catch(Exception ex)
+			{
+				MessageBox.Show($"Cant solve this sudoku. {ex.Message}");
+			}
+		}
 		private void LoadFile()
 		{
 			var openFileDialog = new OpenFileDialog();
@@ -255,6 +274,7 @@ namespace SudokuSolver.ViewModel
 			{
 				gameManagerModel.SaveSelectedGame(saveFileDialog.FileName);
 				MessageBox.Show("Saved");
+
 			}
 			catch(Exception ex)
 			{
@@ -263,16 +283,7 @@ namespace SudokuSolver.ViewModel
 		}
 
 
-		private void SolveBoardAndNotify()
-		{
-			MessageBox.Show("Not implemented");
-		}
 
-		private bool CanSolveBoard()
-		{
-			// Not Implemented;
-			return true;
-		}
 
 		#endregion
 	}

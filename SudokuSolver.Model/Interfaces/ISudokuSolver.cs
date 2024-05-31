@@ -1,10 +1,8 @@
-﻿using SudokuSolver.Model.Models;
-
-namespace SudokuSolver.Model.Interfaces
+﻿namespace SudokuSolver.Model.Interfaces
 {
 	internal interface ISudokuSolver
 	{
-		bool Solve(SudokuBoard board);
+		bool Solve(ref byte[,] sudokuBoard);
 		string GetName();
 	}
 }

@@ -1,6 +1,4 @@
-﻿using SudokuSolver.Model.Models;
-
-namespace SudokuSolver.Model.Services
+﻿namespace SudokuSolver.Model.Services
 {
 	internal class SudokuValidator
 	{
@@ -9,7 +7,7 @@ namespace SudokuSolver.Model.Services
 		/// </summary>
 		/// <param name="board">The Sudoku board to check.</param>
 		/// <returns>True if the Sudoku board is correctly solved, false otherwise.</returns>
-		public static bool IsSolved(SudokuBoard board)
+		public static bool IsSolved(byte[,] board)
 		{
 			if(!IsValidBoard(board))
 			{
@@ -45,7 +43,7 @@ namespace SudokuSolver.Model.Services
 		/// </summary>
 		/// <param name="board">The Sudoku board to check.</param>
 		/// <returns>True if the Sudoku board is valid, false otherwise.</returns>
-		public static bool IsValidBoard(SudokuBoard board)
+		public static bool IsValidBoard(byte[,] board)
 		{
 			return IsCorrectSize(board) && ContainsValidValues(board);
 		}
@@ -87,9 +85,9 @@ namespace SudokuSolver.Model.Services
 		/// </summary>
 		/// <param name="board">The Sudoku board to check.</param>
 		/// <returns>True if the Sudoku board is a 9x9 grid, false otherwise.</returns>
-		private static bool IsCorrectSize(SudokuBoard board)
+		private static bool IsCorrectSize(byte[,] board)
 		{
-			return board.Board.GetLength(0) == 9 && board.Board.GetLength(1) == 9;
+			return board.GetLength(0) == 9 && board.GetLength(1) == 9;
 		}
 
 		/// <summary>
@@ -97,13 +95,13 @@ namespace SudokuSolver.Model.Services
 		/// </summary>
 		/// <param name="board">The Sudoku board to check.</param>
 		/// <returns>True if all values are between 0 and 9, false otherwise.</returns>
-		private static bool ContainsValidValues(SudokuBoard board)
+		private static bool ContainsValidValues(byte[,] board)
 		{
 			for(var i = 0;i < 9;i++)
 			{
 				for(var j = 0;j < 9;j++)
 				{
-					var value = board.Board[i,j];
+					var value = board[i,j];
 					if(value < 0 || value > 9)
 					{
 						return false;

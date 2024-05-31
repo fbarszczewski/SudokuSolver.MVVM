@@ -1,5 +1,4 @@
 ﻿using SudokuSolver.Model.Interfaces;
-using SudokuSolver.Model.Models;
 using SudokuSolver.Model.SolvingAlgorithms;
 
 namespace SudokuSolver.Model.Services
@@ -7,7 +6,6 @@ namespace SudokuSolver.Model.Services
 	internal class SudokuSolverManager
 	{
 		private readonly List<ISudokuSolver> _solvers;
-
 		public SudokuSolverManager()
 		{
 			_solvers = new List<ISudokuSolver>
@@ -18,7 +16,7 @@ namespace SudokuSolver.Model.Services
 			};
 		}
 
-		public bool Solve(SudokuBoard board,ref string firstAlgorithm)
+		public bool Solve(ref byte[,] board,ref string firstAlgorithm)
 		{
 			if(!SudokuValidator.IsValidBoard(board))
 			{
@@ -30,7 +28,7 @@ namespace SudokuSolver.Model.Services
 			{
 				if(solver.GetName() == firstAlgorithm)
 				{
-					if(solver.Solve(board))
+					if(solver.Solve(ref board))
 					{
 						firstAlgorithm = solver.GetName();
 						return true;
@@ -44,7 +42,7 @@ namespace SudokuSolver.Model.Services
 			{
 				if(solver.GetName() != firstAlgorithm)
 				{
-					if(solver.Solve(board))
+					if(solver.Solve(ref board))
 					{
 						firstAlgorithm = solver.GetName();
 						return true;
