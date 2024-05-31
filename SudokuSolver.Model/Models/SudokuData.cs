@@ -2,7 +2,7 @@
 
 namespace SudokuSolver.Model.Models
 {
-	public class SudokuFile : ISudokuFile
+	public class SudokuData : ISudokuData
 	{
 		public List<SudokuBoard> Boards { get; set; }
 		public string DataPath { get; set; }
@@ -10,7 +10,7 @@ namespace SudokuSolver.Model.Models
 		public string Content { get; set; }
 
 
-		public SudokuFile(string dataPath)
+		public SudokuData(string dataPath)
 		{
 			Boards = new List<SudokuBoard>();
 			DataPath = dataPath;
@@ -18,7 +18,7 @@ namespace SudokuSolver.Model.Models
 			Content = string.Empty;
 		}
 
-		public SudokuFile(List<SudokuBoard> boards,string dataPath)
+		public SudokuData(List<SudokuBoard> boards,string dataPath)
 		{
 			Boards = boards;
 			DataPath = dataPath;
@@ -26,7 +26,7 @@ namespace SudokuSolver.Model.Models
 			Content = string.Empty;
 		}
 
-		public SudokuFile(string content,string dataType)
+		public SudokuData(string content,string dataType)
 		{
 			Content = content;
 			DataType = dataType;

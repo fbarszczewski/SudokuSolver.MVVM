@@ -2,7 +2,7 @@
 {
 	public interface ISudokuDataManager
 	{
-		void LoadSudoku(ISudokuFile sudokuFile);
-		void SaveSudoku(ISudokuFile sudokuFile);
+		void LoadSudoku(ISudokuData sudokuFile);
+		void SaveSudoku(ISudokuData sudokuFile);
 	}
 }

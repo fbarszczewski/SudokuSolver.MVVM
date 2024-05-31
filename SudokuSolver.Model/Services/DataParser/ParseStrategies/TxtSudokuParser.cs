@@ -4,7 +4,7 @@ namespace SudokuSolver.Model.Services.DataParser.ParseStrategies
 {
 	internal class TxtSudokuParser : ISudokuParser
 	{
-		public void LoadBoards(ISudokuFile sudokuData)
+		public void LoadBoards(ISudokuData sudokuData)
 		{
 			//var inputData = sudokuData.Content.Replace(" ",string.Empty);
 
@@ -16,7 +16,7 @@ namespace SudokuSolver.Model.Services.DataParser.ParseStrategies
 			throw new NotImplementedException();
 		}
 
-		public void SaveBoards(ISudokuFile sudokuData)
+		public void SaveBoards(ISudokuData sudokuData)
 		{
 			//if(!sudokuData.Boards.Any())
 			//	throw new ArgumentNullException("Nothing to save.");

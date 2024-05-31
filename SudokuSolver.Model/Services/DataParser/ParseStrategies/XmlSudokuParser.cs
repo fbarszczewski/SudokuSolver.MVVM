@@ -5,12 +5,12 @@ namespace SudokuSolver.Model.Services.DataParser.ParseStrategies
 
 	internal class XmlSudokuParser : ISudokuParser
 	{
-		public void LoadBoards(ISudokuFile sudokuData)
+		public void LoadBoards(ISudokuData sudokuData)
 		{
 			throw new NotImplementedException();
 		}
 
-		public void SaveBoards(ISudokuFile sudokuData)
+		public void SaveBoards(ISudokuData sudokuData)
 		{
 			throw new NotImplementedException();
 		}

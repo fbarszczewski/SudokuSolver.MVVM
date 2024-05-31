@@ -9,7 +9,7 @@ namespace SudokuSolver.Model.Services.DataParser.ParseStrategies
 
 	public class JsonSudokuParser : ISudokuParser
 	{
-		public void LoadBoards(ISudokuFile sudokuData)
+		public void LoadBoards(ISudokuData sudokuData)
 		{
 			//if we don`t have content but we have path we read file to get content
 			if(string.IsNullOrEmpty(sudokuData.Content) && !string.IsNullOrEmpty(sudokuData.DataPath))
@@ -34,7 +34,7 @@ namespace SudokuSolver.Model.Services.DataParser.ParseStrategies
 			sudokuData.Boards = boards != null ? boards : throw new Exception($"No sudoku to load.");
 		}
 
-		public void SaveBoards(ISudokuFile sudokuData)
+		public void SaveBoards(ISudokuData sudokuData)
 		{
 			sudokuData.Content = JsonConvert.SerializeObject(sudokuData.Boards);
 			FileHandler.WriteFile(sudokuData);
