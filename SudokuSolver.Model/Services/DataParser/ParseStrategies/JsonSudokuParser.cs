@@ -11,7 +11,10 @@ namespace SudokuSolver.Model.Services.DataParser.ParseStrategies
 	{
 		public void LoadBoards(ISudokuFile sudokuData)
 		{
-			FileHandler.ReadFile(sudokuData);
+			//if we don`t have content but we have path we read file to get content
+			if(string.IsNullOrEmpty(sudokuData.Content) && !string.IsNullOrEmpty(sudokuData.DataPath))
+				FileHandler.ReadFile(sudokuData);
+
 			List<SudokuBoard> boards;
 			try
 			{
@@ -24,7 +27,7 @@ namespace SudokuSolver.Model.Services.DataParser.ParseStrategies
 
 			foreach(SudokuBoard board in sudokuData.Boards)
 			{
-				if(!SudokuValidator.IsValidBoard(board))
+				if(!SudokuValidator.IsValidBoard(board.Board))
 					throw new Exception("Board have incorrect format");
 			}
 
