@@ -12,6 +12,7 @@ namespace SudokuSolver.Model.Services
 			_solvers = new List<ISudokuSolver>
 			{
 				new SimpleBacktrackingSolver(),
+				new BacktrackingSolver(),
 				new ConstraintProgrammingSolver(),
 				new XwingSolver(),
 				new SwordfishSolver()
