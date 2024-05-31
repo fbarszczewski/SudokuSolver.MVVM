@@ -51,6 +51,6 @@ namespace SudokuSolver.Model.Models
 			return true;
 		}
 
-
+		public static implicit operator byte[,](SudokuBoard board) => board.Board;
 	}
 }

@@ -3,7 +3,7 @@ using Autofac;
 using SudokuSolver.Model.Interfaces;
 using SudokuSolver.Model.Models;
 using SudokuSolver.Model.Services;
-using SudokuSolver.Model.Services.ParseFactory;
+using SudokuSolver.Model.Services.DataParser;
 using SudokuSolver.ViewModel;
 
 namespace SudokuSolver.View
