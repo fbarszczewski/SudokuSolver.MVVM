@@ -149,5 +149,11 @@ namespace SudokuSolver.Model.Models
 
 
 		}
+
+		public List<string> GetSolvingAlgorithmsNames()
+		{
+			return _solverManager.GetSolverNames();
+		}
 	}
+
 }

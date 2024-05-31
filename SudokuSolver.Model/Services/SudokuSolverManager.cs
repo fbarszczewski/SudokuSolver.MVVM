@@ -6,6 +6,7 @@ namespace SudokuSolver.Model.Services
 	internal class SudokuSolverManager
 	{
 		private readonly List<ISudokuSolver> _solvers;
+
 		public SudokuSolverManager()
 		{
 			_solvers = new List<ISudokuSolver>
@@ -54,6 +55,10 @@ namespace SudokuSolver.Model.Services
 			}
 
 			return false;
+		}
+		public List<string> GetSolverNames()
+		{
+			return _solvers.Select(solver => solver.GetName()).ToList();
 		}
 	}
 }

@@ -15,6 +15,8 @@ namespace SudokuSolver.ViewModel
 		public event PropertyChangedEventHandler? PropertyChanged;
 		private SudokuGame? selectedGame;
 		public string? PageNumber { get; set; }
+		public List<string> AlgorithmCollection { get; set; }
+		public string SelectedAlgorithm { get; set; }
 		public ObservableCollection<SudokuCell> CellCollection
 		{
 			get;
@@ -25,7 +27,8 @@ namespace SudokuSolver.ViewModel
 		public GameManagerViewModel(IGameManager _model)
 		{
 			gameManagerModel = _model;
-
+			AlgorithmCollection = gameManagerModel.GetSolvingAlgorithmsNames();
+			SelectedAlgorithm = AlgorithmCollection[0];
 			UpdateSelectedGame();
 			UpdatePageNumber();
 			gameManagerModel.GameChanged += RefreshView;
@@ -231,21 +234,22 @@ namespace SudokuSolver.ViewModel
 
 		private void SolveSudoku()
 		{
-			var algorithm = "X-Wing";
+			var algorithm = SelectedAlgorithm;
+			algorithm ??= "Backtracking";
 
 			try
 			{
 				if(gameManagerModel.SolveSudoku(ref algorithm))
 				{
-					MessageBox.Show($"Sudoku solved with {algorithm}");
+					MessageBox.Show($"Sudoku solved with {algorithm} algorithm. :D");
 					RefreshView();
 				}
 				else
-					MessageBox.Show("Cant solve this sudoku.");
+					MessageBox.Show("I cannot solve this sudoku.\nEither it is unsolvable or I just need to add more advanced sudoku solving algorithms. :(");
 			}
 			catch(Exception ex)
 			{
-				MessageBox.Show($"Cant solve this sudoku. {ex.Message}");
+				MessageBox.Show($"Sudoku solver error. :(\n{ex.Message}");
 			}
 		}
 		private void LoadFile()

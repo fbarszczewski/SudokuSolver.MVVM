@@ -41,5 +41,7 @@ namespace SudokuSolver.Model.Interfaces
 		bool SolveSudoku(ref string firstAlgorithm);
 
 		SudokuGame? ReturnSelectedGame();
+
+		List<string> GetSolvingAlgorithmsNames();
 	}
 }
