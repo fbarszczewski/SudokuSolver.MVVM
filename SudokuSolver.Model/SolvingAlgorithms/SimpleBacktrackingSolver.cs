@@ -4,12 +4,7 @@ namespace SudokuSolver.Model.SolvingAlgorithms
 {
 	internal class SimpleBacktrackingSolver : ISudokuSolver
 	{
-		private byte[,] _solvedBoard;
-
-		public SimpleBacktrackingSolver()
-		{
-			_solvedBoard = new byte[9,9];
-		}
+		private byte[,] _solvedBoard = new byte[9,9];
 
 		public string GetName()
 		{

@@ -231,7 +231,7 @@ namespace SudokuSolver.ViewModel
 
 		private void SolveSudoku()
 		{
-			var algorithm = "Simple Backtracking";
+			var algorithm = "Constraint Programming";
 
 			try
 			{

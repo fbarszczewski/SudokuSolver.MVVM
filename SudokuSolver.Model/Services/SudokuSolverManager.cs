@@ -10,8 +10,8 @@ namespace SudokuSolver.Model.Services
 		{
 			_solvers = new List<ISudokuSolver>
 			{
-				new SimpleBacktrackingSolver()
-
+				new SimpleBacktrackingSolver(),
+				new ConstraintProgrammingSolver()
 				// add more solvers here
 			};
 		}
