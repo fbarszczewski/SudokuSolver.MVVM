@@ -1,11 +1,11 @@
 ﻿<Window x:Class="SudokuSolver.View.MainWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:controls="clr-namespace:SudokuSolver.View.CustomControls"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:local="clr-namespace:SudokuSolver.View"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:vm="clr-namespace:SudokuSolver.ViewModel;assembly=SudokuSolver.ViewModel"
-        Width="700" Height="570"
-        mc:Ignorable="d" Icon="/Resources/saveicon.png"
-        ResizeMode="NoResize" Title="Sudoku Solver"
-        WindowStartupLocation="CenterScreen">
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:system="clr-namespace:System;assembly=System.Runtime"
+        xmlns:vm="clr-namespace:SudokuSolver.ViewModel;assembly=SudokuSolver.ViewModel" Width="700"
+        Height="570" mc:Ignorable="d"
+        Icon="/Resources/saveicon.png" ResizeMode="NoResize"
+        Title="Sudoku Solver" WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <Style x:Key="WinButton" TargetType="Button">
             <Setter Property="Background" Value="#FFD8D7D7"/>
@@ -207,7 +207,15 @@
                     <!-- Sudoku board display -->
                     <VirtualizingStackPanel Grid.Column="0" Width="441"
                                             Height="441" VerticalAlignment="Top">
-                        <ItemsControl ItemsSource="{Binding CellCollection}">
+                        <VirtualizingStackPanel.Resources>
+                            <ObjectDataProvider x:Key="GameViewModelProvider" ObjectType="{x:Type vm:GameViewModel}">
+                                <ObjectDataProvider.ConstructorParameters>
+                                  
+                                    <system:String>YourArgumentValue</system:String>
+                                </ObjectDataProvider.ConstructorParameters>
+                            </ObjectDataProvider>
+                        </VirtualizingStackPanel.Resources>
+                        <ItemsControl ItemsSource="{Binding GameCells}">
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <UniformGrid Columns="9" Rows="9"/>
@@ -260,7 +268,7 @@
                         Content="Save" Style="{StaticResource WinButton}"/>
                 <Button x:Name="getSudokuBtn" Margin="0,40,0,3"
                         Command="{Binding GetUnsolvedSudokuCommand}" Content="Get sudoku using webAPI"
-                        Style="{StaticResource WinButton}" FontSize="15"/>
+                        FontSize="15" Style="{StaticResource WinButton}"/>
                 <StackPanel Orientation="Horizontal">
                     <Label x:Name="difficultyLabel" Margin="0,0,0,0"
                            VerticalContentAlignment="Center" Content="Difficulty:"

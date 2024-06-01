@@ -11,8 +11,8 @@ namespace SudokuSolver.Model.Models
 		private int _nextBoardId = 0;
 		private int NextBoardId => _nextBoardId++;
 
-		public List<SudokuGame> GameList { get; private set; }
-		public int SelectedGameId { get; private set; }
+		public List<SudokuBoard> GameList { get; private set; }
+		public int SelectedGameIndex { get; private set; }
 
 		public event Action? GameChanged;
 
@@ -21,20 +21,33 @@ namespace SudokuSolver.Model.Models
 			_solverManager = new SudokuSolverManager();
 			_dataManager = dataManager;
 			_SugokuAPI = new SugokuAPI();
-			GameList = new List<SudokuGame>();
+			GameList = new List<SudokuBoard>();
 			AddGame(new SudokuBoard());
+		}
+
+		public void NextGame()
+		{
+			if(CanNextGame())
+				SelectedGameIndex++;
+
+			GameChanged?.Invoke();
 		}
 
 		public bool CanNextGame()
 		{
-			var currentIndex = GameList.FindIndex(board => board.Id == SelectedGameId);
-			return currentIndex >= 0 && currentIndex < GameList.Count - 1;
+			return SelectedGameIndex >= 0 && SelectedGameIndex < GameList.Count - 1;
+		}
+		public void PreviousGame()
+		{
+			if(CanPreviousGame())
+				SelectedGameIndex--;
+
+			GameChanged?.Invoke();
 		}
 
 		public bool CanPreviousGame()
 		{
-			var currentIndex = GameList.FindIndex(board => board.Id == SelectedGameId);
-			return currentIndex > 0;
+			return SelectedGameIndex > 0;
 		}
 
 		public void LoadGamesFromFile(string path)
@@ -48,25 +61,9 @@ namespace SudokuSolver.Model.Models
 			}
 		}
 
-		public void NextGame()
-		{
-			var currentIndex = GameList.FindIndex(board => board.Id == SelectedGameId);
-			if(currentIndex >= 0 && currentIndex < GameList.Count - 1)
-			{
-				SelectedGameId = GameList[currentIndex + 1].Id;
-			}
-			GameChanged?.Invoke();
-		}
 
-		public void PreviousGame()
-		{
-			var currentIndex = GameList.FindIndex(board => board.Id == SelectedGameId);
-			if(currentIndex > 0)
-			{
-				SelectedGameId = GameList[currentIndex - 1].Id;
-			}
-			GameChanged?.Invoke();
-		}
+
+
 
 		public void RemoveGame()
 		{
@@ -81,7 +78,7 @@ namespace SudokuSolver.Model.Models
 
 		public void SaveSelectedGame(string path)
 		{
-			SudokuBoard? board = ReturnSelectedGame();
+			SudokuBoard board = GetSelectedGame();
 
 			if(board == null)
 				throw new Exception("Cant find selected game.");
@@ -92,22 +89,21 @@ namespace SudokuSolver.Model.Models
 			_dataManager.SaveSudoku(sudokuFile);
 		}
 
-		public SudokuGame? ReturnSelectedGame()
+		public SudokuBoard GetSelectedGame()
 		{
-			return GameList.FirstOrDefault(board => board.Id == SelectedGameId);
+			return GameList[SelectedGameIndex];
 		}
 
 		private void AddGame(SudokuBoard sudoku)
 		{
-			var newGame = new SudokuGame(sudoku,NextBoardId);
+			var newGame = new SudokuBoard(sudoku);
 			GameList.Add(newGame);
-			SelectedGameId = newGame.Id;
 			GameChanged?.Invoke();
 		}
 
 		public void ClearSelectedGame()
 		{
-			SudokuGame? game = ReturnSelectedGame();
+			SudokuBoard game = GetSelectedGame();
 			if(game == null)
 				throw new Exception("Cant find selected game.");
 
@@ -117,7 +113,7 @@ namespace SudokuSolver.Model.Models
 
 		public bool CanClearSelectedGame()
 		{
-			SudokuGame? game = ReturnSelectedGame();
+			SudokuBoard game = GetSelectedGame();
 			if(game == null)
 				throw new Exception("Cant find selected game.");
 
@@ -134,7 +130,7 @@ namespace SudokuSolver.Model.Models
 
 		public bool SolveSudoku(ref string firstAlgorithm)
 		{
-			SudokuGame? selectedGame = ReturnSelectedGame();
+			SudokuBoard selectedGame = GetSelectedGame();
 			var board = selectedGame.Board;
 
 			if(selectedGame == null)

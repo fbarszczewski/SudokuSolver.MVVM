@@ -3,53 +3,55 @@ using System.Windows;
 using System.Windows.Input;
 using Microsoft.Win32;
 using SudokuSolver.Model.Interfaces;
+using SudokuSolver.Model.Models;
 
 namespace SudokuSolver.ViewModel
 {
 	public class AppViewModel : INotifyPropertyChanged
 	{
-		private readonly IGameManager gameManagerModel;
+		private readonly IGameManager _gameManagerModel;
+		public GameViewModel _gameViewModel;
 		public event PropertyChangedEventHandler? PropertyChanged;
-
-
+		public GameViewModel GameViewModel
+		{
+			get => _gameViewModel;
+			set
+			{
+				if(_gameViewModel != value)
+				{
+					_gameViewModel = value;
+					OnPropertyChanged(nameof(_gameViewModel));
+				}
+			}
+		}
 		public List<string> SudokuDifficultyLevels { get; set; }
 		public string SelectedDifficulty { get; set; }
 		public string SelectedAlgorithm { get; set; }
 		public List<string> AlgorithmCollection { get; set; }
 		public string? PageNumber { get; set; }
 
-
-
-
 		public AppViewModel(IGameManager _model)
 		{
-			gameManagerModel = _model;
-			AlgorithmCollection = gameManagerModel.GetSolvingAlgorithmsNames();
+			_gameManagerModel = _model;
+			AlgorithmCollection = _gameManagerModel.GetSolvingAlgorithmsNames();
 			SelectedAlgorithm = AlgorithmCollection[0];
 			SudokuDifficultyLevels = new List<string> { "Easy","Medium","Hard" };
-			UpdatePageNumber();
-			gameManagerModel.GameChanged += RefreshView;
+			SelectedDifficulty = SudokuDifficultyLevels[0];
+			_gameViewModel = new GameViewModel(UpdateGame());
+		}
+
+
+		private SudokuBoard UpdateGame()
+		{
+			PageNumber = $"{_gameManagerModel.SelectedGameIndex + 1} of {_gameManagerModel.GameList.Count}";
+			OnPropertyChanged(nameof(PageNumber));
+			return _gameManagerModel.GetSelectedGame()!;
 		}
 
 		private void OnPropertyChanged(string propertyName)
 		{
 			PropertyChanged?.Invoke(this,new PropertyChangedEventArgs(propertyName));
 		}
-
-
-		private void UpdatePageNumber()
-		{
-			PageNumber = $"{gameManagerModel.SelectedGameId + 1} of {gameManagerModel.GameList.Count}";
-		}
-		private void RefreshView()
-		{
-			UpdatePageNumber();
-			OnPropertyChanged(nameof(PageNumber));
-		}
-
-
-
-
 
 		#region Commands
 		private ICommand? solveCommand;
@@ -64,7 +66,7 @@ namespace SudokuSolver.ViewModel
 		{
 			get
 			{
-				solveCommand = solveCommand ?? new RelayCommand(param => SolveSudoku(),param => gameManagerModel.CanClearSelectedGame());
+				solveCommand = solveCommand ?? new RelayCommand(param => SolveSudoku(),param => _gameManagerModel.CanClearSelectedGame());
 				return solveCommand;
 			}
 		}
@@ -73,7 +75,7 @@ namespace SudokuSolver.ViewModel
 		{
 			get
 			{
-				clearCommand = clearCommand ?? new RelayCommand(param => gameManagerModel.ClearSelectedGame(),param => gameManagerModel.CanClearSelectedGame());
+				clearCommand = clearCommand ?? new RelayCommand(param => _gameManagerModel.ClearSelectedGame(),param => _gameManagerModel.CanClearSelectedGame());
 				return clearCommand;
 			}
 		}
@@ -109,7 +111,7 @@ namespace SudokuSolver.ViewModel
 		{
 			get
 			{
-				previousCommand = previousCommand ?? new RelayCommand(param => gameManagerModel.PreviousGame(),param => gameManagerModel.CanPreviousGame());
+				previousCommand = previousCommand ?? new RelayCommand(param => _gameManagerModel.PreviousGame(),param => _gameManagerModel.CanPreviousGame());
 				return previousCommand;
 			}
 		}
@@ -118,7 +120,7 @@ namespace SudokuSolver.ViewModel
 		{
 			get
 			{
-				nextCommand = nextCommand ?? new RelayCommand(param => gameManagerModel.NextGame(),param => gameManagerModel.CanNextGame());
+				nextCommand = nextCommand ?? new RelayCommand(param => _gameManagerModel.NextGame(),param => _gameManagerModel.CanNextGame());
 				return nextCommand;
 			}
 		}
@@ -132,12 +134,11 @@ namespace SudokuSolver.ViewModel
 			}
 			try
 			{
-				gameManagerModel.GetUnsolvedSudoku(SelectedDifficulty);
-				RefreshView();
+				_gameManagerModel.GetUnsolvedSudoku(SelectedDifficulty);
+				UpdateGame();
 			}
 			catch(Exception ex)
 			{
-
 				MessageBox.Show($"Error getting sudoku to solve.\n{ex.Message}");
 			}
 		}
@@ -149,10 +150,10 @@ namespace SudokuSolver.ViewModel
 
 			try
 			{
-				if(gameManagerModel.SolveSudoku(ref algorithm))
+				if(_gameManagerModel.SolveSudoku(ref algorithm))
 				{
 					MessageBox.Show($"Sudoku solved with {algorithm} algorithm. :D");
-					RefreshView();
+					UpdateGame();
 				}
 				else
 					MessageBox.Show("I cannot solve this sudoku.\nEither it is unsolvable or I just need to add more advanced sudoku solving algorithms. :(");
@@ -170,7 +171,8 @@ namespace SudokuSolver.ViewModel
 			openFileDialog.ShowDialog();
 			try
 			{
-				gameManagerModel.LoadGamesFromFile(openFileDialog.FileName);
+				_gameManagerModel.LoadGamesFromFile(openFileDialog.FileName);
+				UpdateGame();
 			}
 			catch(Exception ex)
 			{
@@ -186,7 +188,7 @@ namespace SudokuSolver.ViewModel
 
 			try
 			{
-				gameManagerModel.SaveSelectedGame(saveFileDialog.FileName);
+				_gameManagerModel.SaveSelectedGame(saveFileDialog.FileName);
 				MessageBox.Show("Saved");
 
 			}
@@ -195,8 +197,6 @@ namespace SudokuSolver.ViewModel
 				MessageBox.Show(ex.Message);
 			}
 		}
-
-
 
 
 		#endregion

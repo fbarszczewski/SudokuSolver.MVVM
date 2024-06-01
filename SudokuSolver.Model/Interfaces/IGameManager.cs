@@ -4,14 +4,14 @@ namespace SudokuSolver.Model.Interfaces
 {
 	public interface IGameManager
 	{
-		List<SudokuGame> GameList
+		List<SudokuBoard> GameList
 		{
 			get;
 		}
 		/// <summary>
 		/// Represents the id of the selected _board in view from BoardsList.
 		/// </summary>
-		int SelectedGameId
+		int SelectedGameIndex
 		{
 			get;
 		}
@@ -40,7 +40,7 @@ namespace SudokuSolver.Model.Interfaces
 
 		bool SolveSudoku(ref string firstAlgorithm);
 
-		SudokuGame? ReturnSelectedGame();
+		SudokuBoard? GetSelectedGame();
 
 		List<string> GetSolvingAlgorithmsNames();
 
