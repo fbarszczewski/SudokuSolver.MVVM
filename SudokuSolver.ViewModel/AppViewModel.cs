@@ -1,50 +1,41 @@
-﻿using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
 using Microsoft.Win32;
 using SudokuSolver.Model.Interfaces;
-using SudokuSolver.Model.Models;
 
 namespace SudokuSolver.ViewModel
 {
-	public class MainViewModel : INotifyPropertyChanged
+	public class AppViewModel : INotifyPropertyChanged
 	{
 		private readonly IGameManager gameManagerModel;
 		public event PropertyChangedEventHandler? PropertyChanged;
-		private SudokuGame? selectedGame;
 
 
 		public List<string> SudokuDifficultyLevels { get; set; }
 		public string SelectedDifficulty { get; set; }
-		public string? PageNumber { get; set; }
-		public List<string> AlgorithmCollection { get; set; }
 		public string SelectedAlgorithm { get; set; }
-		public ObservableCollection<SudokuCell> CellCollection
-		{
-			get;
-			private set;
-		}
+		public List<string> AlgorithmCollection { get; set; }
+		public string? PageNumber { get; set; }
 
 
-		public MainViewModel(IGameManager _model)
+
+
+		public AppViewModel(IGameManager _model)
 		{
 			gameManagerModel = _model;
 			AlgorithmCollection = gameManagerModel.GetSolvingAlgorithmsNames();
 			SelectedAlgorithm = AlgorithmCollection[0];
 			SudokuDifficultyLevels = new List<string> { "Easy","Medium","Hard" };
-			UpdateSelectedGame();
 			UpdatePageNumber();
 			gameManagerModel.GameChanged += RefreshView;
-			CellCollection = new ObservableCollection<SudokuCell>();
-			InitializeCellCollection();
 		}
 
-		protected virtual void OnPropertyChanged(string propertyName)
+		private void OnPropertyChanged(string propertyName)
 		{
 			PropertyChanged?.Invoke(this,new PropertyChangedEventArgs(propertyName));
 		}
+
 
 		private void UpdatePageNumber()
 		{
@@ -52,125 +43,11 @@ namespace SudokuSolver.ViewModel
 		}
 		private void RefreshView()
 		{
-			UpdateSelectedGame();
-
-			InitializeCellCollection();
 			UpdatePageNumber();
-			OnPropertyChanged(nameof(CellCollection));
 			OnPropertyChanged(nameof(PageNumber));
 		}
-		private void UpdateSelectedGame()
-		{
-			SudokuGame? selectedGame = gameManagerModel.ReturnSelectedGame();
-			try
-			{
-				if(selectedGame == null)
-					throw new Exception("Cant find selected game.");
-			}
-			catch(Exception ex)
-			{
-				MessageBox.Show($"Error:{ex.Message}\nRedirecting to default board.");
-				if(gameManagerModel.GameList.Count == 0)
-				{
-					gameManagerModel.AddEmptyGame();
-				}
-			}
 
 
-			this.selectedGame = selectedGame;
-		}
-		private void InitializeCellCollection()
-		{
-			// Detaching event handlers from the previous CellCollection to avoid data leaks.
-			if(CellCollection != null)
-			{
-				foreach(SudokuCell cell in CellCollection)
-				{
-					cell.PropertyChanged -= ListBoardItem_PropertyChanged;
-				}
-
-				CellCollection.CollectionChanged -= ListBoard_CollectionChanged;
-			}
-
-			//getting selected game
-
-			// Filling the collection with the values from the model.
-			// Value type is converted in SudokuCell constructor & every '0' is replaced with empty string.
-			CellCollection = new ObservableCollection<SudokuCell>(
-							selectedGame.Board.OfType<byte>().Select(b => new SudokuCell(b)));
-
-			// Attaching event handler to the CollectionChanged event of CellCollection.
-			// This is necessary to synchronize the changes in the CellCollection with the model's Board.
-			CellCollection.CollectionChanged += ListBoard_CollectionChanged;
-
-			// Attaching event handler to the PropertyChanged event of each SudokuCell in CellCollection.
-			// This is necessary to synchronize the changes in the Value property of the SudokuCell objects in the CellCollection
-			foreach(SudokuCell cell in CellCollection)
-			{
-				cell.PropertyChanged += ListBoardItem_PropertyChanged;
-			}
-		}
-
-		/// <summary>
-		/// Manages the attachment and detachment of event handlers to SudokuCell objects in the CellCollection
-		/// </summary>
-		private void ListBoard_CollectionChanged(object? sender,NotifyCollectionChangedEventArgs e)
-		{
-			if(sender == null)
-				return;
-			if(e.NewItems != null)
-			{
-				foreach(var newItem in e.NewItems)
-				{
-					if(newItem is SudokuCell observableByte)
-					{
-						AttachPropertyChangedHandler(observableByte);
-					}
-				}
-			}
-
-			if(e.OldItems != null)
-			{
-				foreach(var oldItem in e.OldItems)
-				{
-					if(oldItem is SudokuCell observableByte)
-					{
-						DetachPropertyChangedHandler(observableByte);
-					}
-				}
-			}
-		}
-		private void AttachPropertyChangedHandler(SudokuCell cell)
-		{
-			cell.PropertyChanged += ListBoardItem_PropertyChanged;
-		}
-
-		private void DetachPropertyChangedHandler(SudokuCell cell)
-		{
-			cell.PropertyChanged -= ListBoardItem_PropertyChanged;
-		}
-
-		/// <summary>
-		/// Synchronizes changes in the Value property of SudokuCell objects in the CellCollection  with the
-		/// corresponding cells in the model.Board,  allowing the ViewModel to keep the model's state consistent with
-		/// the view's state.
-		/// </summary>
-		private void ListBoardItem_PropertyChanged(object? sender,PropertyChangedEventArgs e)
-		{
-			if(sender == null)
-				return;
-
-			if(e.PropertyName == "Value")
-			{
-				var cell = (SudokuCell)sender;
-				var index = CellCollection.IndexOf(cell);
-
-				var row = index / 9;
-				var col = index % 9;
-
-				selectedGame.Board[row,col] = cell;
-			}
-		}
 
 
 

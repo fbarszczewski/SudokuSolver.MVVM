@@ -3,7 +3,7 @@ using SudokuSolver.Model.Services;
 
 namespace SudokuSolver.Model.Models
 {
-	public class SudokuGameManager : IGameManager
+	public class GamesManager : IGameManager
 	{
 		private readonly ISudokuDataManager _dataManager;
 		private readonly SudokuSolverManager _solverManager;
@@ -16,7 +16,7 @@ namespace SudokuSolver.Model.Models
 
 		public event Action? GameChanged;
 
-		public SudokuGameManager(ISudokuDataManager dataManager)
+		public GamesManager(ISudokuDataManager dataManager)
 		{
 			_solverManager = new SudokuSolverManager();
 			_dataManager = dataManager;
