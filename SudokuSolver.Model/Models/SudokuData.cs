@@ -17,6 +17,13 @@ namespace SudokuSolver.Model.Models
 			DataType = SetDataType;
 			Content = string.Empty;
 		}
+		public SudokuData(string content,string dataType)
+		{
+			Content = content;
+			DataType = dataType;
+			DataPath = string.Empty;
+			Boards = new List<SudokuBoard>();
+		}
 
 		public SudokuData(List<SudokuBoard> boards,string dataPath)
 		{
@@ -26,13 +33,7 @@ namespace SudokuSolver.Model.Models
 			Content = string.Empty;
 		}
 
-		public SudokuData(string content,string dataType)
-		{
-			Content = content;
-			DataType = dataType;
-			DataPath = string.Empty;
-			Boards = new List<SudokuBoard>();
-		}
+
 
 		private string SetDataType => Path.GetExtension(DataPath).TrimStart('.');
 

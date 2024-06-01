@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using SudokuSolver.Model.Interfaces;
+﻿using SudokuSolver.Model.Interfaces;
 
 namespace SudokuSolver.Model.Services
 {
@@ -68,20 +67,5 @@ namespace SudokuSolver.Model.Services
 			}
 		}
 
-		public static string ReadResourceFile(string path)
-		{
-			var resourceName = path;
-			var assembly = Assembly.GetExecutingAssembly();
-			var content = "";
-			using(Stream stream = assembly.GetManifestResourceStream(resourceName)!)
-			{
-				if(stream != null)
-				{
-					using var reader = new StreamReader(stream);
-					content = reader.ReadToEnd();
-				}
-			}
-			return content;
-		}
 	}
 }

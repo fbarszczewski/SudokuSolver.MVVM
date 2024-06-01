@@ -9,7 +9,7 @@ using SudokuSolver.Model.Models;
 
 namespace SudokuSolver.ViewModel
 {
-	public class GameManagerViewModel : INotifyPropertyChanged
+	public class MainViewModel : INotifyPropertyChanged
 	{
 		private readonly IGameManager gameManagerModel;
 		public event PropertyChangedEventHandler? PropertyChanged;
@@ -28,7 +28,7 @@ namespace SudokuSolver.ViewModel
 		}
 
 
-		public GameManagerViewModel(IGameManager _model)
+		public MainViewModel(IGameManager _model)
 		{
 			gameManagerModel = _model;
 			AlgorithmCollection = gameManagerModel.GetSolvingAlgorithmsNames();

@@ -2,11 +2,11 @@
 
 namespace SudokuSolver.Model.Services
 {
-	public class SudokuDataManager : ISudokuDataManager
+	public class SudokuFileManager : ISudokuDataManager
 	{
 		private readonly ISudokuParserFactory _parserFactory;
 
-		public SudokuDataManager(ISudokuParserFactory parserFactory)
+		public SudokuFileManager(ISudokuParserFactory parserFactory)
 		{
 			_parserFactory = parserFactory;
 		}
