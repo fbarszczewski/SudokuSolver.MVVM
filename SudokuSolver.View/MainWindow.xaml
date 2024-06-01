@@ -259,8 +259,8 @@
                 <Button x:Name="saveBtn" Command="{Binding SaveCommand}"
                         Content="Save" Style="{StaticResource WinButton}"/>
                 <Button x:Name="getSudokuBtn" Margin="0,40,0,3"
-                        Command="{Binding GetUnsolvedSudokuCommand}" Content="Get sudoku to solve"
-                        Style="{StaticResource WinButton}"/>
+                        Command="{Binding GetUnsolvedSudokuCommand}" Content="Get sudoku using webAPI"
+                        Style="{StaticResource WinButton}" FontSize="15"/>
                 <StackPanel Orientation="Horizontal">
                     <Label x:Name="difficultyLabel" Margin="0,0,0,0"
                            VerticalContentAlignment="Center" Content="Difficulty:"
