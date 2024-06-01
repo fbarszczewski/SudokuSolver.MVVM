@@ -11,13 +11,13 @@ namespace SudokuSolver.Model.Services
 			_parserFactory = parserFactory;
 		}
 
-		public void LoadSudoku(ISudokuFile sudokuFile)
+		public void LoadSudoku(ISudokuData sudokuFile)
 		{
 			ISudokuParser parser = _parserFactory.GetParser(sudokuFile.DataType);
 			parser.LoadBoards(sudokuFile);
 		}
 
-		public void SaveSudoku(ISudokuFile sudokuFile)
+		public void SaveSudoku(ISudokuData sudokuFile)
 		{
 			ISudokuParser parser = _parserFactory.GetParser(sudokuFile.DataType);
 			parser.SaveBoards(sudokuFile);

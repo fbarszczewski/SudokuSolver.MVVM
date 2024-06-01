@@ -6,8 +6,9 @@ namespace SudokuSolver.Model.Models
 	public class SudokuGameManager : IGameManager
 	{
 		private readonly ISudokuDataManager _dataManager;
-		private int _nextBoardId = 0;
 		private readonly SudokuSolverManager _solverManager;
+		private readonly SugokuAPI _SugokuAPI;
+		private int _nextBoardId = 0;
 		private int NextBoardId => _nextBoardId++;
 
 		public List<SudokuGame> GameList { get; private set; }
@@ -19,6 +20,7 @@ namespace SudokuSolver.Model.Models
 		{
 			_solverManager = new SudokuSolverManager();
 			_dataManager = dataManager;
+			_SugokuAPI = new SugokuAPI();
 			GameList = new List<SudokuGame>();
 			AddGame(new SudokuBoard());
 		}
@@ -37,7 +39,7 @@ namespace SudokuSolver.Model.Models
 
 		public void LoadGamesFromFile(string path)
 		{
-			var loadSudoku = new SudokuFile(path);
+			var loadSudoku = new SudokuData(path);
 			_dataManager.LoadSudoku(loadSudoku);
 
 			foreach(SudokuBoard board in loadSudoku.Boards)
@@ -85,7 +87,7 @@ namespace SudokuSolver.Model.Models
 				throw new Exception("Cant find selected game.");
 
 
-			ISudokuFile sudokuFile = new SudokuFile(new List<SudokuBoard> { board },path);
+			ISudokuData sudokuFile = new SudokuData(new List<SudokuBoard> { board },path);
 
 			_dataManager.SaveSudoku(sudokuFile);
 		}
@@ -153,6 +155,22 @@ namespace SudokuSolver.Model.Models
 		public List<string> GetSolvingAlgorithmsNames()
 		{
 			return _solverManager.GetSolverNames();
+		}
+
+		public async void GetUnsolvedSudoku(string difficultyLevel)
+		{
+			var contentToParse = await _SugokuAPI.GetSudoku(difficultyLevel.ToLower());
+
+			if(contentToParse == null)
+				throw new Exception("No data retrieved from suGOku API.");
+
+			var sudokuFile = new SudokuData(contentToParse,"json");
+			_dataManager.LoadSudoku(sudokuFile);
+
+			foreach(SudokuBoard board in sudokuFile.Boards)
+			{
+				AddGame(board);
+			}
 		}
 	}
 

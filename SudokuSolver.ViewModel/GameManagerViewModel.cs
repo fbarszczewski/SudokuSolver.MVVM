@@ -14,6 +14,10 @@ namespace SudokuSolver.ViewModel
 		private readonly IGameManager gameManagerModel;
 		public event PropertyChangedEventHandler? PropertyChanged;
 		private SudokuGame? selectedGame;
+
+
+		public List<string> SudokuDifficultyLevels { get; set; }
+		public string SelectedDifficulty { get; set; }
 		public string? PageNumber { get; set; }
 		public List<string> AlgorithmCollection { get; set; }
 		public string SelectedAlgorithm { get; set; }
@@ -29,6 +33,7 @@ namespace SudokuSolver.ViewModel
 			gameManagerModel = _model;
 			AlgorithmCollection = gameManagerModel.GetSolvingAlgorithmsNames();
 			SelectedAlgorithm = AlgorithmCollection[0];
+			SudokuDifficultyLevels = new List<string> { "Easy","Medium","Hard" };
 			UpdateSelectedGame();
 			UpdatePageNumber();
 			gameManagerModel.GameChanged += RefreshView;
@@ -176,7 +181,7 @@ namespace SudokuSolver.ViewModel
 		private ICommand? loadFileCommand;
 		private ICommand? previousCommand;
 		private ICommand? nextCommand;
-
+		private ICommand? getUnsolvedSudokuCommand;
 
 		public ICommand SolveCommand
 		{
@@ -214,6 +219,15 @@ namespace SudokuSolver.ViewModel
 			}
 		}
 
+		public ICommand GetUnsolvedSudokuCommand
+		{
+			get
+			{
+				getUnsolvedSudokuCommand = getUnsolvedSudokuCommand ?? new RelayCommand(param => GetUnsolvedSudoku(),param => !string.IsNullOrEmpty(SelectedDifficulty));
+				return getUnsolvedSudokuCommand;
+			}
+		}
+
 		public ICommand PreviousCommand
 		{
 			get
@@ -229,6 +243,25 @@ namespace SudokuSolver.ViewModel
 			{
 				nextCommand = nextCommand ?? new RelayCommand(param => gameManagerModel.NextGame(),param => gameManagerModel.CanNextGame());
 				return nextCommand;
+			}
+		}
+
+		private void GetUnsolvedSudoku()
+		{
+			if(string.IsNullOrEmpty(SelectedDifficulty))
+			{
+				MessageBox.Show("Select difficulty level first.");
+				return;
+			}
+			try
+			{
+				gameManagerModel.GetUnsolvedSudoku(SelectedDifficulty);
+				RefreshView();
+			}
+			catch(Exception ex)
+			{
+
+				MessageBox.Show($"Error getting sudoku to solve.\n{ex.Message}");
 			}
 		}
 
