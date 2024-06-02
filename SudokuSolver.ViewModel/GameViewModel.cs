@@ -17,8 +17,6 @@ namespace SudokuSolver.ViewModel
 				{
 					DetachEventHandlers();
 					_selectedGameBoard = value;
-					InitializeGameCells(value);
-					OnPropertyChanged(nameof(SelectedGameBoard));
 				}
 			}
 		}
@@ -67,6 +65,11 @@ namespace SudokuSolver.ViewModel
 			}
 		}
 
+		/// <summary>
+		/// Attaches or detaches the GameCell_PropertyChanged event handler to or from SudokuCell objects 
+		/// when they are added to or removed from the GameCells collection, respectively.
+		/// Not really used right now in app since we dont add or remove cells after initialized
+		/// </summary>
 		private void GameCells_CollectionChanged(object? sender,NotifyCollectionChangedEventArgs e)
 		{
 			if(sender == null)
