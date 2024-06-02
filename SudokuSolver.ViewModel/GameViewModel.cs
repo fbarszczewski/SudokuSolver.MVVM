@@ -7,8 +7,22 @@ namespace SudokuSolver.ViewModel
 {
 	public class GameViewModel : INotifyPropertyChanged
 	{
+		private SudokuBoard? _selectedGameBoard;
+		public SudokuBoard? SelectedGameBoard
+		{
+			get => _selectedGameBoard;
+			set
+			{
+				if(_selectedGameBoard != value)
+				{
+					DetachEventHandlers();
+					_selectedGameBoard = value;
+					InitializeGameCells(value);
+					OnPropertyChanged(nameof(SelectedGameBoard));
+				}
+			}
+		}
 		public ObservableCollection<SudokuCell>? GameCells { get; private set; }
-		public SudokuBoard? SelectedGameBoard { get; set; }
 
 		public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -26,7 +40,22 @@ namespace SudokuSolver.ViewModel
 
 		private void InitializeGameCells(SudokuBoard selectedGame)
 		{
-			// Detaching event handlers from the previous GameCells to avoid data leaks.
+			// Filling collection with the values from the model.
+			var cells = new List<SudokuCell>(81);
+			foreach(var b in selectedGame.Board)
+			{
+				var cell = new SudokuCell(b);
+				cell.PropertyChanged += CollectionCell_PropertyChanged;
+				cells.Add(cell);
+			}
+			GameCells = new ObservableCollection<SudokuCell>(cells);
+
+			// Attaching event handler to the CollectionChanged event of GameCells.
+			// This is necessary to synchronize the changes in the GameCells with the model's Board.
+			GameCells.CollectionChanged += GameCells_CollectionChanged;
+		}
+		private void DetachEventHandlers()
+		{
 			if(GameCells != null)
 			{
 				foreach(SudokuCell cell in GameCells)
@@ -35,21 +64,6 @@ namespace SudokuSolver.ViewModel
 				}
 
 				GameCells.CollectionChanged -= GameCells_CollectionChanged;
-			}
-
-			// Filling collection with the values from the model.
-			GameCells = new ObservableCollection<SudokuCell>(
-							selectedGame.Board.OfType<byte>().Select(b => new SudokuCell(b)));
-
-			// Attaching event handler to the CollectionChanged event of GameCells.
-			// This is necessary to synchronize the changes in the GameCells with the model's Board.
-			GameCells.CollectionChanged += GameCells_CollectionChanged;
-
-			// Attaching event handler to the PropertyChanged event of each SudokuCell in GameCells.
-			// This is necessary to synchronize the changes in the Value property of the SudokuCell objects in the GameCells
-			foreach(SudokuCell cell in GameCells)
-			{
-				cell.PropertyChanged += CollectionCell_PropertyChanged;
 			}
 		}
 
