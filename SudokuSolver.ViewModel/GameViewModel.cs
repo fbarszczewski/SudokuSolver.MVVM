@@ -96,12 +96,14 @@ namespace SudokuSolver.ViewModel
 			if(e.PropertyName == "Value")
 			{
 				var cell = (SudokuCell)sender;
-				var index = GameCells.IndexOf(cell);
-
+				var index = GameCells!.IndexOf(cell);
 				var row = index / 9;
 				var col = index % 9;
 
-				SelectedGameBoard!.Board[row,col] = cell;
+				if(SelectedGameBoard!.Board[row,col] != cell)
+				{
+					SelectedGameBoard!.Board[row,col] = cell;
+				}
 			}
 		}
 
