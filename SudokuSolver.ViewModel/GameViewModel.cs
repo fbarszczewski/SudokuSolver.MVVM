@@ -20,11 +20,11 @@ namespace SudokuSolver.ViewModel
 		public void UpdateGameBoard(SudokuBoard updatedBoard)
 		{
 			SelectedGameBoard = updatedBoard;
-			InitializeCellCollection(updatedBoard);
+			InitializeGameCells(updatedBoard);
 			OnPropertyChanged(nameof(SelectedGameBoard));
 		}
 
-		private void InitializeCellCollection(SudokuBoard selectedGame)
+		private void InitializeGameCells(SudokuBoard selectedGame)
 		{
 			// Detaching event handlers from the previous GameCells to avoid data leaks.
 			if(GameCells != null)
