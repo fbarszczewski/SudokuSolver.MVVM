@@ -8,6 +8,7 @@ namespace SudokuSolver.Model.Models
 		private readonly ISudokuDataManager _dataManager;
 		private readonly SudokuSolverManager _solverManager;
 		private readonly SugokuAPI _SugokuAPI;
+
 		public List<SudokuBoard> GameList { get; private set; }
 		public int SelectedGameIndex { get; private set; }
 
@@ -20,6 +21,10 @@ namespace SudokuSolver.Model.Models
 			AddGame(new SudokuBoard());
 		}
 
+		public SudokuBoard GetSelectedGame()
+		{
+			return GameList[SelectedGameIndex];
+		}
 		public void NextGame()
 		{
 			if(CanNextGame())
@@ -74,11 +79,6 @@ namespace SudokuSolver.Model.Models
 			ISudokuData sudokuFile = new SudokuData(new List<SudokuBoard> { board },path);
 
 			_dataManager.SaveSudoku(sudokuFile);
-		}
-
-		public SudokuBoard GetSelectedGame()
-		{
-			return GameList[SelectedGameIndex];
 		}
 
 		public void ClearSelectedGame()

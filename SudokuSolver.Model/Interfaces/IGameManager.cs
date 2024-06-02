@@ -4,17 +4,11 @@ namespace SudokuSolver.Model.Interfaces
 {
 	public interface IGameManager
 	{
-		List<SudokuBoard> GameList
-		{
-			get;
-		}
+		List<SudokuBoard> GameList { get; }
 		/// <summary>
 		/// Represents the id of the selected _board in view from BoardsList.
 		/// </summary>
-		int SelectedGameIndex
-		{
-			get;
-		}
+		int SelectedGameIndex { get; }
 
 		void SaveSelectedGame(string path);
 

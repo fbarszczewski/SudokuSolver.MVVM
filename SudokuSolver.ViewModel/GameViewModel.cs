@@ -7,26 +7,21 @@ namespace SudokuSolver.ViewModel
 {
 	public class GameViewModel : INotifyPropertyChanged
 	{
-		public event PropertyChangedEventHandler? PropertyChanged;
-		public SudokuBoard SelectedGameBoard { get; set; }
 		public ObservableCollection<SudokuCell>? GameCells { get; private set; }
+		public SudokuBoard? SelectedGameBoard { get; set; }
+
+		public event PropertyChangedEventHandler? PropertyChanged;
 
 		public GameViewModel()
 		{
 
 		}
 
-
 		public void UpdateGameBoard(SudokuBoard updatedBoard)
 		{
 			SelectedGameBoard = updatedBoard;
 			InitializeCellCollection(updatedBoard);
 			OnPropertyChanged(nameof(SelectedGameBoard));
-		}
-
-		private void OnPropertyChanged(string propertyName)
-		{
-			PropertyChanged?.Invoke(this,new PropertyChangedEventArgs(propertyName));
 		}
 
 		private void InitializeCellCollection(SudokuBoard selectedGame)
@@ -92,8 +87,13 @@ namespace SudokuSolver.ViewModel
 				var row = index / 9;
 				var col = index % 9;
 
-				SelectedGameBoard.Board[row,col] = cell;
+				SelectedGameBoard!.Board[row,col] = cell;
 			}
+		}
+
+		private void OnPropertyChanged(string propertyName)
+		{
+			PropertyChanged?.Invoke(this,new PropertyChangedEventArgs(propertyName));
 		}
 	}
 }

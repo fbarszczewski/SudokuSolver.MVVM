@@ -9,6 +9,7 @@ namespace SudokuSolver.ViewModel
 	public class AppViewModel : INotifyPropertyChanged
 	{
 		private readonly IGameManager _gameManagerModel;
+
 		private ICommand? solveCommand;
 		private ICommand? clearCommand;
 		private ICommand? saveCommand;
@@ -16,8 +17,14 @@ namespace SudokuSolver.ViewModel
 		private ICommand? previousCommand;
 		private ICommand? nextCommand;
 		private ICommand? getUnsolvedSudokuCommand;
-
-		public List<string> AlgorithmCollection { get; set; }
+		public ICommand SolveCommand
+		{
+			get
+			{
+				solveCommand = solveCommand ?? new RelayCommand(param => SolveSudoku(),param => _gameManagerModel.CanClearSelectedGame());
+				return solveCommand;
+			}
+		}
 		public ICommand ClearCommand
 		{
 			get
@@ -26,7 +33,6 @@ namespace SudokuSolver.ViewModel
 				return clearCommand;
 			}
 		}
-		public GameViewModel GameViewModel { get; set; }
 		public ICommand GetUnsolvedSudokuCommand
 		{
 			get
@@ -51,7 +57,6 @@ namespace SudokuSolver.ViewModel
 				return nextCommand;
 			}
 		}
-		public string? PageNumber { get; set; }
 		public ICommand PreviousCommand
 		{
 			get
@@ -68,17 +73,12 @@ namespace SudokuSolver.ViewModel
 				return saveCommand;
 			}
 		}
-		public string SelectedAlgorithm { get; set; }
-		public string SelectedDifficulty { get; set; }
-		public ICommand SolveCommand
-		{
-			get
-			{
-				solveCommand = solveCommand ?? new RelayCommand(param => SolveSudoku(),param => _gameManagerModel.CanClearSelectedGame());
-				return solveCommand;
-			}
-		}
-		public List<string> SudokuDifficultyLevels { get; set; }
+		public string? PageNumber { get; private set; }
+		public GameViewModel GameViewModel { get; private set; }
+		public string SelectedAlgorithm { get; private set; }
+		public string SelectedDifficulty { get; private set; }
+		public List<string> AlgorithmCollection { get; private set; }
+		public List<string> SudokuDifficultyLevels { get; private set; }
 
 		public event PropertyChangedEventHandler? PropertyChanged;
 
