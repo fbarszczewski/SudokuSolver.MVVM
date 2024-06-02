@@ -16,8 +16,6 @@ namespace SudokuSolver.Model.Interfaces
 			get;
 		}
 
-		event Action? GameChanged;
-
 		void SaveSelectedGame(string path);
 
 		void LoadGamesFromFile(string path);

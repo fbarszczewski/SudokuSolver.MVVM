@@ -11,8 +11,6 @@ namespace SudokuSolver.Model.Models
 		public List<SudokuBoard> GameList { get; private set; }
 		public int SelectedGameIndex { get; private set; }
 
-		public event Action? GameChanged;
-
 		public GamesManager(ISudokuDataManager dataManager)
 		{
 			_solverManager = new SudokuSolverManager();
@@ -26,8 +24,6 @@ namespace SudokuSolver.Model.Models
 		{
 			if(CanNextGame())
 				SelectedGameIndex++;
-
-			GameChanged?.Invoke();
 		}
 
 		public bool CanNextGame()
@@ -38,8 +34,6 @@ namespace SudokuSolver.Model.Models
 		{
 			if(CanPreviousGame())
 				SelectedGameIndex--;
-
-			GameChanged?.Invoke();
 		}
 
 		public bool CanPreviousGame()
@@ -51,7 +45,6 @@ namespace SudokuSolver.Model.Models
 			var newGame = new SudokuBoard(sudoku);
 			GameList.Add(newGame);
 			SelectedGameIndex = GameList.Count - 1;
-			GameChanged?.Invoke();
 		}
 
 		public void LoadGamesFromFile(string path)
@@ -107,7 +100,6 @@ namespace SudokuSolver.Model.Models
 				throw new Exception("Cant find selected game.");
 
 			Array.Clear(game.Board,0,game.Board.Length);
-			GameChanged?.Invoke();
 		}
 
 		public bool CanClearSelectedGame()
