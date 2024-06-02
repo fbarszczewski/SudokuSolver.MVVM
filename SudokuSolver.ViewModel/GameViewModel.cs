@@ -45,7 +45,7 @@ namespace SudokuSolver.ViewModel
 			foreach(var b in selectedGame.Board)
 			{
 				var cell = new SudokuCell(b);
-				cell.PropertyChanged += CollectionCell_PropertyChanged;
+				cell.PropertyChanged += GameCell_PropertyChanged;
 				cells.Add(cell);
 			}
 			GameCells = new ObservableCollection<SudokuCell>(cells);
@@ -60,7 +60,7 @@ namespace SudokuSolver.ViewModel
 			{
 				foreach(SudokuCell cell in GameCells)
 				{
-					cell.PropertyChanged -= CollectionCell_PropertyChanged;
+					cell.PropertyChanged -= GameCell_PropertyChanged;
 				}
 
 				GameCells.CollectionChanged -= GameCells_CollectionChanged;
@@ -75,12 +75,12 @@ namespace SudokuSolver.ViewModel
 			if(e.NewItems != null)
 				foreach(var newItem in e.NewItems)
 					if(newItem is SudokuCell observableByte)
-						observableByte.PropertyChanged += CollectionCell_PropertyChanged;
+						observableByte.PropertyChanged += GameCell_PropertyChanged;
 
 			if(e.OldItems != null)
 				foreach(var oldItem in e.OldItems)
 					if(oldItem is SudokuCell observableByte)
-						observableByte.PropertyChanged -= CollectionCell_PropertyChanged;
+						observableByte.PropertyChanged -= GameCell_PropertyChanged;
 		}
 
 		/// <summary>
@@ -88,7 +88,7 @@ namespace SudokuSolver.ViewModel
 		/// corresponding cells in the model.Board,  allowing the ViewModel to keep the model's state consistent with
 		/// the view's state.
 		/// </summary>
-		private void CollectionCell_PropertyChanged(object? sender,PropertyChangedEventArgs e)
+		private void GameCell_PropertyChanged(object? sender,PropertyChangedEventArgs e)
 		{
 			if(sender == null)
 				return;
