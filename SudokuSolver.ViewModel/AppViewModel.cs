@@ -3,27 +3,15 @@ using System.Windows;
 using System.Windows.Input;
 using Microsoft.Win32;
 using SudokuSolver.Model.Interfaces;
-using SudokuSolver.Model.Models;
 
 namespace SudokuSolver.ViewModel
 {
 	public class AppViewModel : INotifyPropertyChanged
 	{
 		private readonly IGameManager _gameManagerModel;
-		private GameViewModel _gameViewModel;
+
 		public event PropertyChangedEventHandler? PropertyChanged;
-		public GameViewModel GameViewModel
-		{
-			get => _gameViewModel;
-			set
-			{
-				if(_gameViewModel != value)
-				{
-					_gameViewModel = value;
-					OnPropertyChanged(nameof(_gameViewModel));
-				}
-			}
-		}
+		public GameViewModel GameViewModel { get; set; }
 		public List<string> SudokuDifficultyLevels { get; set; }
 		public string SelectedDifficulty { get; set; }
 		public string SelectedAlgorithm { get; set; }
@@ -37,15 +25,19 @@ namespace SudokuSolver.ViewModel
 			SelectedAlgorithm = AlgorithmCollection[0];
 			SudokuDifficultyLevels = new List<string> { "Easy","Medium","Hard" };
 			SelectedDifficulty = SudokuDifficultyLevels[0];
-			_gameViewModel = new GameViewModel(UpdateGame());
+			GameViewModel = new GameViewModel();
+			UpdateGame();
 		}
 
 
-		private SudokuBoard UpdateGame()
+		private void UpdateGame()
 		{
-			PageNumber = $"{_gameManagerModel.SelectedGameIndex + 1} of {_gameManagerModel.GameList.Count}";
+			PageNumber = $"{_gameManagerModel.SelectedGameIndex} of {_gameManagerModel.GameList.Count}";
+
+			GameViewModel.UpdateGameBoard(_gameManagerModel.GetSelectedGame()!);
 			OnPropertyChanged(nameof(PageNumber));
-			return _gameManagerModel.GetSelectedGame()!;
+			OnPropertyChanged(nameof(GameViewModel));
+
 		}
 
 		private void OnPropertyChanged(string propertyName)
@@ -111,7 +103,7 @@ namespace SudokuSolver.ViewModel
 		{
 			get
 			{
-				previousCommand = previousCommand ?? new RelayCommand(param => _gameManagerModel.PreviousGame(),param => _gameManagerModel.CanPreviousGame());
+				previousCommand = previousCommand ?? new RelayCommand(param => SelectPreviousGame(),param => _gameManagerModel.CanPreviousGame());
 				return previousCommand;
 			}
 		}
@@ -120,11 +112,21 @@ namespace SudokuSolver.ViewModel
 		{
 			get
 			{
-				nextCommand = nextCommand ?? new RelayCommand(param => _gameManagerModel.NextGame(),param => _gameManagerModel.CanNextGame());
+				nextCommand = nextCommand ?? new RelayCommand(param => SelectNextGame(),param => _gameManagerModel.CanNextGame());
 				return nextCommand;
 			}
 		}
 
+		private void SelectNextGame()
+		{
+			_gameManagerModel.NextGame();
+			UpdateGame();
+		}
+		private void SelectPreviousGame()
+		{
+			_gameManagerModel.PreviousGame();
+			UpdateGame();
+		}
 		private void GetUnsolvedSudoku()
 		{
 			if(string.IsNullOrEmpty(SelectedDifficulty))

@@ -9,13 +9,11 @@ namespace SudokuSolver.ViewModel
 	{
 		public event PropertyChangedEventHandler? PropertyChanged;
 		public SudokuBoard SelectedGameBoard { get; set; }
-		public ObservableCollection<SudokuCell> GameCells { get; private set; }
+		public ObservableCollection<SudokuCell>? GameCells { get; private set; }
 
-		public GameViewModel(SudokuBoard selectedGame)
+		public GameViewModel()
 		{
-			GameCells = new ObservableCollection<SudokuCell>();
-			SelectedGameBoard = selectedGame;
-			InitializeCellCollection(selectedGame);
+
 		}
 
 

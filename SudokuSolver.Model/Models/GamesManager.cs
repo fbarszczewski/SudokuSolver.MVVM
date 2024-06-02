@@ -98,6 +98,7 @@ namespace SudokuSolver.Model.Models
 		{
 			var newGame = new SudokuBoard(sudoku);
 			GameList.Add(newGame);
+			SelectedGameIndex = GameList.Count - 1;
 			GameChanged?.Invoke();
 		}
 
