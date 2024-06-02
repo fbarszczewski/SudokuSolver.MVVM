@@ -10,7 +10,7 @@ namespace SudokuSolver.ViewModel
 	public class AppViewModel : INotifyPropertyChanged
 	{
 		private readonly IGameManager _gameManagerModel;
-		public GameViewModel _gameViewModel;
+		private GameViewModel _gameViewModel;
 		public event PropertyChangedEventHandler? PropertyChanged;
 		public GameViewModel GameViewModel
 		{

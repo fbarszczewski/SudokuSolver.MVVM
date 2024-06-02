@@ -207,15 +207,8 @@
                     <!-- Sudoku board display -->
                     <VirtualizingStackPanel Grid.Column="0" Width="441"
                                             Height="441" VerticalAlignment="Top">
-                        <VirtualizingStackPanel.Resources>
-                            <ObjectDataProvider x:Key="GameViewModelProvider" ObjectType="{x:Type vm:GameViewModel}">
-                                <ObjectDataProvider.ConstructorParameters>
-                                  
-                                    <system:String>YourArgumentValue</system:String>
-                                </ObjectDataProvider.ConstructorParameters>
-                            </ObjectDataProvider>
-                        </VirtualizingStackPanel.Resources>
-                        <ItemsControl ItemsSource="{Binding GameCells}">
+
+                        <ItemsControl ItemsSource="{Binding GameViewModel.GameCells}">
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <UniformGrid Columns="9" Rows="9"/>
