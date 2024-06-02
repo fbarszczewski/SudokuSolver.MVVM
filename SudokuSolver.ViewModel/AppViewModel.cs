@@ -75,8 +75,8 @@ namespace SudokuSolver.ViewModel
 		}
 		public string? PageNumber { get; private set; }
 		public GameViewModel GameViewModel { get; private set; }
-		public string SelectedAlgorithm { get; private set; }
-		public string SelectedDifficulty { get; private set; }
+		public string SelectedAlgorithm { get; set; }
+		public string SelectedDifficulty { get; set; }
 		public List<string> AlgorithmCollection { get; private set; }
 		public List<string> SudokuDifficultyLevels { get; private set; }
 

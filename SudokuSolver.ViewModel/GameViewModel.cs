@@ -7,8 +7,20 @@ namespace SudokuSolver.ViewModel
 {
 	public class GameViewModel : INotifyPropertyChanged
 	{
+		private SudokuBoard? _selectedGameBoard;
+		public SudokuBoard? SelectedGameBoard
+		{
+			get => _selectedGameBoard;
+			set
+			{
+				if(_selectedGameBoard != value)
+				{
+					DetachEventHandlers();
+					_selectedGameBoard = value;
+				}
+			}
+		}
 		public ObservableCollection<SudokuCell>? GameCells { get; private set; }
-		public SudokuBoard? SelectedGameBoard { get; set; }
 
 		public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -20,39 +32,44 @@ namespace SudokuSolver.ViewModel
 		public void UpdateGameBoard(SudokuBoard updatedBoard)
 		{
 			SelectedGameBoard = updatedBoard;
-			InitializeCellCollection(updatedBoard);
+			InitializeGameCells(updatedBoard);
 			OnPropertyChanged(nameof(SelectedGameBoard));
 		}
 
-		private void InitializeCellCollection(SudokuBoard selectedGame)
+		private void InitializeGameCells(SudokuBoard selectedGame)
 		{
-			// Detaching event handlers from the previous GameCells to avoid data leaks.
-			if(GameCells != null)
-			{
-				foreach(SudokuCell cell in GameCells)
-				{
-					cell.PropertyChanged -= CollectionCell_PropertyChanged;
-				}
-
-				GameCells.CollectionChanged -= GameCells_CollectionChanged;
-			}
-
 			// Filling collection with the values from the model.
-			GameCells = new ObservableCollection<SudokuCell>(
-							selectedGame.Board.OfType<byte>().Select(b => new SudokuCell(b)));
+			var cells = new List<SudokuCell>(81);
+			foreach(var b in selectedGame.Board)
+			{
+				var cell = new SudokuCell(b);
+				cell.PropertyChanged += GameCell_PropertyChanged;
+				cells.Add(cell);
+			}
+			GameCells = new ObservableCollection<SudokuCell>(cells);
 
 			// Attaching event handler to the CollectionChanged event of GameCells.
 			// This is necessary to synchronize the changes in the GameCells with the model's Board.
 			GameCells.CollectionChanged += GameCells_CollectionChanged;
-
-			// Attaching event handler to the PropertyChanged event of each SudokuCell in GameCells.
-			// This is necessary to synchronize the changes in the Value property of the SudokuCell objects in the GameCells
-			foreach(SudokuCell cell in GameCells)
+		}
+		private void DetachEventHandlers()
+		{
+			if(GameCells != null)
 			{
-				cell.PropertyChanged += CollectionCell_PropertyChanged;
+				foreach(SudokuCell cell in GameCells)
+				{
+					cell.PropertyChanged -= GameCell_PropertyChanged;
+				}
+
+				GameCells.CollectionChanged -= GameCells_CollectionChanged;
 			}
 		}
 
+		/// <summary>
+		/// Attaches or detaches the GameCell_PropertyChanged event handler to or from SudokuCell objects 
+		/// when they are added to or removed from the GameCells collection, respectively.
+		/// Not really used right now in app since we dont add or remove cells after initialized
+		/// </summary>
 		private void GameCells_CollectionChanged(object? sender,NotifyCollectionChangedEventArgs e)
 		{
 			if(sender == null)
@@ -61,12 +78,12 @@ namespace SudokuSolver.ViewModel
 			if(e.NewItems != null)
 				foreach(var newItem in e.NewItems)
 					if(newItem is SudokuCell observableByte)
-						observableByte.PropertyChanged += CollectionCell_PropertyChanged;
+						observableByte.PropertyChanged += GameCell_PropertyChanged;
 
 			if(e.OldItems != null)
 				foreach(var oldItem in e.OldItems)
 					if(oldItem is SudokuCell observableByte)
-						observableByte.PropertyChanged -= CollectionCell_PropertyChanged;
+						observableByte.PropertyChanged -= GameCell_PropertyChanged;
 		}
 
 		/// <summary>
@@ -74,7 +91,7 @@ namespace SudokuSolver.ViewModel
 		/// corresponding cells in the model.Board,  allowing the ViewModel to keep the model's state consistent with
 		/// the view's state.
 		/// </summary>
-		private void CollectionCell_PropertyChanged(object? sender,PropertyChangedEventArgs e)
+		private void GameCell_PropertyChanged(object? sender,PropertyChangedEventArgs e)
 		{
 			if(sender == null)
 				return;
@@ -82,12 +99,14 @@ namespace SudokuSolver.ViewModel
 			if(e.PropertyName == "Value")
 			{
 				var cell = (SudokuCell)sender;
-				var index = GameCells.IndexOf(cell);
-
+				var index = GameCells!.IndexOf(cell);
 				var row = index / 9;
 				var col = index % 9;
 
-				SelectedGameBoard!.Board[row,col] = cell;
+				if(SelectedGameBoard!.Board[row,col] != cell)
+				{
+					SelectedGameBoard!.Board[row,col] = cell;
+				}
 			}
 		}
 
