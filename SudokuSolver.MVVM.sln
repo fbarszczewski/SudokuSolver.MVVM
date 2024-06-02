@@ -11,7 +11,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SudokuSolver.ViewModel", "S
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SudokuSolver.Model.Tests", "SudokuSolver.Model.Tests\SudokuSolver.Model.Tests.csproj", "{7DBAC379-2FF2-486C-8BD1-3C620914C9E0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SudokuSolver.ViewModel.Tests", "SudokuSolver.ViewModel.Tests\SudokuSolver.ViewModel.Tests.csproj", "{52916300-7901-4A5A-92EB-A7964D88094F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SudokuSolver.ViewModel.Tests", "SudokuSolver.ViewModel.Tests\SudokuSolver.ViewModel.Tests.csproj", "{52916300-7901-4A5A-92EB-A7964D88094F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F4E786B3-F86F-41E9-87BD-36A99E64C564}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
