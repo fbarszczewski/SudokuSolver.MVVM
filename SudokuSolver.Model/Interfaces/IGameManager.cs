@@ -44,6 +44,6 @@ namespace SudokuSolver.Model.Interfaces
 
 		List<string> GetSolvingAlgorithmsNames();
 
-		void GetUnsolvedSudoku(string difficultyLevel);
+		Task GetUnsolvedSudoku(string difficultyLevel);
 	}
 }

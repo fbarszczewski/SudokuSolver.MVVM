@@ -8,9 +8,6 @@ namespace SudokuSolver.Model.Models
 		private readonly ISudokuDataManager _dataManager;
 		private readonly SudokuSolverManager _solverManager;
 		private readonly SugokuAPI _SugokuAPI;
-		private int _nextBoardId = 0;
-		private int NextBoardId => _nextBoardId++;
-
 		public List<SudokuBoard> GameList { get; private set; }
 		public int SelectedGameIndex { get; private set; }
 
@@ -48,6 +45,13 @@ namespace SudokuSolver.Model.Models
 		public bool CanPreviousGame()
 		{
 			return SelectedGameIndex > 0;
+		}
+		private void AddGame(SudokuBoard sudoku)
+		{
+			var newGame = new SudokuBoard(sudoku);
+			GameList.Add(newGame);
+			SelectedGameIndex = GameList.Count - 1;
+			GameChanged?.Invoke();
 		}
 
 		public void LoadGamesFromFile(string path)
@@ -94,13 +98,7 @@ namespace SudokuSolver.Model.Models
 			return GameList[SelectedGameIndex];
 		}
 
-		private void AddGame(SudokuBoard sudoku)
-		{
-			var newGame = new SudokuBoard(sudoku);
-			GameList.Add(newGame);
-			SelectedGameIndex = GameList.Count - 1;
-			GameChanged?.Invoke();
-		}
+
 
 		public void ClearSelectedGame()
 		{
@@ -154,7 +152,7 @@ namespace SudokuSolver.Model.Models
 			return _solverManager.GetSolverNames();
 		}
 
-		public async void GetUnsolvedSudoku(string difficultyLevel)
+		public async Task GetUnsolvedSudoku(string difficultyLevel)
 		{
 			var contentToParse = await _SugokuAPI.GetSudoku(difficultyLevel.ToLower());
 

@@ -32,7 +32,7 @@ namespace SudokuSolver.ViewModel
 
 		private void UpdateGame()
 		{
-			PageNumber = $"{_gameManagerModel.SelectedGameIndex} of {_gameManagerModel.GameList.Count}";
+			PageNumber = $"{_gameManagerModel.SelectedGameIndex + 1} of {_gameManagerModel.GameList.Count}";
 
 			GameViewModel.UpdateGameBoard(_gameManagerModel.GetSelectedGame()!);
 			OnPropertyChanged(nameof(PageNumber));
@@ -94,7 +94,7 @@ namespace SudokuSolver.ViewModel
 		{
 			get
 			{
-				getUnsolvedSudokuCommand = getUnsolvedSudokuCommand ?? new RelayCommand(param => GetUnsolvedSudoku(),param => !string.IsNullOrEmpty(SelectedDifficulty));
+				getUnsolvedSudokuCommand = getUnsolvedSudokuCommand ?? new RelayCommand(param => GetUnsolvedSudokuAndUpdateGame(),param => !string.IsNullOrEmpty(SelectedDifficulty));
 				return getUnsolvedSudokuCommand;
 			}
 		}
@@ -127,7 +127,7 @@ namespace SudokuSolver.ViewModel
 			_gameManagerModel.PreviousGame();
 			UpdateGame();
 		}
-		private void GetUnsolvedSudoku()
+		private async Task GetUnsolvedSudoku()
 		{
 			if(string.IsNullOrEmpty(SelectedDifficulty))
 			{
@@ -136,13 +136,18 @@ namespace SudokuSolver.ViewModel
 			}
 			try
 			{
-				_gameManagerModel.GetUnsolvedSudoku(SelectedDifficulty);
-				UpdateGame();
+				await _gameManagerModel.GetUnsolvedSudoku(SelectedDifficulty);
+
 			}
 			catch(Exception ex)
 			{
 				MessageBox.Show($"Error getting sudoku to solve.\n{ex.Message}");
 			}
+		}
+		private async void GetUnsolvedSudokuAndUpdateGame()
+		{
+			await GetUnsolvedSudoku();
+			UpdateGame();
 		}
 
 		private void SolveSudoku()
