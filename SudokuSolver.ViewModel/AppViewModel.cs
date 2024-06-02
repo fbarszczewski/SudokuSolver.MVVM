@@ -10,13 +10,14 @@ namespace SudokuSolver.ViewModel
 	{
 		private readonly IGameManager _gameManagerModel;
 
-		public event PropertyChangedEventHandler? PropertyChanged;
-		public GameViewModel GameViewModel { get; set; }
-		public List<string> SudokuDifficultyLevels { get; set; }
-		public string SelectedDifficulty { get; set; }
-		public string SelectedAlgorithm { get; set; }
 		public List<string> AlgorithmCollection { get; set; }
+		public GameViewModel GameViewModel { get; set; }
 		public string? PageNumber { get; set; }
+		public string SelectedAlgorithm { get; set; }
+		public string SelectedDifficulty { get; set; }
+		public List<string> SudokuDifficultyLevels { get; set; }
+
+		public event PropertyChangedEventHandler? PropertyChanged;
 
 		public AppViewModel(IGameManager _model)
 		{
@@ -28,7 +29,6 @@ namespace SudokuSolver.ViewModel
 			GameViewModel = new GameViewModel();
 			UpdateGame();
 		}
-
 
 		private void UpdateGame()
 		{
@@ -122,11 +122,13 @@ namespace SudokuSolver.ViewModel
 			_gameManagerModel.NextGame();
 			UpdateGame();
 		}
+
 		private void SelectPreviousGame()
 		{
 			_gameManagerModel.PreviousGame();
 			UpdateGame();
 		}
+
 		private async Task GetUnsolvedSudoku()
 		{
 			if(string.IsNullOrEmpty(SelectedDifficulty))
@@ -144,6 +146,7 @@ namespace SudokuSolver.ViewModel
 				MessageBox.Show($"Error getting sudoku to solve.\n{ex.Message}");
 			}
 		}
+
 		private async void GetUnsolvedSudokuAndUpdateGame()
 		{
 			await GetUnsolvedSudoku();
@@ -170,6 +173,7 @@ namespace SudokuSolver.ViewModel
 				MessageBox.Show($"Sudoku solver error. :(\n{ex.Message}");
 			}
 		}
+
 		private void LoadFile()
 		{
 			var openFileDialog = new OpenFileDialog();

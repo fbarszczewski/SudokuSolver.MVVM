@@ -30,6 +30,7 @@ namespace SudokuSolver.Model.Models
 		{
 			return SelectedGameIndex >= 0 && SelectedGameIndex < GameList.Count - 1;
 		}
+
 		public void PreviousGame()
 		{
 			if(CanPreviousGame())
@@ -39,12 +40,6 @@ namespace SudokuSolver.Model.Models
 		public bool CanPreviousGame()
 		{
 			return SelectedGameIndex > 0;
-		}
-		private void AddGame(SudokuBoard sudoku)
-		{
-			var newGame = new SudokuBoard(sudoku);
-			GameList.Add(newGame);
-			SelectedGameIndex = GameList.Count - 1;
 		}
 
 		public void LoadGamesFromFile(string path)
@@ -58,10 +53,6 @@ namespace SudokuSolver.Model.Models
 			}
 		}
 
-
-
-
-
 		public void RemoveGame()
 		{
 			throw new NotImplementedException();
@@ -71,7 +62,6 @@ namespace SudokuSolver.Model.Models
 		{
 			AddGame(new SudokuBoard());
 		}
-
 
 		public void SaveSelectedGame(string path)
 		{
@@ -90,8 +80,6 @@ namespace SudokuSolver.Model.Models
 		{
 			return GameList[SelectedGameIndex];
 		}
-
-
 
 		public void ClearSelectedGame()
 		{
@@ -159,6 +147,12 @@ namespace SudokuSolver.Model.Models
 				AddGame(board);
 			}
 		}
-	}
 
+		private void AddGame(SudokuBoard sudoku)
+		{
+			var newGame = new SudokuBoard(sudoku);
+			GameList.Add(newGame);
+			SelectedGameIndex = GameList.Count - 1;
+		}
+	}
 }
