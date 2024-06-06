@@ -1,4 +1,6 @@
-﻿using SudokuSolver.Model.Interfaces;
+﻿using System.Text;
+using SudokuSolver.Model.Interfaces;
+using SudokuSolver.Model.Models;
 
 namespace SudokuSolver.Model.Services.DataParser.ParseStrategies
 {
@@ -6,37 +8,23 @@ namespace SudokuSolver.Model.Services.DataParser.ParseStrategies
 	{
 		public void LoadBoards(ISudokuData sudokuData)
 		{
-			//var inputData = sudokuData.Content.Replace(" ",string.Empty);
-
-			//if(!CanConvert(inputData))
-			//	throw new ArgumentException("Invalid Sudoku data.");
+			FileHandler.ReadFile(sudokuData);
 
 
-			//sudokuData.Boards = ConvertToBoard(inputData).ToList();
-			throw new NotImplementedException();
+			if(!CanConvert(sudokuData.Content))
+				throw new ArgumentException("Invalid Sudoku data format.");
+
+
+			sudokuData.Boards = ConvertToSudokuBoard(sudokuData.Content);
 		}
 
 		public void SaveBoards(ISudokuData sudokuData)
 		{
-			//if(!sudokuData.Boards.Any())
-			//	throw new ArgumentNullException("Nothing to save.");
+			if(!sudokuData.Boards.Any())
+				throw new ArgumentNullException("Nothing to save.");
+			sudokuData.Content = ConvertSudokuBoardsToString(sudokuData.Boards);
 
-			//var sb = new StringBuilder();
-
-			//foreach(var _board in sudokuData.Boards)
-			//{
-			//	for(var i = 0;i < 9;i++)
-			//	{
-			//		for(var j = 0;j < 9;j++)
-			//		{
-			//			sb.Append(_board[i,j]);
-			//			if(j < 8) sb.Append(" ");
-			//		}
-			//		sb.AppendLine();
-			//	}
-			//	sb.AppendLine();
-			//}
-			throw new NotImplementedException();
+			FileHandler.WriteFile(sudokuData);
 		}
 
 
@@ -69,9 +57,9 @@ namespace SudokuSolver.Model.Services.DataParser.ParseStrategies
 			return true;
 		}
 
-		private IEnumerable<byte[,]> ConvertToBoard(string inputData)
+		private List<SudokuBoard> ConvertToSudokuBoard(string inputData)
 		{
-			var boards = new List<byte[,]>();
+			var sudokuBoards = new List<SudokuBoard>();
 			var lines = inputData.Split(new[] { "\r\n","\r","\n" },StringSplitOptions.None)
 							 .Where(line => !string.IsNullOrWhiteSpace(line))
 							 .ToArray();
@@ -87,10 +75,33 @@ namespace SudokuSolver.Model.Services.DataParser.ParseStrategies
 						board[j,k] = byte.Parse(line[k].ToString());
 					}
 				}
-				boards.Add(board);
+				sudokuBoards.Add(new SudokuBoard(board));
 			}
+			return sudokuBoards;
+		}
 
-			return boards;
+		public string ConvertSudokuBoardsToString(List<SudokuBoard> sudokuBoards)
+		{
+			var sb = new StringBuilder();
+			var lineCount = 0;
+			foreach(SudokuBoard board in sudokuBoards)
+			{
+				for(var i = 0;i < board.Board.GetLength(0);i++)
+				{
+					for(var j = 0;j < board.Board.GetLength(1);j++)
+					{
+						sb.Append((char)board.Board[i,j]);
+						if((j + 1) % 9 == 0)
+						{
+							sb.AppendLine();
+							lineCount++;
+							if(lineCount % 9 == 0)
+								sb.AppendLine();
+						}
+					}
+				}
+			}
+			return sb.ToString();
 		}
 	}
 }
